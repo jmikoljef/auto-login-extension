@@ -1,0 +1,26 @@
+<html>
+<head>
+<script>
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+console.log(request);
+    if (request.method == "getCredential") {
+      var options = eval("("+window.localStorage.getItem("options")+")");;
+      console.log( {
+            username: options.username,
+            password: options.password
+          });
+      sendResponse(
+          {
+            username: options.username,
+            password: options.password
+          });
+    } else {
+    console.log(request);
+      sendResponse({}); // snub them.
+    }
+});
+</script>
+</head>
+<body>
+</body>
+</html>
