@@ -54,6 +54,18 @@ function changeCredential(credential) {
 // Main
 exports.main = function(options, callbacks) {
     /*
+     * Branche le script adéquat sur la page de test
+     */
+    /*let testPage = PAGE_MOD.PageMod({
+        include: '*',
+        contentScriptWhen : 'end',
+        contentScriptFile: [DATA.url('scripts/test0.js'), DATA.url('scripts/test1.js')],
+        onAttach: function(worker) {
+			worker.port.emit('execute', null);
+        }
+    });*/
+
+    /*
      * Branche le script adéquat sur la page de login freemobile
      */
     let freeMobilePage = PAGE_MOD.PageMod({
@@ -105,7 +117,7 @@ exports.main = function(options, callbacks) {
         label: "Sites Login Helper Settings",
         id: 'settings',
         content: '<span style="font-weight:lighter">Sites Login Helper<img src="' + DATA.url('ui/icon.ico') + '" /><span>',
-        width: 160,
+        width: 170,
         onClick: function() {
             if(!!settingsTabs) {
                 settingsTabs.activate();
