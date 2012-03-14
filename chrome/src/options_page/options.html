@@ -1,0 +1,86 @@
+<html>
+<head><title>Options</title></head>
+<style type="text/css">
+.status {
+  background: #FFF299;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  display: none;
+  position: absolute;
+}
+</style>
+<script type="text/javascript">
+var _options = [ {name: "username", type: "text"}, {name: "password", type: "password"} ];
+function setStatus(msg) {
+  // Update status to let user know options were saved.
+  var status = document.getElementById("status");
+  status.innerHTML = msg;
+  status.style.display = "inline";
+  setTimeout(function() {
+    status.style.display = "none";
+  }, 750);
+}
+
+// Saves options to localStorage.
+function saveOptions() {
+  var options = {};
+  for(var i=0; i<_options.length; i++) {
+    options[_options[i].name] = document.getElementById(_options[i].name).value;
+  }
+  window.localStorage.setItem("options",	JSON.stringify(options));
+
+  setStatus("Options Saved.");
+}
+
+// Restores select box state to saved value from localStorage.
+function restoreOptions() {
+  var options = eval("("+window.localStorage.getItem("options")+")");;
+  if(!options) options = { username: "", password:"" };
+  for(var i=0; i<_options.length; i++) {
+    document.getElementById(_options[i].name).value = options[_options[i].name];
+  }
+}
+
+function captureKey(e) {
+  if(e.ctrlKey && e.which==83) { // CTRL + S
+    saveOptions();
+    return false;
+  }
+}
+
+window.addEventListener("load", restoreOptions, false);
+window.addEventListener("keydown", captureKey, false);
+
+
+</script>
+
+<body>
+<div id="status" class="status"></div>
+<table id="options">
+<script>
+  for(var i=0; i<_options.length; i++) {
+    var tr = document.createElement("tr");
+    var td1 = document.createElement("td");
+    var label = document.createElement("label");
+    label.setAttribute("for", _options[i].name);
+    var text = document.createTextNode(_options[i].name);
+    label.appendChild(text);
+    td1.appendChild(label);
+    tr.appendChild(td1);
+    var td2 = document.createElement("td");
+    var input = document.createElement("input");
+    input.setAttribute("type", _options[i].type);
+    input.setAttribute("id", _options[i].name);
+    input.setAttribute("name", _options[i].name);
+    td2.appendChild(input);
+    tr.appendChild(td2);
+    document.getElementById("options").appendChild(tr);
+  }
+</script>
+</table>
+<br>
+<button onclick="saveOptions()">Save</button>
+</body>
+</html>
