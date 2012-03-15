@@ -9,7 +9,6 @@ const DATA = SELF.data;
 const PANEL = require("panel");
 */
 
-// Consts
 const FREEMOBILE_URL = "https://mobile.free.fr";
 const FREEMOBILE_LOGIN_PAGE_URL = "https://mobile.free.fr/moncompte/*";
 
@@ -116,8 +115,8 @@ exports.main = function(options, callbacks) {
     let settingsWidget = WIDGET.Widget({
         label: "Sites Login Helper Settings",
         id: 'settings',
-        content: '<span style="font-weight:lighter">Sites Login Helper<img src="' + DATA.url('ui/icon.ico') + '" /><span>',
-        width: 170,
+        contentURL: DATA.url('ui/widget.html'),
+        width: 100,
         onClick: function() {
             if(!!settingsTabs) {
                 settingsTabs.activate();
