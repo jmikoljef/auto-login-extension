@@ -1,4 +1,4 @@
-== Bull Auto Login ==
+== Auto-Login Extension ==
 
 // insérer ici une présentation du projet
 
