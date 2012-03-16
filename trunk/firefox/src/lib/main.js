@@ -58,6 +58,9 @@ exports.main = function(options, callbacks) {
 	 */
 	for(var id in SCRIPTS_CONFIG) {
 		var config = SCRIPTS_CONFIG[id];
+		// Hack (à cause de BMA !!!!)
+		config.id = id;
+		// /Hack
 		let freeMobilePage = PAGE_MOD.PageMod({
 		    include: config.loginPageUrl,
 		    contentScriptWhen : 'end',
@@ -76,6 +79,7 @@ exports.main = function(options, callbacks) {
         contentScriptFile: DATA.url("ui/settings.js"),
         onAttach: function(worker) {
             worker.port.on('changeCredential', changeCredential);
+            worker.port.emit('main', SCRIPTS_CONFIG);
         }
     });
     
