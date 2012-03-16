@@ -137,7 +137,7 @@ function authenticate(credential) {
   document.getElementById("ident_btn_submit").click();
 }
 
-function process(credential) {
+function execute(credential) {
   ocr();
   authenticate(credential);
 }

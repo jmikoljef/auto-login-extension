@@ -5,18 +5,6 @@ const WIDGET = require("widget");
 const SELF = require("self");
 const TABS = require("tabs");
 const DATA = SELF.data;
-/*
-const PANEL = require("panel");
-*/
-
-const FREEMOBILE_URL = "https://mobile.free.fr";
-const FREEMOBILE_LOGIN_PAGE_URL = "https://mobile.free.fr/moncompte/*";
-
-const CAISSEEPARGNE_URL = "https://www.caisse-epargne.fr";
-const CAISSEEPARGNE_LOGIN_PAGE_URL = "https://www.caisse-epargne.fr/ind_pauthpopup.aspx?srcurl=accueil";
-
-const BANQUEPOSTALE_URL = "https://www.labanquepostale.fr";
-const BANQUEPOSTALE_LOGIN_PAGE_URL = "https://voscomptesenligne.labanquepostale.fr/wsost/OstBrokerWeb/loginform?TAM_OP=login&ERROR_CODE=0x00000000&URL=%2Fvoscomptes%2FcanalXHTML%2Fidentif.ea%3Forigin%3Dparticuliers";
 
 var settingsTabs = undefined;
 
@@ -50,60 +38,39 @@ function changeCredential(credential) {
     });
 }
 
+function convertURL(id, files) {
+	var urls = new Array();
+	if(!!files) {
+		for(var i in files) {
+			urls.push('scripts/' + DATA.url(files[i]));
+		}
+	}
+	urls.push('scripts/' + id + '/script.js');
+	urls.push('scripts/bootstrap.js');
+	return urls;
+}
+
 // Main
 exports.main = function(options, callbacks) {
-    /*
-     * Branche le script adéquat sur la page de test
-     */
-    /*let testPage = PAGE_MOD.PageMod({
-        include: '*',
-        contentScriptWhen : 'end',
-        contentScriptFile: [DATA.url('scripts/test0.js'), DATA.url('scripts/test1.js')],
-        onAttach: function(worker) {
-			worker.port.emit('execute', null);
-        }
-    });*/
 
-    /*
-     * Branche le script adéquat sur la page de login freemobile
-     */
-    let freeMobilePage = PAGE_MOD.PageMod({
-        include: FREEMOBILE_LOGIN_PAGE_URL,
-        contentScriptWhen : 'end',
-        contentScriptFile: DATA.url("scripts/freemobile.js"),
-        onAttach: function(worker) {
-            execute(FREEMOBILE_URL, worker);
-        }
-    });
-
-    /*
-     * Branche le script adéquat sur la page de login caisseepargne
-     */
-    let caisseEpargnePage = PAGE_MOD.PageMod({
-        include: CAISSEEPARGNE_LOGIN_PAGE_URL,
-        contentScriptWhen : 'end',
-        contentScriptFile: DATA.url("scripts/caisseepargne.js"),
-        onAttach: function(worker) {
-            execute(CAISSEEPARGNE_URL, worker);
-        }
-    });
-
-    /*
-     * Branche le script adéquat sur la page de login banquepostal
-     */
-    let banquePostalePage = PAGE_MOD.PageMod({
-        include: BANQUEPOSTALE_LOGIN_PAGE_URL,
-        contentScriptWhen : 'end',
-        contentScriptFile: DATA.url("scripts/banquepostale.js"),
-        onAttach: function(worker) {
-            execute(BANQUEPOSTALE_URL, worker);
-        }
-    });
+	/*
+	 * Plug scripts in pages
+	 */
+	for(var id in SCRIPTS_CONFIG) {
+		var config = SCRIPTS_CONFIG[id];
+		let freeMobilePage = PAGE_MOD.PageMod({
+		    include: config.loginPageUrl,
+		    contentScriptWhen : 'end',
+		    contentScriptFile: convertURL(id, config.files),
+		    onAttach: function(worker) {
+		        execute(config.url, worker);
+		    }
+		});
+	}
 
     /*
      * Settings
      */
-
     let settingsPage = PAGE_MOD.PageMod({
         include: DATA.url('ui/settings.html'),
         contentScriptFile: DATA.url("ui/settings.js"),
@@ -123,10 +90,10 @@ exports.main = function(options, callbacks) {
             } else {
                 TABS.open({
                     url: DATA.url('ui/settings.html'),
-                    onOpen: function onOpen(tab) {
+                    onOpen: function(tab) {
                         settingsTabs = tab;
                     },
-                    onClose: function onOpen(tab) {
+                    onClose: function(tab) {
                         settingsTabs = undefined;
                     }
                 });
@@ -135,7 +102,7 @@ exports.main = function(options, callbacks) {
     });
 }
 
-exports.onUnload = function (reason) {
+exports.onUnload = function(reason) {
     if(!!settingsTabs) {
         settingsTabs.close();
     }
