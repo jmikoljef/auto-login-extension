@@ -1,6 +1,3 @@
-const ACTIVATION = _get('activation');
-const CREDENTIAL = _get('credential');
-
 function _get(id) {
     return document.getElementById(id);
 }
@@ -15,13 +12,13 @@ function _text(text) {
 
 function _div(className) {
 	var e = _element('div');
-	e.class = className;
+	e.className = className;
 	return e;
 }
 
-function _label(for, text) {
+function _label(forTag, text) {
 	var e = _element('label');
-	e.for = for;
+	e.for = forTag;
 	var t = _text(text);
 	e.appendChild(t);
 	return e;
@@ -36,79 +33,90 @@ function _input(id, type, value) {
 	return e;
 }
 
-function _activation(config, parent) {
-	var div = _div('checkbox');
-	var label = _label(config.id + '-activation', config.label + ' :');
-	div.appendChild(label);
-	var input = _input(config.id + '-activation', 'checkbox', true);
-	div.appendChild(input);
-	parent.appendChild(div);
-}
+// --------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
-function _username(config, parent) {
-	var div = _div('textfield');
-	var label = _label(config.id + '-username', 'Login :');
-	div.appendChild(label);
-	var input = _input(config.id + '-username', 'text', '');
-	div.appendChild(input);
-	parent.appendChild(div);
-}
-
-function _password(config, parent) {
-	var div = _div('textfield');
-	var label = _label(config.id + '-password', 'Mot de passe :');
-	div.appendChild(label);
-	var input = _input(config.id + '-password', 'password', '');
-	div.appendChild(input);
-	parent.appendChild(div);
-}
-
-function _button(config, parent) {
-	var div = _div('button');
-	var input = _input(config.id + '-button', 'button', 'Modifier');
-	div.appendChild(input);
-	div.addEventListener('click', function (){ _click(config); });
-	parent.appendChild(div);
-}
-
-function _click(config) {
-	var username = _get(config.id + '-username');
-	var password = _get(config.id + '-password');
-    if(!!username) {
-		changeCredential(config, username, password);
-    } else {
-        console.warn('username empty for: ' + config.siteUrl);
-    }
-}
-
-function _activation(config) {
-	_activation(config, ACTIVATION);
-}
-
-function _credential(config) {
-	var e = _div('label');
-	var t = _text(config.label);
-	e.appendChild(t);
-	CREDENTIAL.appendChild(e);
-	_username(config, CREDENTIAL);
-	_password(config, CREDENTIAL);
-	_button(config, CREDENTIAL);
-}
-
-function changeCredential(config, username, password) {
+function changeCredential(script, username, password) {
     var credential = {
-        url: config.siteUrl,
+        url: script.site,
         username: username,
         password: password
     };
     self.port.emit('changeCredential', credential);
 }
 
-function main(configs) {
-	for(var id in configs) {
-		var config = configs[id];
-		_activation(config);
-		_credential(config);
+function _onClick(script) {
+	var username = _get(script.id + '-username');
+	var password = _get(script.id + '-password');
+    if(!!username) {
+		changeCredential(script, username, password);
+    } else {
+        console.warn('username empty for: ' + script.site);
+    }
+}
+
+function _activation(script, parent) {
+	var div = _div('checkbox');
+	var label = _label(script.id + '-activation', script.label + ' :');
+	div.appendChild(label);
+	var input = _input(script.id + '-activation', 'checkbox', true);
+	div.appendChild(input);
+	parent.appendChild(div);
+}
+
+function _siteLabel(script, parent) {
+	var div = _div('label');
+	var text = _text(script.label);
+	div.appendChild(text);
+	parent.appendChild(div);
+}
+
+function _username(script, parent) {
+	var div = _div('textfield');
+	var label = _label(script.id + '-username', 'Login :');
+	div.appendChild(label);
+	var input = _input(script.id + '-username', 'text', '');
+	div.appendChild(input);
+	parent.appendChild(div);
+}
+
+function _password(script, parent) {
+	var div = _div('textfield');
+	var label = _label(script.id + '-password', 'Mot de passe :');
+	div.appendChild(label);
+	var input = _input(script.id + '-password', 'password', '');
+	div.appendChild(input);
+	parent.appendChild(div);
+}
+
+function _button(script, parent) {
+	var div = _div('button');
+	var input = _input(script.id + '-button', 'button', 'Modifier');
+	div.appendChild(input);
+	div.addEventListener('click', function (){ _onClick(script); });
+	parent.appendChild(div);
+}
+
+function _blocActivation(script) {
+	var div = _div('activation');
+	_activation(script, div);
+	_get('activation').appendChild(div);
+}
+
+function _blocCredential(script) {
+	var div = _div('credential');
+	_siteLabel(script, div);
+	_username(script, div);
+	_password(script, div);
+	_button(script, div);
+	_get('credential').appendChild(div);
+}
+
+function main(scripts) {
+	for(var id in scripts) {
+		var script = scripts[id];
+		_blocActivation(script);
+		_blocCredential(script);
 	}
 }
 self.port.on('main', main);
