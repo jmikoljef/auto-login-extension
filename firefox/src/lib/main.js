@@ -1,90 +1,74 @@
-// Includes
+// SDK libs
 const PASSWORDS = require("passwords");
 const PAGE_MOD = require("page-mod");
 const WIDGET = require("widget");
 const SELF = require("self");
 const TABS = require("tabs");
 const DATA = SELF.data;
+// personnal libs
+const PASSWORD_MANAGER = require("password-manager");
+const SCRIPTS_CONFIG = require("scripts_config");
+// Scripts
+const SCRIPTS = SCRIPTS_CONFIG.SCRIPTS;
 
 var settingsTabs = undefined;
 
-function execute(url, worker) {
-    var sent = false;
-    PASSWORDS.search({
-        url: url,
-        onComplete: function onComplete(credentials) {
-            credentials.forEach(function (credential){
-                if (!sent) {
-                    sent = true;
-                    worker.port.emit('execute', credential);
-                }
-            });
-        }
-    });
-}
-
-function changeCredential(credential) {
-    PASSWORDS.search({
-        url: credential.url,
-        onComplete: function onComplete(credentials) {
-            credentials.forEach(PASSWORDS.remove);
-            PASSWORDS.store({
-                url: credential.url,
-                formSubmitURL: credential.url,
-                username: credential.username,
-                password: credential.password
-            });
-        }
-    });
-}
-
-function convertURL(id, files) {
+/*
+ * Extract optionnal scripts path, and add mandatory scripts path
+ */
+function _contentScriptFiles(script) {
 	var urls = new Array();
-	if(!!files) {
-		for(var i in files) {
-			urls.push('scripts/' + DATA.url(files[i]));
+	if(!!script.files) {
+		for(var i in script.files) {
+			urls.push(DATA.url('scripts/' + script.files[i]));
 		}
 	}
-	urls.push('scripts/' + id + '/script.js');
-	urls.push('scripts/bootstrap.js');
+	urls.push(DATA.url('scripts/' + script.id + '/script.js'));
+	urls.push(DATA.url('scripts/bootstrap.js'));
 	return urls;
 }
 
 // Main
 exports.main = function(options, callbacks) {
-
 	/*
 	 * Plug scripts in pages
 	 */
-	for(var id in SCRIPTS_CONFIG) {
-		var config = SCRIPTS_CONFIG[id];
-		// Hack (à cause de BMA !!!!)
-		config.id = id;
-		// /Hack
+	for(var i in SCRIPTS) {
+		var script = SCRIPTS[i];
 		let freeMobilePage = PAGE_MOD.PageMod({
-		    include: config.loginPageUrl,
+		    include: script.page,
 		    contentScriptWhen : 'end',
-		    contentScriptFile: convertURL(id, config.files),
+		    contentScriptFile: _contentScriptFiles(script),
 		    onAttach: function(worker) {
-		        execute(config.url, worker);
+		    	PASSWORD_MANAGER.getFirst(
+		    		{
+		    			url:script.site
+	    			},
+	    			function() {
+	    				worker.port.emit('execute', credential);
+    				}
+    			);
 		    }
 		});
 	}
 
     /*
-     * Settings
+     * Settings page
      */
     let settingsPage = PAGE_MOD.PageMod({
         include: DATA.url('ui/settings.html'),
         contentScriptFile: DATA.url("ui/settings.js"),
         onAttach: function(worker) {
-            worker.port.on('changeCredential', changeCredential);
-            worker.port.emit('main', SCRIPTS_CONFIG);
+            worker.port.on('changeCredential', PASSWORD_MANAGER.set);
+            worker.port.emit('main', SCRIPTS);
         }
     });
-    
+
+    /*
+     * Widget
+     */    
     let settingsWidget = WIDGET.Widget({
-        label: "Sites Login Helper Settings",
+        label: "Auto-Login configuration",
         id: 'settings',
         contentURL: DATA.url('ui/widget.html'),
         width: 100,
@@ -106,6 +90,7 @@ exports.main = function(options, callbacks) {
     });
 }
 
+// Unload
 exports.onUnload = function(reason) {
     if(!!settingsTabs) {
         settingsTabs.close();

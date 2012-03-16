@@ -1,30 +1,41 @@
-const SCRIPTS_CONFIG = {
+const SCRIPTS_CONFIG = [
     /*
      * Free Mobile
      */
-    freemobile: {
+    {
+    	id: 'freemobile',
     	label: 'Free mobile',
-        siteUrl: 'https://mobile.free.fr',
-        loginPageUrl: 'https://mobile.free.fr/moncompte/*',
-        files: ['sha1.js']
+        site: 'https://mobile.free.fr',
+        page: 'https://mobile.free.fr/moncompte/*',
+        scripts: ['sha1.js']
     },
 
     /*
      * Caisse d'epargne
      */
-    caisseepargne: {
+    {
+    	id: 'caisseepargne',
     	label: 'La Caisse d\'Epargne',
-        siteUrl: 'https://www.caisse-epargne.fr',
-        loginPageUrl: 'https://www.caisse-epargne.fr/ind_pauthpopup.aspx?srcurl=accueil'
+        site: 'https://www.caisse-epargne.fr',
+        page: 'https://www.caisse-epargne.fr/ind_pauthpopup.aspx?srcurl=accueil'
     },
 
     /*
      * La banque postale
      */
-    banquepostale: {
+    {
+    	id: 'banquepostale',
     	label: 'La Banque Postale',
-        siteUrl: 'https://www.labanquepostale.fr',
-        loginPageUrl: 'https://voscomptesenligne.labanquepostale.fr/wsost/OstBrokerWeb/loginform?TAM_OP=login'+
+        site: 'https://www.labanquepostale.fr',
+        page: 'https://voscomptesenligne.labanquepostale.fr/wsost/OstBrokerWeb/loginform?TAM_OP=login'+
         '&ERROR_CODE=0x00000000&URL=%2Fvoscomptes%2FcanalXHTML%2Fidentif.ea%3Forigin%3Dparticuliers'
     }
-};
+];
+
+try {
+	// Firefox
+	exports.SCRIPTS = SCRIPTS_CONFIG;
+} catch(err) {
+	// Une erreur ? C'est que ça doit-être Chrome !
+	console.error(err);
+}
