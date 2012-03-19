@@ -6,7 +6,7 @@ const SCRIPTS_CONFIG = [
     	id: 'freemobile',
     	label: 'Free mobile',
         site: 'https://mobile.free.fr',
-        page: 'https://mobile.free.fr/moncompte/*',
+        page: ['https://mobile.free.fr/moncompte/*'],
         scripts: ['sha1.js']
     },
 
@@ -17,7 +17,7 @@ const SCRIPTS_CONFIG = [
     	id: 'caisseepargne',
     	label: 'La Caisse d\'Epargne',
         site: 'https://www.caisse-epargne.fr',
-        page: 'https://www.caisse-epargne.fr/ind_pauthpopup.aspx?srcurl=accueil'
+        page: ['https://www.caisse-epargne.fr/ind_pauthpopup.aspx*', 'https://www.caisse-epargne.fr/particuliers/ind_pauthpopup.aspx*']
     },
 
     /*
@@ -27,8 +27,7 @@ const SCRIPTS_CONFIG = [
     	id: 'banquepostale',
     	label: 'La Banque Postale',
         site: 'https://www.labanquepostale.fr',
-        page: 'https://voscomptesenligne.labanquepostale.fr/wsost/OstBrokerWeb/loginform?TAM_OP=login'+
-        '&ERROR_CODE=0x00000000&URL=%2Fvoscomptes%2FcanalXHTML%2Fidentif.ea%3Forigin%3Dparticuliers'
+        page: ['https://voscomptesenligne.labanquepostale.fr/wsost/OstBrokerWeb/loginform?TAM_OP=login&ERROR_CODE=0x00000000&URL=%2Fvoscomptes%2FcanalXHTML%2Fidentif.ea%3Forigin%3Dparticuliers']
     }
 ];
 

@@ -1,6 +1,6 @@
 const PASSWORDS = require("passwords");
 
-function _get(credential, callback) {
+function _getAll(credential, callback) {
     PASSWORDS.search({
         url: credential.url,
         onComplete: function onComplete(credentials) {
@@ -10,14 +10,16 @@ function _get(credential, callback) {
 };
 
 function _getFirst(credential, callback) {
+    console.log('url:' + credential.url);
     var found = false;
     PASSWORDS.search({
         url: credential.url,
         onComplete: function onComplete(credentials) {
-            credentials.forEach(function (credential){
+            console.log('credentials:' +credentials);
+            credentials.forEach(function (foundCredential){
                 if (!found) {
                     found = true;
-                    callback(credential);
+                    callback(foundCredential);
                 }
             });
         }
@@ -48,6 +50,7 @@ function _remove(credential) {
     });
 };
 
-exports.get = _get;
+exports.getAll = _getAll;
+exports.getFirst = _getFirst;
 exports.set = _set;
 exports.remove = _remove;

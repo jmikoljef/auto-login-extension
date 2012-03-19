@@ -46,8 +46,8 @@ function changeCredential(script, username, password) {
 }
 
 function _onClick(script) {
-	var username = _get(script.id + '-username');
-	var password = _get(script.id + '-password');
+	var username = _get(script.id + '-username').value;
+	var password = _get(script.id + '-password').value;
     if(!!username) {
 		changeCredential(script, username, password);
     } else {

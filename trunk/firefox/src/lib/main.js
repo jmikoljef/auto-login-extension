@@ -28,6 +28,25 @@ function _contentScriptFiles(script) {
 	return urls;
 }
 
+function _plugScript(script) {
+	let pageMod = PAGE_MOD.PageMod({
+	    include: script.page,
+	    contentScriptWhen : 'end',
+	    contentScriptFile: _contentScriptFiles(script),
+	    onAttach: function(worker) {
+	    	PASSWORD_MANAGER.getFirst(
+	    		{
+	    			url:script.site
+    			},
+    			function(credential) {
+                    console.trace();
+    				worker.port.emit('execute', credential);
+				}
+			);
+	    }
+	});
+}
+
 // Main
 exports.main = function(options, callbacks) {
 	/*
@@ -35,21 +54,7 @@ exports.main = function(options, callbacks) {
 	 */
 	for(var i in SCRIPTS) {
 		var script = SCRIPTS[i];
-		let freeMobilePage = PAGE_MOD.PageMod({
-		    include: script.page,
-		    contentScriptWhen : 'end',
-		    contentScriptFile: _contentScriptFiles(script),
-		    onAttach: function(worker) {
-		    	PASSWORD_MANAGER.getFirst(
-		    		{
-		    			url:script.site
-	    			},
-	    			function() {
-	    				worker.port.emit('execute', credential);
-    				}
-    			);
-		    }
-		});
+        _plugScript(script);
 	}
 
     /*
