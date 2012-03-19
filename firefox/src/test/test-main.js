@@ -1,5 +1,14 @@
-const main = require("main");
+const MAIN = require("main");
+const TABS = require("tabs");
 
+exports.test_open_tab = function(test) {
+    TABS.open({
+        url: "https://www.caisse-epargne.fr/particuliers/ind_pauthpopup.aspx"
+    });
+    test.waitUntilDone(200000);
+};
+
+/*
 exports.test_test_run = function(test) {
   test.pass("Unit test running!");
 };
@@ -7,6 +16,8 @@ exports.test_test_run = function(test) {
 exports.test_id = function(test) {
   test.assert(require("self").id.length > 0);
 };
+
+
 /*
 exports.test_url = function(test) {
   require("request").Request({

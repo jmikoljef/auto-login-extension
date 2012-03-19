@@ -5,5 +5,25 @@
     "version": "0.1", 
     "fullName": "Auto-Login Extension", 
     "id": "jid1-O9kpfSiYNsuwcw", 
-    "description": "Little firefox addon helping user to log on sites with exotic protections "
+    "description": "Little firefox addon helping user to log on sites with exotic protections",
+    "preferences": [
+        {
+            "type": "string",
+            "name": "stringPreference",
+            "value": "this is the default string value",
+            "title": "String Preference"
+        },
+        {
+            "type": "bool",
+            "name": "boolPreference",
+            "value": true,
+            "title": "Boolean Pref" 
+        },
+        {
+            "type": "integer",
+            "name": "intPreference",
+            "value": 42,
+            "title": "Integer Pref" 
+        }
+	]
 }
