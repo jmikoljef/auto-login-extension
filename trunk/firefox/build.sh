@@ -1,9 +1,5 @@
 #!/bin/bash
 
-function _version() {
-    echo `grep "version" package.json | sed s/[^0-9.]*//g`
-}
-
 function _clean() {
 	# Clean
 	rm -Rf "$TARGET"
@@ -21,41 +17,80 @@ function _copy() {
 	cp -Rf $SCRIPTS "$TARGET/data"
 }
 
-function _run() {
+function _cfx() {
     cd $TARGET
     cfx $@
+    cd -
+}
+
+function _version() {
+    echo `grep "version" $TARGET/package.json | sed s/[^0-9.]*//g`
 }
 
 function _rename() {
     VERSION=`_version`
-    mv "auto-login-extension.xpi" "auto-login-extension-$VERSION.xpi"
+    OLD_FILE_NAME="auto-login-extension.xpi"
+    NEW_FILE_NAME="auto-login-extension-$VERSION.xpi"
+    mv $TARGET/$OLD_FILE_NAME $TARGET/$NEW_FILE_NAME
 }
+
+function _move() {
+    VERSION=`_version`
+    FILE_NAME="auto-login-extension-$VERSION.xpi"
+    mv $TARGET/$FILE_NAME $RELEASES
+}
+
+function _warningRDF() {
+    echo "################################################################################"
+    echo "##########                                                            ##########"
+    echo "##########          WARNING : Update RDF file !                       ##########"
+    echo "##########                                                            ##########"
+    echo "################################################################################"
+}
+
+#
+# ###
+#
+
+function _test() {
+    _clean
+    _copy
+    _cfx "test" $CFX_TEST_OPTIONS $@
+}
+
+function _install() {
+    _clean
+    _copy
+    _cfx "xpi" $CFX_INSTALL_OPTIONS $@
+    _rename
+    _move
+}
+
+function _release() {
+    _clean
+    _copy
+    _cfx "xpi" $CFX_RELEASE_OPTIONS $@
+    _rename
+    _move
+    _warningRDF
+}
+
+#
+# ###
+#
 
 function _goal() {
     case "$GOAL" in
-        run | test)
-            _clean
-            _copy
-            _run "$GOAL" $CFX_TEST_OPTIONS $@
-        ;;
-        
-        xpi)
-            _clean
-            _copy
-            _run "xpi" $CFX_XPI_OPTIONS $@
-            _rename
+        test)
+            _test $@
         ;;
         
         install)
-            _goal "run" $@
-        ;;
-        
-        package)
-            _goal "xpi" $@
+            _install $@
         ;;
         
         release)
-            echo "Not yet implemented"
+            _release  $@
         ;;
         
         *)
@@ -66,12 +101,13 @@ function _goal() {
 
 DEFAULT_FIREFOX_INSTANCE=`which firefox`
 DEFAULT_FIREFOX_PROFILE_DIR="/tmp/dev"
+RELEASES="../../releases"
 SRC="./src"
 TARGET="./target"
 COMMON="../common"
 SCRIPTS="$COMMON/scripts"
-UPDATE_XPI="https://auto-login-extension.googlecode.com/files/auto-login-extension-latest.xpi"
-UPDATE_RDF="https://auto-login-extension.googlecode.com/files/auto-login-extension.update.rdf"
+UPDATE_DEV_RDF="http://auto-login-extension.googlecode.com/svn/releases/update-dev.rdf"
+UPDATE_STABLE_RDF="http://auto-login-extension.googlecode.com/svn/releases/update-stable.rdf"
 
 if [ -z "$FIREFOX_INSTANCE" ]; then
     FIREFOX_INSTANCE=$DEFAULT_FIREFOX_INSTANCE
@@ -81,7 +117,8 @@ if [ -z "$FIREFOX_PROFILE_DIR" ]; then
     FIREFOX_PROFILE_DIR=$DEFAULT_FIREFOX_PROFILE_DIR
 fi
 CFX_TEST_OPTIONS="-b $FIREFOX_INSTANCE -p $FIREFOX_PROFILE_DIR"
-CFX_XPI_OPTIONS="--update-link $UPDATE_XPI --update-url $UPDATE_RDF"
+CFX_INSTALL_OPTIONS="--update-url $UPDATE_DEV_RDF"
+CFX_RELEASE_OPTIONS="--update-url $UPDATE_STABLE_RDF"
 
 
 if [ $# -eq 0 ]; then
