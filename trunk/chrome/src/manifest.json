@@ -6,12 +6,6 @@
     "<all_urls>",
     "tabs"
   ],
-  "content_scripts": [
-    {
-      "matches": ["https://mobile.free.fr/*"],
-      "js": ["content_scripts/freemobile.js", "content_scripts/script.js", "content_scripts/sha1.js"]
-    }
-  ],
   "background_page": "background_page/background.html",
   "options_page": "options_page/options.html"
 }

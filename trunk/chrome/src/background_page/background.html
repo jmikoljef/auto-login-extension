@@ -1,23 +1,41 @@
 <html>
 <head>
+<script type="text/javascript" src="../scripts_config.js"></script>
 <script>
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-console.log(request);
-    if (request.method == "getCredential") {
-      var options = eval("("+window.localStorage.getItem("options")+")");;
-      console.log( {
-            username: options.username,
-            password: options.password
-          });
-      sendResponse(
-          {
-            username: options.username,
-            password: options.password
-          });
-    } else {
-    console.log(request);
-      sendResponse({}); // snub them.
+var config = eval("("+window.localStorage.getItem("options")+")");;
+
+function injectScripts(tabId, script_config) {
+console.log("injectScripts", script_config);
+  var credential = config[script_config.id].credential;
+  credential = { username: credential.username.value, password: credential.password.value };
+
+  for(var n in script_config.scripts) {
+    chrome.tabs.executeScript(tabId, {file: "scripts/" + script_config.id + "/" + script_config.scripts[n]});
+  }
+  chrome.tabs.executeScript(tabId, {file: "scripts/" + script_config.id + "/script.js"}, function() {
+    chrome.tabs.executeScript(tabId, {code: "execute("+JSON.stringify(credential)+")"});
+  });
+}
+
+
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+  if(!!changeInfo && changeInfo.status=="complete") {
+    for(var i in SCRIPTS_CONFIG) {
+      var script_config = SCRIPTS_CONFIG[i];
+      var pages = script_config.page;
+  console.log(pages);
+      for(var n in pages) {
+  console.log(n);
+        var page = pages[n];
+        page = page.replace(/\?/, "\\?");
+        page = page.replace(/\*/, ".*");
+  console.log(tab.url, page);
+        if(tab.url.match(page)) {
+          injectScripts(tabId, script_config);
+        }
+      }
     }
+  }
 });
 </script>
 </head>
