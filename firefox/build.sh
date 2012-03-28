@@ -63,7 +63,7 @@ function _install() {
     _copy
     _cfx "xpi" $CFX_INSTALL_OPTIONS $@
     _rename
-    _move
+#    _move
 }
 
 function _release() {
@@ -84,15 +84,15 @@ function _goal() {
         test)
             _test $@
         ;;
-        
+
         install)
             _install $@
         ;;
-        
+
         release)
             _release  $@
         ;;
-        
+
         *)
             echo "Unknown goal"
         ;;
@@ -106,8 +106,8 @@ SRC="./src"
 TARGET="./target"
 COMMON="../common"
 SCRIPTS="$COMMON/scripts"
-UPDATE_DEV_RDF="http://auto-login-extension.googlecode.com/svn/releases/update-dev.rdf"
-UPDATE_STABLE_RDF="http://auto-login-extension.googlecode.com/svn/releases/update-stable.rdf"
+UPDATE_DEV_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-dev.rdf"
+UPDATE_STABLE_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-stable.rdf"
 
 if [ -z "$FIREFOX_INSTANCE" ]; then
     FIREFOX_INSTANCE=$DEFAULT_FIREFOX_INSTANCE
