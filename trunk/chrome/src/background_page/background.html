@@ -5,7 +5,6 @@
 var config = eval("("+window.localStorage.getItem("options")+")");;
 
 function injectScripts(tabId, script_config) {
-console.log("injectScripts", script_config);
   var credential = config[script_config.id].credential;
   credential = { username: credential.username.value, password: credential.password.value };
 
@@ -23,13 +22,10 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     for(var i in SCRIPTS_CONFIG) {
       var script_config = SCRIPTS_CONFIG[i];
       var pages = script_config.page;
-  console.log(pages);
       for(var n in pages) {
-  console.log(n);
         var page = pages[n];
         page = page.replace(/\?/, "\\?");
         page = page.replace(/\*/, ".*");
-  console.log(tab.url, page);
         if(tab.url.match(page)) {
           injectScripts(tabId, script_config);
         }
