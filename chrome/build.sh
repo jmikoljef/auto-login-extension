@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ROOT_DIR=`dirname $0`
 EXTENSION_NAME="auto-login-extension"
@@ -23,6 +23,8 @@ cp -Rf ${SRC_DIR}/* ${EXTENSION_DIR}
 
 # Copy config file
 cp -Rf ${COMMON_DIR}/* ${EXTENSION_DIR}
+
+echo "Extension created in ${EXTENSION_DIR}"
 
 # Create or update the extension
 if [ -a ${EXTENSION_NAME}.pem ]; then
