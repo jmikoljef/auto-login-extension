@@ -80,20 +80,30 @@ var hash = {
 
 var pos = [];
 
+const CHIFFRES_BOUTON = document.getElementsByClassName('ident_chiffre_img');
+const PASSWORD_INPUT = document.getElementsByName("pwd_abo")[0];
+const SUBMIT_BUTTON = document.getElementById("ident_btn_submit");
+
 function ocr() {
   for(var i=0; i<10; i++) {
-    var img = document.getElementsByClassName('ident_chiffre_img')[i];
+    var img = CHIFFRES_BOUTON[i];
     var canvas = getCanvas(img);
     canvas = convert(canvas);
     var sha = SHA1(canvas.toDataURL("image/png").replace(/^data:image\/(png|jpg);base64,/, ""));
     var n = hash[sha];
-    console.log(n!=undefined?n:sha);
+    if(n == undefined) {
+      console.warn("Une image n'a pas été déchiffrée (hash="+hash+");
+      
+    }
     if(n != undefined) {
       pos[n] = i;
     }
   }
 }
 
+/**
+ * Convert a canvas into White and black
+ */
 function convert(canvas) {
   var image = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
   var data = image.data;
@@ -114,6 +124,9 @@ function convert(canvas) {
   return canvas;
 }
 
+/**
+ * Return a canvas object correponding to an img HTML element
+ */
 function getCanvas(img) {
     // Create an empty canvas element
     var canvas = document.createElement("canvas");
@@ -127,16 +140,39 @@ function getCanvas(img) {
     return canvas
 }
 
+/**
+ * Try to authenticate the user
+ */
 function authenticate(credential) {
+  var haveError = false;
+  // Parcourt du login pour cliquer sur les chiffres correspondant
   for(var i in credential.username) {
     var n = parseInt(credential.username[i]);
-    var p = pos[n];
-    document.getElementsByClassName('ident_chiffre_img')[p].onclick();
+    if(n == NaN) {
+      console.error("Le login doit contenir uniquement des chiffres");
+      haveError = true;
+    } else {
+      // Recherche de la position du bouton correspondant au chiffre 'n'
+      var p = pos[n];
+      if(p == undefined) {
+        console.error("L'image correspondant au chiffre " + n + " n'a pas été reconnu.");
+        haveError = true;
+      } else {
+        // On a trouvé le bouton correspondant au chiffre, on peut cliquer dessus.
+        CHIFFRES_BOUTON[p].onclick();
+      }
+    }
   }
-  document.getElementsByName("pwd_abo")[0].value = credential.password;
-  document.getElementById("ident_btn_submit").click();
+  if(haveError) return;
+  // On renseigne le mot de passe
+  PASSWORD_INPUT.value = credential.password;
+  // On soumet le formulaire
+  SUBMIT_BUTTON.click();
 }
 
+/**
+ * The main method of this script
+ */
 function execute(credential) {
   ocr();
   authenticate(credential);
