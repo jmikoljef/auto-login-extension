@@ -1,0 +1,345 @@
+<html>
+    <head>
+        <title>AutoLogin Extension - Options UI - 20120329 Proposale by PMD </title>
+        <style type="text/css">
+            * {
+                /* -moz-use-system-font */
+                font-family: ubuntu, sans-serif;
+            }
+            body {
+                background-color: rgb(242,241,240);
+                padding: 10px;
+            }
+            .body {
+                width: 100%;
+                height: 100%;
+            }
+            
+            /*
+             * Title
+             */
+            h1 {
+                margin-top: -5px;
+                margin-bottom: 20px; 
+                width: 100%;
+                text-align: center;
+                font-size: 2em;
+                font-weight: bolder;
+            }
+            
+            /*
+             * Menu
+             */
+            .menu {
+                float: left;
+                width: 220px;
+                padding-top: 40px;
+            }
+            .menu img {
+                vertical-align : middle;
+            }
+            .menu-item-l1,.menu-item-l2 {
+                padding: 5px;
+                margin-bottom: 5px;
+
+                /* A retirer si  chrome gère le border-radius css3 */
+                -webkit-border-top-left-radius: 5px;
+                -webkit-border-bottom-left-radius: 5px;
+                /* CSS3 */
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+
+                /* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
+                position:relative;
+            }
+            
+            .menu .menu-item-l1 {
+                color: rgb(72,72,72);
+                font-size: 16pt;
+                width: 210px;
+            }
+            .menu .menu-item-l2 {
+                font-size: 12pt;
+                margin-left: 18px;
+                width: 192px;
+            }
+            .menu .menu-item-l2 img {
+                width: 16px;
+            }
+            .menu a:link,a:visited,a:focus,a:active,a:hover {
+                color: rgb(72,72,72);
+                text-decoration: none;
+                outline: none;
+            }
+            .menu input {
+                float: right;
+            }
+            .menu-disabled {
+                border: 1px solid rgb(242,241,240);
+
+                /* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
+                z-index: 0;
+            }
+            .menu-enabled {
+                background-color: white;
+                border: 1px solid grey;
+                border-right: none;
+                
+                /* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
+                z-index: 1;
+            }
+            
+            /*
+             * Content
+             */
+            .panel {
+                overflow:auto;
+                height: 94%;
+                background-color: white;
+                border: 1px solid grey;
+                display: none;
+                
+                /* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
+                position:relative;
+                z-index: 0;
+                /*  */
+
+                /* A retirer si  chrome gère le border-radius css3 */
+                -webkit-border-radius: 5px;
+                /* CSS3 */
+                border-radius: 5px;
+            }
+            .panel div, h2 {
+                padding: 5px;
+            }
+            .panel .element {
+                clear:both;
+                padding: 0px 15px 15px 15px;
+            }
+            h2 {
+                margin-top: 1px;
+                font-size: 12pt;
+                border-bottom: 1px solid rgb(200,200,200);
+            }
+            h3 {
+                font-size: 12pt;
+                font-weight: normal;
+                text-decoration: underline;
+            }
+            .button {
+                clear:both;
+                margin-top: 20px;
+                border-top: 1px solid rgb(200,200,200);
+                
+                text-align: right;
+            }
+            .button input{
+                margin-top: 5px;
+                margin-right: 10px;
+            }
+            hr { /* Separateur */
+                visibility: hidden;
+                clear:both;
+                height: 1px;
+            }
+            #panel-main {
+                display: block; /* A l'affichage on affiche l'onglet générale (main) */
+            }
+            
+            /*
+             * Bullshit
+             */
+             table {
+                width: 95%;
+                margin: auto;
+             }
+             tr {
+             }
+             td {
+                border: solid 1px grey;
+             }
+             .left {
+                padding-top: 2px;
+                display: block;
+                width: 18%;
+                float: left;
+                text-align: right;
+                margin-right: 3px;
+             }
+             .right {
+                display: block;
+                width: 30%;
+                float: left;
+             }
+             .text-center {
+                text-align: center;
+             }
+        </style>
+        <script>
+            function switchPanel(id) {
+                for each(var menu in document.getElementsByClassName('menu-item-l1')) {
+                    if(menu.id == 'menu-' + id) {
+                        menu.className = 'menu-item-l1 menu-enabled';
+                    } else {
+                        menu.className = 'menu-item-l1 menu-disabled';
+                    }
+                }
+                for each(var menu in document.getElementsByClassName('menu-item-l2')) {
+                    if(menu.id == 'menu-' + id) {
+                        menu.className = 'menu-item-l2 menu-enabled';
+                    } else {
+                        menu.className = 'menu-item-l2 menu-disabled';
+                    }
+                }
+                for each(var pane in document.getElementsByClassName('panel')) {
+                    if(pane.id == 'panel-' + id) {
+                        pane.style.display = 'block';
+                    } else { 
+                        pane.style.display = 'none';
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="body">
+            <h1>Autologin options</h1>
+            <div class="menu">
+                <div id="menu-main" class="menu-item-l1 menu-enabled">
+                    <a href="javascript:switchPanel('main')">
+                        <img src="main.png" />
+                        <span>G&eacute;n&eacute;rales</span>
+                    </a>
+                </div>
+                <div id="menu-scripts" class="menu-item-l1 menu-disabled">
+                    <a href="javascript:switchPanel('scripts')">
+                        <img src="extension.png" />
+                        <span>Scripts<span>
+                    </a>
+                </div>
+                <div id="menu-freemobile" class="menu-item-l2 menu-disabled">
+                    <a href="javascript:switchPanel('freemobile')">
+                        <img src="advanced.png" />
+                        <span>FreeMobile</span>
+                    </a>
+                    <input type="checkbox" />
+                </div>
+                <div id="menu-caisse-epargne" class="menu-item-l2 menu-disabled">
+                    <a href="javascript:switchPanel('caisse-epargne')">
+                        <img src="advanced.png" />
+                        <span>Caisse d'Epargne</span>
+                    </a>
+                    <input type="checkbox" checked="checked" />
+                </div>
+                <div id="menu-la-banque-postale" class="menu-item-l2 menu-disabled">
+                    <a href="javascript:switchPanel('la-banque-postale')">
+                        <img src="advanced.png" />
+                        <span>La Banque Postale</span>
+                    </a>
+                    <input type="checkbox" checked="checked" />
+                </div>
+            </div>
+            <div id="panel-main" class="panel">
+                <h2>G&eacute;n&eacute;rales</h2>
+                <div class="element">
+                    <h3>Mode de notification</h3>
+                    <label><input name="notification" type="radio" value="desktop" checked="checked" />Sur le bureau</label><br />
+                    <label><input name="notification" type="radio" value="browser" />Dans le navigateur</label><br />
+                    <label><input name="notification" type="radio" value="page" />Uniquement sur la page du site</label>
+                </div>
+                <div class="button">
+                    <input name="button" type="button" value="Enregistrer" />
+                </div>
+            </div>
+            <div id="panel-scripts" class="panel">
+                <h2>Gestion des scripts</h2>
+                <table>
+                    <tr>
+                        <th>Script</th>
+                        <th>Etat</th>
+                    </tr>
+                    <tr>
+                        <td>FreeMobile</td>
+                        <td class="text-center">Installé</td>
+                    </tr>
+                    <tr>
+                        <td>Caisse d'Epargne</td>
+                        <td class="text-center">Installé</td>
+                    </tr>
+                    <tr>
+                        <td>La Banque Postale</td>
+                        <td class="text-center">Installé</td>
+                    </tr>
+                    <tr>
+                        <td>Crédit Agricole</td>
+                        <td class="text-center">Disponible</td>
+                    </tr>
+                    <tr>
+                        <td>BNP</td>
+                        <td class="text-center">A venir</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="panel-freemobile" class="panel">
+                <h2>Freemobile</h2>
+                <div class="element">
+                    <h3>Mode</h3>
+                    <label><input name="freemobile-mode" type="radio" value="auto" checked="checked" />Automatique</label><br />
+                    <label><input name="freemobile-mode" type="radio" value="manual" />Manuel</label>
+                </div>
+                <div class="element">
+                    <h3>Identifiant / mot de passe</h3>
+                    <label class="left">Identifiant :</label>
+                    <input name="freemobile-username" class="right" type="text" value="123456789" />
+                    <hr />
+                    <label class="left">Mot de passe :</label>
+                    <input name="freemobile-password" class="right" type="text" value="000000000" />
+                    <hr /><!-- Ne pas retier -->
+                </div>
+                <div class="button">
+                    <input name="freemobile-button" type="button" value="Enregistrer" />
+                </div>
+            </div>
+            <div id="panel-caisse-epargne" class="panel">
+                <h2>La Caisse d'Epargne</h2>
+                <div class="element">
+                    <h3>Mode</h3>
+                    <label><input name="caisse-epargne-mode" type="radio" value="auto" checked="checked" />Automatique</label><br />
+                    <label><input name="caisse-epargne-mode" type="radio" value="manual" />Manuel</label>
+                </div>
+                <div class="element">
+                    <h3>Identifiant / mot de passe</h3>
+                    <label class="left">Identifiant :</label>
+                    <input name="caisse-epargne-username" class="right" type="text" value="123456789" />
+                    <hr />
+                    <label class="left">Mot de passe :</label>
+                    <input name="caisse-epargne-password" class="right" type="text" value="000000000" />
+                    <hr /><!-- Ne pas retier -->
+                </div>
+                <div class="button">
+                    <input name="caisse-epargne-button" type="button" value="Enregistrer" />
+                </div>
+            </div>
+            <div id="panel-la-banque-postale" class="panel">
+                <h2>La Banque Postale</h2>
+                <div class="element">
+                    <h3>Mode</h3>
+                    <label><input name="la-banque-postale-mode" type="radio" value="auto" checked="checked" />Automatique</label><br />
+                    <label><input name="la-banque-postale-mode" type="radio" value="manual" />Manuel</label>
+                </div>
+                <div class="element">
+                    <h3>Identifiant / mot de passe</h3>
+                    <label class="left">Identifiant :</label>
+                    <input name="la-banque-postale-username" class="right" type="text" value="123456789" />
+                    <hr />
+                    <label class="left">Mot de passe :</label>
+                    <input name="la-banque-postale-password" class="right" type="text" value="000000000" />
+                    <hr /><!-- Ne pas retier -->
+                </div>
+                <div class="button">
+                    <input name="la-banque-postale-button" type="button" value="Enregistrer" />
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
