@@ -18,9 +18,14 @@ var settingsTabs = undefined;
  */
 function _contentScriptFiles(script) {
 	var urls = new Array();
+	if(!!script.libs) {
+		for(var i in script.files) {
+			urls.push(DATA.url('scripts/' + script.libs[i]));
+		}
+	}
 	if(!!script.files) {
 		for(var i in script.files) {
-			urls.push(DATA.url('scripts/' + script.files[i]));
+			urls.push(DATA.url('scripts/' + script.id + '/' + script.files[i]));
 		}
 	}
 	urls.push(DATA.url('scripts/' + script.id + '/script.js'));
