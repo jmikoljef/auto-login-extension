@@ -93,7 +93,6 @@ function ocr() {
     var n = hash[sha];
     if(n == undefined) {
       console.warn("Une image n'a pas été déchiffrée (hash="+hash+");
-      
     }
     if(n != undefined) {
       pos[n] = i;
@@ -117,8 +116,6 @@ function convert(canvas) {
       data[i+2] = grayscale;   // blue
       data[i+3] = 255;         // alpha
     }
-  }
-  for (var i = 0, n = data.length; i < n; i += 4) {
   }
   canvas.getContext("2d").putImageData(image, 0, 0);
   return canvas;
@@ -159,7 +156,7 @@ function authenticate(credential) {
         haveError = true;
       } else {
         // On a trouvé le bouton correspondant au chiffre, on peut cliquer dessus.
-        CHIFFRES_BOUTON[p].onclick();
+        if(!haveError) CHIFFRES_BOUTON[p].onclick();
       }
     }
   }

@@ -58,12 +58,17 @@ function _test() {
     _cfx "test" $CFX_TEST_OPTIONS $@
 }
 
+function _run() {
+    _clean
+    _copy
+    _cfx "run" $CFX_TEST_OPTIONS $@
+}
+
 function _install() {
     _clean
     _copy
     _cfx "xpi" $CFX_INSTALL_OPTIONS $@
     _rename
-#    _move
 }
 
 function _release() {
@@ -83,6 +88,10 @@ function _goal() {
     case "$GOAL" in
         test)
             _test $@
+        ;;
+
+        run)
+            _run $@
         ;;
 
         install)
@@ -110,6 +119,7 @@ UPDATE_DEV_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-
 UPDATE_STABLE_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-stable.rdf"
 
 if [ -z "$FIREFOX_INSTANCE" ]; then
+	echo "#$FIREFOX_INSTANCE#"
     FIREFOX_INSTANCE=$DEFAULT_FIREFOX_INSTANCE
 fi
 
@@ -119,7 +129,6 @@ fi
 CFX_TEST_OPTIONS="-b $FIREFOX_INSTANCE -p $FIREFOX_PROFILE_DIR"
 CFX_INSTALL_OPTIONS="--update-url $UPDATE_DEV_RDF"
 CFX_RELEASE_OPTIONS="--update-url $UPDATE_STABLE_RDF"
-
 
 if [ $# -eq 0 ]; then
 	GOAL="run"
