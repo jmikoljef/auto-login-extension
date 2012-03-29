@@ -163,7 +163,11 @@ function authenticate(credential) {
       }
     }
   }
-  if(haveError) return;
+  if(haveError) {
+    var element = document.getElementsByClassName('ident_chiffre2')[0];
+    element.innerHTML = '<h1>' + credential.username + '</h1>' + element.innerHTML;
+    return;
+  }
   // On renseigne le mot de passe
   PASSWORD_INPUT.value = credential.password;
   // On soumet le formulaire
