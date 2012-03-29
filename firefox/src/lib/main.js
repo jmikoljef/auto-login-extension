@@ -35,7 +35,7 @@ function _contentScriptFiles(script) {
 
 function _plugScript(script) {
 	let pageMod = PAGE_MOD.PageMod({
-	    include: script.page,
+	    include: script.pages,
 	    contentScriptWhen : 'end',
 	    contentScriptFile: _contentScriptFiles(script),
 	    onAttach: function(worker) {

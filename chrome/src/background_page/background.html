@@ -30,7 +30,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   if(!!changeInfo && changeInfo.status=="complete") {
     for(var i in SCRIPTS_CONFIG) {
       var script_config = SCRIPTS_CONFIG[i];
-      var pages = script_config.page;
+      var pages = script_config.pages;
       // loop on each page that can match
       for(var n in pages) {
         var page = pages[n];
