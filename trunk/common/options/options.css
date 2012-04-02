@@ -16,6 +16,9 @@ label {
   clear:both;
   float:left;
 }
+fieldset {
+  margin-bottom: 15px;
+}
 fieldset input[type="radio"], fieldset input[type="checkbox"] {
   clear:both;
   float:left;
@@ -45,11 +48,10 @@ h1 {
  */
 .menu {
   float: left;
-  width: 220px;
   padding-top: 40px;
 }
 .menu img {
-  vertical-align : middle;
+  vertical-align : bottom;
 }
 .menu-item-l1,.menu-item-l2 {
   padding: 5px;
@@ -66,12 +68,12 @@ h1 {
 .menu .menu-item-l1 {
   color: rgb(72,72,72);
   font-size: 16pt;
-  width: 210px;
+  width: 240px;
 }
 .menu .menu-item-l2 {
   font-size: 12pt;
   margin-left: 18px;
-  width: 192px;
+  width: 222px;
 }
 .menu .menu-item-l2 img {
   width: 16px;
@@ -109,7 +111,7 @@ h1 {
   display: none;
   position:absolute;
   top: 41px;
-  left: 220px;
+  left: 250px;
   bottom: 0px;
   right: 0px;
     
