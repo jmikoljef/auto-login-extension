@@ -16,7 +16,8 @@ function getPanelsDescr() {
 								{ value: "desktop", label: "Sur le bureau" },
 								{ value: "browser", label: "Dans le navigateur" },
 								{ value: "page", label: "Uniquement sur la page du site" }
-							]
+							],
+							default_value: "browser"
 						}
 					]
 				}
@@ -47,15 +48,16 @@ function getPanelsDescr() {
 							values: [
 								{ value: 1, label: "Automatique" },
 								{ value: 2, label: "Manuel" }
-							]
+							],
+							default_value: 1
 						}
 					]
 				},
 				{
 					label: "Identifiant / mot de passe",
 					options: [
-						{id: config.id + ".username", type: "text", label: "Identifiant"},
-						{id: config.id + ".password", type: "password", label: "Mot de passe"}
+						{id: config.id + ".credential.username", type: "text", label: "Identifiant"},
+						{id: config.id + ".credential.password", type: "password", label: "Mot de passe"}
 					]
 				}
 			]
@@ -192,7 +194,7 @@ function createRadio(parent, optionDescr) {
 		var id = optionDescr.id+"."+radio.value
 		input.setAttribute("id", id);
 		input.setAttribute("value", radio.value);
-		if(i == 0) { // On coche le 1er element
+		if(radio.value == optionDescr.default_value) {
 			input.setAttribute("checked", "checked");
 		}
 		parent.appendChild(input);

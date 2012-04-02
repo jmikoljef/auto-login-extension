@@ -92,7 +92,7 @@ function ocr() {
     var sha = SHA1(canvas.toDataURL("image/png").replace(/^data:image\/(png|jpg);base64,/, ""));
     var n = hash[sha];
     if(n == undefined) {
-      console.warn("Une image n'a pas été déchiffrée (hash="+hash+");
+      console.warn("Une image n'a pas été déchiffrée (hash="+hash+")");
     }
     if(n != undefined) {
       pos[n] = i;
@@ -175,6 +175,10 @@ function authenticate(credential) {
  * The main method of this script
  */
 function execute(credential) {
+  if(!credential) {
+  	console.info("Merci de configurer le script avant de l'exécuter.");
+  	return;
+  }
   ocr();
   authenticate(credential);
 }
