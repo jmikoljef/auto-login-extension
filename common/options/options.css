@@ -51,7 +51,15 @@ h1 {
   padding-top: 40px;
 }
 .menu img {
-  vertical-align : bottom;
+  vertical-align : middle;
+  margin-right: 5px;
+}
+.menu span {
+  vertical-align : middle;
+}
+.menu input {
+  vertical-align : middle;
+  float: right;
 }
 .menu-item-l1,.menu-item-l2 {
   padding: 5px;
@@ -82,9 +90,6 @@ h1 {
   color: rgb(72,72,72);
   text-decoration: none;
   outline: none;
-}
-.menu input {
-  float: right;
 }
 .menu-disabled {
   border: 1px solid rgb(242,241,240);
