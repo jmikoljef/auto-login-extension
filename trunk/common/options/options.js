@@ -114,9 +114,6 @@ function createMenuItem(menuItem) {
 	img.setAttribute("src", menuItem.img);
 	a.appendChild(img);
 
-	var space = document.createTextNode('\n');
-	a.appendChild(space);
-
 	var span = document.createElement("span");
 	var label = menuItem.short_label;
 	if(!label) label = menuItem.label
