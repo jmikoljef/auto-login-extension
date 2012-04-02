@@ -4,7 +4,7 @@ function getPanelsDescr() {
 			level: 1,
 			id: "main",
 			img: "main.png",
-			label:"Générales",
+			label:'G\u00E9n\u00E9rales',
 			prefs: [
 				{
 					label: "Mode de notification",
@@ -111,6 +111,10 @@ function createMenuItem(menuItem) {
 	var img = document.createElement("img");
 	img.setAttribute("src", menuItem.img);
 	a.appendChild(img);
+
+	var space = document.createTextNode('\n');
+	a.appendChild(space);
+
 	var span = document.createElement("span");
 	var label = menuItem.short_label;
 	if(!label) label = menuItem.label
@@ -178,13 +182,16 @@ function createOption(parent, optionDescr) {
 
 function createRadio(parent, optionDescr) {
 	for(var i=0; i<optionDescr.values.length; i++) {
-			var radio = optionDescr.values[i];
+		var radio = optionDescr.values[i];
 		var input = document.createElement("input");
 		input.setAttribute("type", "radio");
 		input.setAttribute("name", optionDescr.id);
 		var id = optionDescr.id+"."+radio.value
 		input.setAttribute("id", id);
 		input.setAttribute("value", radio.value);
+		if(i == 0) { // On coche le 1er element
+			input.setAttribute("checked", "checked");
+		}
 		parent.appendChild(input);
 		var label = document.createElement("label");
 		label.setAttribute("for", id);
