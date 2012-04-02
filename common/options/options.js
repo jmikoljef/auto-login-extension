@@ -125,9 +125,10 @@ function createMenuItem(menuItem) {
 	if(menuItem.level == 2) {
 		var checkbox = document.createElement("input");
 		checkbox.setAttribute("type", "checkbox");
-		checkbox.setAttribute("name", menuItem.id + ".enabled");
-		checkbox.setAttribute("id", menuItem.id + ".enabled");
-		checkbox.setAttribute("id", menuItem.id + ".enabled");
+		var checkboxId = menuItem.id + ".enabled";
+		checkbox.setAttribute("name", checkboxId);
+		checkbox.setAttribute("id", checkboxId);
+		checkbox.setAttribute("onchange", "updateOption('"+checkboxId+"')");
 		div.appendChild(checkbox);
 	}
 	menu.appendChild(div);
@@ -231,7 +232,7 @@ function initOptions() {
 	for(var i=0; i<panels.length; i++) {
 		var panelItem = panels[i];
 		var id = panelItem.id;
-		options[id] = eval("("+window.localStorage.getItem(id)+")");
+		options[id] = getOption(id);
 		createMenuItem(panelItem);
 		createPanel(panelItem);
 		if(!!options[id]) restoreOption(options, id+".enabled");
@@ -256,7 +257,7 @@ function saveOptions(id) {
 }
 
 function saveObject(object, name) {
-  window.localStorage.setItem(name, JSON.stringify(object));
+	setOption(name, object);
 }
 
 function getPrefs(prefs) {
@@ -316,7 +317,7 @@ function restoreOptions(id) {
 		var panel = panels[i];
 		if(panel.id==id) {
 			var options = {};
-			options[id] = eval("("+window.localStorage.getItem(id)+")");
+			options[id] = getOption(id);
 			if(!options[id]) return;
 			restorePrefs(panel.prefs, options);
 			restoreOption(options, id+".enabled");
@@ -364,6 +365,22 @@ function restoreValue(name, value) {
 			}
 		}
 	}
+}
+
+function updateOption(name) {
+	var name_parts = name.split(".");
+	var id = name_parts[0]
+	var options = {};
+	options[id] = getOption(id);
+	fillObject(options, name);
+	setOption(id, options[id]);
+}
+ 
+function getOption(name) {
+	return eval("("+window.localStorage.getItem(name)+")");
+}
+function setOption(name, value) {
+	window.localStorage.setItem(name, JSON.stringify(value));
 }
 
 window.addEventListener("load", initOptions, false);
