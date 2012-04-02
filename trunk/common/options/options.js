@@ -10,7 +10,7 @@ function getPanelsDescr() {
 					label: "Mode de notification",
 					options: [
 						{
-							id: "general.notification",
+							id: "main.notification",
 							type: "radio",
 							values: [
 								{ value: "desktop", label: "Sur le bureau" },
@@ -126,6 +126,9 @@ function createMenuItem(menuItem) {
 	if(menuItem.level == 2) {
 		var checkbox = document.createElement("input");
 		checkbox.setAttribute("type", "checkbox");
+		checkbox.setAttribute("name", menuItem.id + ".enabled");
+		checkbox.setAttribute("id", menuItem.id + ".enabled");
+		checkbox.setAttribute("id", menuItem.id + ".enabled");
 		div.appendChild(checkbox);
 	}
 	menu.appendChild(div);
@@ -225,14 +228,16 @@ function createPassword(parent, optionDescr) {
 }
 
 function initOptions() {
+	var options = {};
 	for(var i=0; i<panels.length; i++) {
 		var panelItem = panels[i];
+		var id = panelItem.id;
+		options[id] = eval("("+window.localStorage.getItem(id)+")");
 		createMenuItem(panelItem);
-	}
-	for(var i=0; i<panels.length; i++) {
-		var panelItem = panels[i];
 		createPanel(panelItem);
+		if(!!options[id]) restoreOption(options, id+".enabled");
 	}
+	switchPanel("main");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -243,6 +248,8 @@ function saveOptions(id) {
 		var panel = panels[i];
 		if(panel.id==id) {
 			var prefs = getPrefs(panel.prefs);
+			fillObject(prefs, id+".enabled");
+			if(!prefs) return;
 			saveObject(prefs[id], id);
 			return;
 		}
@@ -254,6 +261,7 @@ function saveObject(object, name) {
 }
 
 function getPrefs(prefs) {
+    if(!prefs) return;
     var result = {};
 	for(var i=0; i<prefs.length; i++) {
 		var pref = prefs[i];
@@ -290,7 +298,9 @@ function getValue(name) {
 	} else {
 		var values = [];
 		for(var i=0; i<elements.length; i++) {
-			if(elements[i].type!="checkbox" || elements[i].checked) {
+			if(elements[i].type=="checkbox") {
+				values.push(elements[i].checked);
+			} else {
 				values.push(elements[i].value);
 			}
 		}
@@ -310,6 +320,7 @@ function restoreOptions(id) {
 			options[id] = eval("("+window.localStorage.getItem(id)+")");
 			if(!options[id]) return;
 			restorePrefs(panel.prefs, options);
+			restoreOption(options, id+".enabled");
 			return;
 		}
 	}
@@ -318,19 +329,19 @@ function restorePrefs(prefs, options) {
 	for(var i=0; i<prefs.length; i++) {
 		var pref = prefs[i];
 		for(var j=0; j<pref.options.length; j++) {
-			restoreOption(options, pref.options[j]);
+			restoreOption(options, pref.options[j].id);
 		}
 	}
 }
-function restoreOption(options, option) {
+function restoreOption(options, name) {
 	// Find the value to restore
 	var value = options;
-	var name_parts = option.id.split(".");
+	var name_parts = name.split(".");
 	for(var i in name_parts) {
 		value = value[name_parts[i]];
 	}
 	// restore the value
-	restoreValue(option.id, value);
+	restoreValue(name, value);
 }
 function restoreValue(name, value) {
 	var elements = document.getElementsByName(name);
@@ -345,9 +356,10 @@ function restoreValue(name, value) {
 		else values = [ value ];
 		for(var i=0; i<elements.length; i++) {
 			if(elements[i].type=="checkbox") {
-				for(var j=0; i<values.length; j++) {
-					elements[i].checked = elements[i].value==values[j];
-				}
+				elements[i].checked=values[i];
+//				for(var j=0; j<values.length; j++) {
+//					elements[i].checked = elements[i].value==values[j];
+//				}
 			} else {
 				elements[i].value=values[i];
 			}
