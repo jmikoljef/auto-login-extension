@@ -7,9 +7,9 @@ const TABS = require("tabs");
 const DATA = SELF.data;
 // personnal libs
 const PASSWORD_MANAGER = require("password-manager");
-const SCRIPTS_CONFIG = require("scripts_config");
+const MANIFEST = require("manifest");
 // Scripts
-const SCRIPTS = SCRIPTS_CONFIG.SCRIPTS;
+const SCRIPTS = MANIFEST.SCRIPTS;
 
 var settingsTabs = undefined;
 
