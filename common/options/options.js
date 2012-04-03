@@ -195,9 +195,11 @@ function createRadio(parent, optionDescr) {
 		if(radio.value == optionDescr.default_value) {
 			input.setAttribute("checked", "checked");
 		}
+		input.setAttribute("class", "left");
 		parent.appendChild(input);
 		var label = document.createElement("label");
 		label.setAttribute("for", id);
+		label.setAttribute("class", "right");
 		label.appendChild(document.createTextNode(radio.label));
 		parent.appendChild(label);
 	}
@@ -207,23 +209,27 @@ function createCheckbox(parent, optionDescr) {
 function createText(parent, optionDescr) {
 	var label = document.createElement("label");
 	label.setAttribute("for", optionDescr.id);
+	label.setAttribute("class", "left");
 	label.appendChild(document.createTextNode(optionDescr.label + " : "));
 	parent.appendChild(label);
 	var input = document.createElement("input");
 	input.setAttribute("type", "text");
 	input.setAttribute("name", optionDescr.id);
 	input.setAttribute("id", optionDescr.id);
+	input.setAttribute("class", "right");
 	parent.appendChild(input);
 }
 function createPassword(parent, optionDescr) {
 	var label = document.createElement("label");
 	label.setAttribute("for", optionDescr.id);
+	label.setAttribute("class", "left");
 	label.appendChild(document.createTextNode(optionDescr.label + " : "));
 	parent.appendChild(label);
 	var input = document.createElement("input");
 	input.setAttribute("type", "password");
 	input.setAttribute("name", optionDescr.id);
 	input.setAttribute("id", optionDescr.id);
+	input.setAttribute("class", "right");
 	parent.appendChild(input);
 }
 
