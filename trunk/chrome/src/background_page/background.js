@@ -41,3 +41,32 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   }
 });
 
+function getOption(name) {
+	return eval("("+window.localStorage.getItem(name)+")");
+}
+function setOption(name, value) {
+	window.localStorage.setItem(name, JSON.stringify(value));
+}
+
+chrome.extension.onRequest.addListener(
+	function(request, sender, sendResponse) {
+		var _function = eval("_"+request.function);
+		var response = _function.apply(this, request.params)
+		console.log(request, response);
+		sendResponse(response);
+	});
+
+function _addImage(base64) {
+	var images = getOption("freemobile.images");
+	if(!images) images = {};
+	if(!images[base64]) {
+		images[base64] = undefined;
+		setOpion("freemobile.images", images);
+	}
+}
+
+function _getImages() {
+	var images = getOption("freemobile.images");
+	if(!images) images = {};
+	return images;
+}

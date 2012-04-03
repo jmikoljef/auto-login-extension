@@ -1,198 +1,203 @@
 * {
-  /* -moz-use-system-font */
-  font-family: ubuntu, sans-serif;
+	/* -moz-use-system-font */
+	font-family: ubuntu, sans-serif;
 }
 body {
-  background-color: rgb(242,241,240);
+	background-color: rgb(242,241,240);
 }
 .body {
-  position:absolute;
-  top:10px;
-  left:10px;
-  bottom:10px;
-  right:10px;
+	position:absolute;
+	top:10px;
+	left:10px;
+	bottom:10px;
+	right:10px;
 }
 label {
-  clear:both;
-  float:left;
+	clear:both;
+	float:left;
 }
 fieldset {
-  margin-bottom: 15px;
+	margin-bottom: 15px;
 }
 fieldset input[type="radio"], fieldset input[type="checkbox"] {
-  clear:both;
-  float:left;
+	clear:both;
+	float:left;
 }
 input[type="radio"] + label, input[type="checkbox"] + label {
-  clear:none;
-  float:left;
+	clear:none;
+	float:left;
 }
 fieldset input[type="text"], fieldset input[type="password"] {
-  float:left;
+	float:left;
 }
 
 /*
  * Title
  */
 h1 {
-  margin-top: -5px;
-  margin-bottom: 20px; 
-  width: 100%;
-  text-align: center;
-  font-size: 2em;
-  font-weight: bolder;
+	margin-top: -5px;
+	margin-bottom: 20px; 
+	width: 100%;
+	text-align: center;
+	font-size: 2em;
+	font-weight: bolder;
 }
 
 /*
  * Menu
  */
 .menu {
-  float: left;
-  padding-top: 40px;
+	float: left;
+	padding-top: 40px;
 }
 .menu img {
-  vertical-align : middle;
-  margin-right: 5px;
+	vertical-align : middle;
+	margin-right: 5px;
 }
 .menu span {
-  vertical-align : middle;
+	vertical-align : middle;
 }
 .menu input {
-  vertical-align : middle;
-  float: right;
+	vertical-align : middle;
+	float: right;
 }
 .menu-item-l1,.menu-item-l2 {
-  padding: 5px;
-  margin-bottom: 5px;
+	padding: 5px;
+	margin-bottom: 5px;
 
-  /* CSS3 */
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+	/* CSS3 */
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
 
-  /* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
-  position:relative;
+	/* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
+	position:relative;
 }
 
 .menu .menu-item-l1 {
-  color: rgb(72,72,72);
-  font-size: 16pt;
-  width: 240px;
+	color: rgb(72,72,72);
+	font-size: 16pt;
+	width: 240px;
 }
 .menu .menu-item-l2 {
-  font-size: 12pt;
-  margin-left: 18px;
-  width: 222px;
+	font-size: 12pt;
+	margin-left: 18px;
+	width: 222px;
 }
 .menu .menu-item-l2 img {
-  width: 16px;
+	width: 16px;
 }
 .menu a:link,a:visited,a:focus,a:active,a:hover {
-  color: rgb(72,72,72);
-  text-decoration: none;
-  outline: none;
+	color: rgb(72,72,72);
+	text-decoration: none;
+	outline: none;
 }
 .menu-disabled {
-  border: 1px solid rgb(242,241,240);
+	border: 1px solid rgb(242,241,240);
 
-  /* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
-  z-index: 0;
+	/* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
+	z-index: 0;
 }
 .menu-enabled {
-  background-color: white;
-  border: 1px solid grey;
-  border-right: none;
-    
-  /* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
-  z-index: 1;
+	background-color: white;
+	border: 1px solid grey;
+	border-right: none;
+		
+	/* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
+	z-index: 1;
 }
 
 /*
  * Content
  */
 .panel {
-  overflow:auto;
-  background-color: white;
-  border: 1px solid grey;
-  display: none;
-  position:absolute;
-  top: 41px;
-  left: 250px;
-  bottom: 0px;
-  right: 0px;
-    
-  /* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
-  z-index: 0;
+	overflow:auto;
+	background-color: white;
+	border: 1px solid grey;
+	display: none;
+	position:absolute;
+	top: 41px;
+	left: 250px;
+	bottom: 0px;
+	right: 0px;
+		
+	/* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
+	z-index: 0;
 
-  /* CSS3 */
-  border-radius: 5px;
+	/* CSS3 */
+	border-radius: 5px;
 }
 .panel div, h2 {
-  padding: 5px;
+	padding: 5px;
 }
 .panel .element {
-  clear:both;
-  padding: 0px 15px 15px 15px;
+	clear:both;
+	padding: 0px 15px 15px 15px;
 }
 h2 {
-  margin-top: 1px;
-  font-size: 12pt;
-  border-bottom: 1px solid rgb(200,200,200);
+	margin-top: 1px;
+	font-size: 12pt;
+	border-bottom: 1px solid rgb(200,200,200);
 }
 h3 {
-  font-size: 12pt;
-  font-weight: normal;
-  text-decoration: underline;
+	font-size: 12pt;
+	font-weight: normal;
+	text-decoration: underline;
 }
 .button {
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  left: 0px;
-  clear:both;
-  margin-top: 20px;
-  border-top: 1px solid rgb(200,200,200);
-    
-  text-align: right;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	clear:both;
+	margin-top: 20px;
+	border-top: 1px solid rgb(200,200,200);
+		
+	text-align: right;
 }
 .button input{
-  margin-top: 5px;
-  margin-right: 10px;
+	margin-top: 5px;
+	margin-right: 10px;
 }
 hr { /* Separateur */
-  visibility: hidden;
-  clear:both;
-  height: 1px;
+	visibility: hidden;
+	clear:both;
+	height: 1px;
 }
 #panel-main {
-  display: block; /* A l'affichage on affiche l'onglet générale (main) */
+	display: block; /* A l'affichage on affiche l'onglet générale (main) */
 }
 
 /*
  * Bullshit
  */
 table {
-  width: 95%;
-  margin: auto;
+	width: 95%;
+	margin: auto;
 }
 tr {
 }
 td {
-  border: solid 1px grey;
+	border: solid 1px grey;
 }
 .left {
-  padding-top: 2px;
-  display: block;
-  width: 18%;
-  float: left;
-  text-align: right;
-  margin-right: 3px;
+	padding-top: 2px;
+	display: block;
+	width: 140px;
+	float: left;
+	text-align: right;
+	margin-right: 3px;
 }
 .right {
-  display: block;
-  width: 30%;
-  float: left;
+	display: block;
+	float: left;
 }
 .text-center {
-  text-align: center;
+	text-align: center;
 }
-
+input.right {
+	width: 80px;
+}
+input.left {
+	margin-left: 125px;
+	width: 15px;
+}
