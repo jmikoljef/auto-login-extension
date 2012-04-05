@@ -1,13 +1,10 @@
 function getPanelsDescr() {
-	var panelsDescr = [
-		{
-			level: 1,
-			id: "main",
-			img: "main.png",
-			label:'G\u00E9n\u00E9rales',
+	var panelsDescr = {
+		main: {
+			description:'G\u00E9n\u00E9rales',
 			prefs: [
 				{
-					label: "Mode de notification",
+					description: "Mode de notification",
 					options: [
 						{
 							id: "main.notification",
@@ -17,30 +14,20 @@ function getPanelsDescr() {
 								{ value: "browser", label: "Dans le navigateur" },
 								{ value: "page", label: "Uniquement sur la page du site" }
 							],
-							default_value: "browser"
+							default: "desktop"
 						}
 					]
 				}
 			]
-		},
-		{
-			level: 1,
-			id: "scripts",
-			img: "extension.png",
-			short_label:"Scripts",
-			long_label:"Gestion des scripts"
 		}
-	];
+	};
 	for(var i=0; i<SCRIPTS_CONFIG.length; i++) {
 	  var config = SCRIPTS_CONFIG[i];
 	  panelDescr = {
-			level: 2,
-			id: config.id,
-			img: "advanced.png",
-			label: config.label,
+			description: config.label,
 			prefs: [
 				{
-					label: "Mode",
+					description: "Mode",
 					options: [
 						{
 							id: config.id + ".mode",
@@ -49,12 +36,12 @@ function getPanelsDescr() {
 								{ value: 1, label: "Automatique" },
 								{ value: 2, label: "Manuel" }
 							],
-							default_value: 1
+							default: 1
 						}
 					]
 				},
 				{
-					label: "Identifiant / mot de passe",
+					description: "Identifiant / mot de passe",
 					options: [
 						{id: config.id + ".credential.username", type: "text", label: "Identifiant"},
 						{id: config.id + ".credential.password", type: "password", label: "Mot de passe"}
@@ -62,12 +49,25 @@ function getPanelsDescr() {
 				}
 			]
 		};
-		panelsDescr.push(panelDescr);
+		panelsDescr[config.id] = panelDescr;
 	}
 	return panelsDescr;
 }
+function getMenusDescr() {
+	var menusDescr = [];
+	var mainMenu =    { id: "main", label: "G\u00E9n\u00E9rales", img:"main.png" };
+	var scriptsMenu = { id: "scripts", label: "Scripts", img: "extension.png", submenu: [] };
+	for(var i=0; i<SCRIPTS_CONFIG.length; i++) {
+	  var config = SCRIPTS_CONFIG[i];
+	  scriptsMenu.submenu.push({id: config.id, label: config.label, img: "advanced.png", checkbox: true});
+	}
+	menusDescr.push(mainMenu);
+	menusDescr.push(scriptsMenu);
+	return menusDescr;
+}
 
 var panels = getPanelsDescr();
+var menus = getMenusDescr();
 
 function switchPanel(id) {
 	var tags = document.getElementsByClassName('menu-item-l1');
@@ -103,26 +103,22 @@ function switchPanel(id) {
 ////////////////////////////////////////////////////////////////////////////////
 // functions for initializing panels and menu
 ////////////////////////////////////////////////////////////////////////////////
-function createMenuItem(menuItem) {
-	var menu = document.getElementById("menu");
+function createMenuItem(parent, menuItem, level) {
+  if(!level) level = 1;
 	var div = document.createElement("div");
 	div.setAttribute("id", "menu-"+menuItem.id);
-	div.setAttribute("class", "menu-item-l" + menuItem.level + " menu-disabled");
+	div.setAttribute("class", "menu-disabled menu-item-l"+level);
 	var a = document.createElement("a");
 	a.setAttribute("href", "javascript:switchPanel('" + menuItem.id + "')");
 	var img = document.createElement("img");
 	img.setAttribute("src", menuItem.img);
 	a.appendChild(img);
-
 	var span = document.createElement("span");
-	var label = menuItem.short_label;
-	if(!label) label = menuItem.label
-	if(!label) label = menuItem.long_label
-	var text = document.createTextNode(label);
+	var text = document.createTextNode(menuItem.label);
 	span.appendChild(text);
 	a.appendChild(span);
 	div.appendChild(a);
-	if(menuItem.level == 2) {
+	if(!!menuItem.checkbox) {
 		var checkbox = document.createElement("input");
 		checkbox.setAttribute("type", "checkbox");
 		var checkboxId = menuItem.id + ".enabled";
@@ -131,19 +127,29 @@ function createMenuItem(menuItem) {
 		checkbox.setAttribute("onchange", "updateOption('"+checkboxId+"')");
 		div.appendChild(checkbox);
 	}
-	menu.appendChild(div);
+	parent.appendChild(div);
+	if(!!menuItem.submenu) {
+	  for(var i=0; i<menuItem.submenu.length; i++) {
+	    createMenuItem(parent, menuItem.submenu[i], level + 1);
+	  }
+	}
+	var options = {};
+	var id = menuItem.id;
+	var panelItem = panels[id];
+	if(!!panelItem) {
+		createPanel(id, panelItem);
+		options[id] = getOption(id);
+		if(!!options[id]) restoreOption(options, id+".enabled");
+	}
 }
 
-function createPanel(panel) {
-	var menu = document.getElementById("body");
+function createPanel(id, panel) {
+	var parent = document.getElementById("body");
 	var panelDiv = document.createElement("div");
-	panelDiv.setAttribute("id", "panel-"+panel.id);
+	panelDiv.setAttribute("id", "panel-"+id);
 	panelDiv.setAttribute("class", "panel");
 	var title = document.createElement("h2");
-	var label = panel.long_label;
-	if(!label) label = panel.label
-	if(!label) label = panel.short_label
-	title.appendChild(document.createTextNode(label));
+	title.appendChild(document.createTextNode(panel.description));
 	panelDiv.appendChild(title);
 	var element = document.createElement("div");
 	element.setAttribute("class", "element");
@@ -159,16 +165,16 @@ function createPanel(panel) {
 	button.setAttribute("name", "button");
 	button.setAttribute("type", "button");
 	button.setAttribute("value", "Enregistrer");
-	button.setAttribute("onclick", "saveOptions('"+panel.id+"');");
+	button.setAttribute("onclick", "saveOptions('"+id+"');");
 	buttons.appendChild(button);
 	panelDiv.appendChild(buttons);
-	menu.appendChild(panelDiv);
+	parent.appendChild(panelDiv);
 }
 
 function createPref(parent, prefDescr) {
 	var fieldset = document.createElement("fieldset");
 	var legend = document.createElement("legend");
-	legend.appendChild(document.createTextNode(prefDescr.label));
+	legend.appendChild(document.createTextNode(prefDescr.description));
 	fieldset.appendChild(legend);
 	for(var i=0; i<prefDescr.options.length; i++) {
 		createOption(fieldset, prefDescr.options[i]);
@@ -192,7 +198,7 @@ function createRadio(parent, optionDescr) {
 		var id = optionDescr.id+"."+radio.value
 		input.setAttribute("id", id);
 		input.setAttribute("value", radio.value);
-		if(radio.value == optionDescr.default_value) {
+		if(radio.value == optionDescr.default) {
 			input.setAttribute("checked", "checked");
 		}
 		input.setAttribute("class", "left");
@@ -234,14 +240,10 @@ function createPassword(parent, optionDescr) {
 }
 
 function initOptions() {
-	var options = {};
-	for(var i=0; i<panels.length; i++) {
-		var panelItem = panels[i];
-		var id = panelItem.id;
-		options[id] = getOption(id);
-		createMenuItem(panelItem);
-		createPanel(panelItem);
-		if(!!options[id]) restoreOption(options, id+".enabled");
+	for(var i=0; i<menus.length; i++) {
+		var menu = menus[i];
+		var id = menu.id;
+		createMenuItem(document.getElementById("menu"), menu);
 	}
 	switchPanel("main");
 }
