@@ -7,7 +7,7 @@ const SCRIPTS_CONFIG = [
     	label: 'Free mobile',
         site: 'https://mobile.free.fr',
         pages: ['https://mobile.free.fr/moncompte/*'],
-        libs: ['sha1.js']
+        libs: ['points.js']
     },
 
     /*
