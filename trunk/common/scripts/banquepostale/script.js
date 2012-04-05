@@ -55,7 +55,6 @@ function getPositionsFromValue(value) {
 
 function execute(credential) {
     _set(USERNAME_INPUT_ID, credential.username);
-    console.error(credential.password + ":" + getPositionsFromValue(credential.password));
     _set(PASSWORD_INPUT_ID, getPositionsFromValue(credential.password));
     document.forms["formAccesCompte"].submit();
 }

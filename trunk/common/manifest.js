@@ -28,6 +28,16 @@ const SCRIPTS_CONFIG = [
     	label: 'La Banque Postale',
         site: 'https://www.labanquepostale.fr',
         pages: ['https://voscomptesenligne.labanquepostale.fr/wsost/OstBrokerWeb/loginform?TAM_OP=login&ERROR_CODE=0x00000000&URL=%2Fvoscomptes%2FcanalXHTML%2Fidentif.ea%3Forigin%3Dparticuliers']
+    },
+
+    /*
+     * Le crédit agricole
+     */
+    {
+    	id: 'creditagricole',
+    	label: 'Crédit Agricole',
+        site: 'http://www.credit-agricole.fr/',
+        pages: ['https://www.tourainepoitou-s2-g2-enligne.credit-agricole.fr/stb/entreeBam']
     }
 ];
 
