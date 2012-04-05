@@ -162,9 +162,6 @@ hr { /* Separateur */
 	clear:both;
 	height: 1px;
 }
-#panel-main {
-	display: block; /* A l'affichage on affiche l'onglet générale (main) */
-}
 
 /*
  * Bullshit
