@@ -60,4 +60,3 @@ function execute(credential) {
 }
 
 parseImgs();
-self.port.on('execute', execute);

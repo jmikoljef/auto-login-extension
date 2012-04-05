@@ -17,7 +17,7 @@ const SCRIPTS_CONFIG = [
     	id: 'caisseepargne',
     	label: 'La Caisse d\'Epargne',
         site: 'https://www.caisse-epargne.fr',
-        pages: ['https://www.caisse-epargne.fr/ind_pauthpopup.aspx*', 'https://www.caisse-epargne.fr/particuliers/ind_pauthpopup.aspx*']
+        pages: /.*caisse-epargne\.fr.*ind_pauthpopup\.aspx.*/,
     },
 
     /*

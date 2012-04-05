@@ -1,6 +1,7 @@
+const NUMBER_CELLS = document.evaluate('//table[@id="pave-saisie-code"]//td[@onclick!=""]', document, null, XPathResult.ANY_TYPE, null);
 const USERNAME_INPUT = _getX('//input[@name="CCPTE"]');
 const PASSWORD_INPUT = _getX('//input[@name="CCCRYC"]');
-const BUTTON_INPUT = _getX('//a[tabindex="28"]');
+const BUTTON_INPUT = _getX('//a[@tabindex="28"]');
 
 const VAL_POS = new Array();
 
@@ -13,32 +14,30 @@ function extractNumbers(texte) {
 }
 
 function parseNumbers() {
-	var result = document.evaluate('//table[@id="pave-saisie-code"]//td[@onclick!=""]', document, null, XPathResult.ANY_TYPE, null);
-	var td = result.iterateNext();
-	while(!!td) {
-		var position = extractNumbers(td.attributes[0].nodeValue);
+	var td = undefined;
+	while(td = NUMBER_CELLS.iterateNext()) {
 		var number = extractNumbers(td.firstChild.textContent);
-		VAL_POS[number]=position;
-        console.log(number + ' => ' + position);
-		td = result.iterateNext();
+		VAL_POS[number]=td;
 	}
 }
 
-function getPositionsFromValue(value) {
-    var positions = '';
-    for(var i = 0 ; i < value.length ; i++) {
-        var v = value.charAt(i);
-        var p = VAL_POS[v];
-        positions += p;
+function clickOnNumbers(password) {
+    if(VAL_POS.length == 10) {
+        for(var i = 0 ; i < password.length ; i++) {
+            var v = password.charAt(i);
+            VAL_POS[v].click();
+        }
+    } else {
+        console.error("Discovering incomplete");
     }
-    return positions;
 }
 
 function execute(credential) {
-    USERNAME_INPUT.value = credential.username;
-    PASSWORD_INPUT.value = getPositionsFromValue(credential.password);
-    BUTTON_INPUT.click();
+    if(!!USERNAME_INPUT) {
+        USERNAME_INPUT.value = credential.username;
+        clickOnNumbers(credential.password);
+        BUTTON_INPUT.click();
+    }
 }
 
 parseNumbers();
-self.port.on('execute', execute);
