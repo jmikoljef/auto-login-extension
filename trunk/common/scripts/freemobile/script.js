@@ -9,8 +9,8 @@ var pos = new Array();
  */
 function ocr() {
     var couples = new Array();
-    for(var i in imgs) {
-        var img = imgs[i];
+    for(var i=0; i<CHIFFRES_BOUTON.length; i++) {
+        var img = CHIFFRES_BOUTON[i];
         var canvas = getCanvas(img);
         for (var p in POINTS) {
             var point = POINTS[p];
@@ -20,6 +20,25 @@ function ocr() {
             }
         }
     }
+}
+
+function check(canvas, points) {
+	var valid = true;
+  for(var p=0; p<points.length && valid; p++) {
+  	point = points[p];
+		var i = point.x*4+point.y*4*canvas.width;
+		var image = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
+		var data = image.data;
+		var grayscale = data[i  ] * .3 + data[i+1] * .59 + data[i+2] * .11;
+		if(point.c == 0) {
+			// On doit être sur le fond
+			valid = grayscale>220;
+		} else {
+			// On doit être sur le chiffre
+			valid = grayscale<150;
+		}
+  }
+  return valid
 }
 
 /**
