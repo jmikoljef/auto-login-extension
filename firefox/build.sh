@@ -11,7 +11,7 @@ function _copy() {
 	cp -Rf "$SRC"/* $TARGET
 
 	# Conpy config file
-	cp "$COMMON/scripts_config.js" "$TARGET/lib"
+	cp "$COMMON/manifest.js" "$TARGET/lib"
 
 	# Copy scripts
 	cp -Rf $SCRIPTS "$TARGET/data"
