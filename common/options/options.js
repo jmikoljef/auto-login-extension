@@ -252,9 +252,9 @@ function initOptions() {
 // functions for saving prefs
 ////////////////////////////////////////////////////////////////////////////////
 function saveOptions(id) {
-	for(var i=0; i<panels.length; i++) {
-		var panel = panels[i];
-		if(panel.id==id) {
+	for(var pannelId in panels) {
+		var panel = panels[pannelId];
+		if(pannelId==id) {
 			var prefs = getPrefs(panel.prefs);
 			fillObject(prefs, id+".enabled");
 			if(!prefs) return;
