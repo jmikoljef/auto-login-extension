@@ -1,10 +1,7 @@
 /**
  * Inject all needed script in the page
  */
-function injectScripts(tabId, script_config) {
-  var config = eval("("+window.localStorage.getItem(script_config.id)+")");
-  if(!config) return;
-  if(!config.enabled) return;
+function injectScripts(tabId, script_config, config) {
   var credential = config.credential;
 
   // Inject library scripts
@@ -26,6 +23,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   if(!!changeInfo && changeInfo.status=="complete") {
     for(var i in SCRIPTS_CONFIG) {
       var script_config = SCRIPTS_CONFIG[i];
+      var config = eval("("+window.localStorage.getItem(script_config.id)+")");
+      if(!config) continue;
+      if(!config.enabled) continue;
       var pages = script_config.pages;
       // loop on each page that can match
       for(var n in pages) {
@@ -34,7 +34,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         page = page.replace(/\*/, ".*");
         // Does the current URL match with this config ?
         if(tab.url.match(page)) {
-          injectScripts(tabId, script_config);
+          injectScripts(tabId, script_config, config);
         }
       }
     }
@@ -52,7 +52,6 @@ chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse) {
 		var _function = eval("_"+request.function);
 		var response = _function.apply(this, request.params)
-		console.log(request, response);
 		sendResponse(response);
 	});
 
@@ -70,3 +69,4 @@ function _getImages() {
 	if(!images) images = {};
 	return images;
 }
+
