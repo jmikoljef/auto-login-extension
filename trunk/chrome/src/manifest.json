@@ -1,11 +1,15 @@
 {
-  "name": "Auto-Login",
-  "version": "0.0.1",
-  "description": "Auto-Login",
-  "permissions": [
-    "<all_urls>",
-    "tabs"
-  ],
-  "background_page": "background_page/background.html",
-  "options_page": "options/options.html"
+	"name": "Auto-Login",
+	"version": "0.0.1",
+	"description": "Auto-Login",
+	"permissions": [
+		"webRequest",
+		"webRequestBlocking",
+		"<all_urls>",
+		"tabs"
+	],
+	"background": {
+		"scripts": ["manifest.js", "background_page/background.js"]
+	},
+	"options_page": "options/options.html"
 }
