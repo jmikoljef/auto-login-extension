@@ -28,7 +28,8 @@ function check(canvas, points) {
     var ok=true;
     var image = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
     var data = image.data;
-    for each(var point in points) {
+    for(var p in points) {
+        var point = points[p];
         var x = point.x;
         var y = point.y;
         var c = point.c;
