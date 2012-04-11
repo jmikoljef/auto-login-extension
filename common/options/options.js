@@ -321,17 +321,13 @@ function getValue(name) {
 // functions for restoring prefs
 ////////////////////////////////////////////////////////////////////////////////
 function restoreOptions(id) {
-	for(var i=0; i<panels.length; i++) {
-		var panel = panels[i];
-		if(panel.id==id) {
-			var options = {};
-			options[id] = getOption(id);
-			if(!options[id]) return;
-			restorePrefs(panel.prefs, options);
-			restoreOption(options, id+".enabled");
-			return;
-		}
-	}
+	var panel = panels[id];
+	panel.id = id;
+	var options = {};
+	options[id] = getOption(id);
+	if(!options[id]) return;
+	restorePrefs(panel.prefs, options);
+	restoreOption(options, id+".enabled");
 }
 function restorePrefs(prefs, options) {
 	for(var i=0; i<prefs.length; i++) {
