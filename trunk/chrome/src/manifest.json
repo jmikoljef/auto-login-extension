@@ -3,13 +3,13 @@
 	"version": "0.0.1",
 	"description": "Auto-Login",
 	"permissions": [
-		"webRequest",
-		"webRequestBlocking",
+		"webNavigation",
 		"<all_urls>",
 		"tabs"
 	],
 	"background": {
-		"scripts": ["manifest.js", "background_page/background.js"]
+		"scripts": ["manifest.js", "background.js"]
 	},
 	"options_page": "options/options.html"
 }
+
