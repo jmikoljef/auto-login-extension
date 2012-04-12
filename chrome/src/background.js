@@ -4,6 +4,8 @@
 function injectScripts(details, script_config, config) {
 	var credential = config.credential;
 
+	// chrome hack
+	chrome.tabs.executeScript(details.tabId, {allFrames: true, file: "hack_gc.js"});
 	// Inject library scripts
 	for(var i in script_config.libs) {
 		chrome.tabs.executeScript(details.tabId, {allFrames: true, file: "scripts/" + script_config.libs[i]});
