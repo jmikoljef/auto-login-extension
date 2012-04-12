@@ -36,7 +36,7 @@ const SCRIPTS_CONFIG = [
      */
     {
     	id: 'creditagricole',
-    	label: 'Crédit Agricole',
+    	label: 'Cr\u00E9dit Agricole',
         site: 'http://www.credit-agricole.fr/',
         pages: ['https://www.tourainepoitou-s2-g2-enligne.credit-agricole.fr/stb/entreeBam']
     }

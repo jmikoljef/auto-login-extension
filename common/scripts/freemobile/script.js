@@ -25,19 +25,17 @@ function ocr() {
  * Vérifie si l'image valide une des séries de points fournies
  */
 function check(canvas, points) {
-    var ok=true;
     var image = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
     var data = image.data;
     for(var p in points) {
         var point = points[p];
-        var x = point.x;
-        var y = point.y;
-        var c = point.c;
-        var i = x*4+y*4*canvas.width;
+        var i = point.x*4 + point.y*4 * canvas.width;
         var white = (data[i] == 255 && data[i+1] == 255 && data[i+2] == 255);
-        ok &= (c==0 && white) || (c==1 && !white);
+        if(!((point.c==0 && white) || (point.c==1 && !white))) {
+		return false;
+	}
     }
-    return ok;
+    return true;
 }
 
 /**
@@ -75,7 +73,14 @@ function authenticate(credential) {
                 haveError = true;
             } else {
                 // On a trouvé le bouton correspondant au chiffre, on peut cliquer dessus.
-                if(!haveError) CHIFFRES_BOUTON[p].onclick();
+                if(!haveError) {
+			var b = CHIFFRES_BOUTON[p];
+			if(!!b.click) {
+				b.click();
+			} else {
+				b.onclick();
+			}
+		}
             }
         }
     }

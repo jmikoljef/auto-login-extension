@@ -44,10 +44,9 @@ function _plugScript(script) {
 	    			url:script.site
     			},
     			function(credential) {
-                    console.trace();
     				worker.port.emit('execute', credential);
-				}
-			);
+			}
+		);
 	    }
 	});
 }
@@ -65,6 +64,7 @@ exports.main = function(options, callbacks) {
     /*
      * Settings page
      */
+/*
     let settingsPage = PAGE_MOD.PageMod({
         include: DATA.url('ui/settings.html'),
         contentScriptFile: DATA.url("ui/settings.js"),
@@ -73,6 +73,7 @@ exports.main = function(options, callbacks) {
             worker.port.emit('main', SCRIPTS);
         }
     });
+*/
 
     /*
      * Widget
@@ -87,7 +88,7 @@ exports.main = function(options, callbacks) {
                 settingsTabs.activate();
             } else {
                 TABS.open({
-                    url: DATA.url('ui/settings.html'),
+                    url: DATA.url('options/options.html'),
                     onOpen: function(tab) {
                         settingsTabs = tab;
                     },
@@ -98,6 +99,18 @@ exports.main = function(options, callbacks) {
             }
         }
     });
+    
+    var storage = require("simple-storage").storage;
+    try {
+	    console.log("storage.main.notification : " + storage["main.notification"]);
+    } catch(e) {
+    	console.exception(e);
+    }
+    try {
+	    console.log("window.localStorage.getItem(main.notification) : " + window.localStorage.getItem(main.notification));
+    } catch(e) {
+    	console.exception(e);
+    }
 }
 
 // Unload

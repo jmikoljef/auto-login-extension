@@ -14,7 +14,10 @@ function _copy() {
 	cp "$COMMON/manifest.js" "$TARGET/lib"
 
 	# Copy scripts
-	cp -Rf $SCRIPTS "$TARGET/data"
+	#cp -Rf $SCRIPTS "$TARGET/data"
+
+	# Copy scripts
+	cp -Rf $COMMON/* "$TARGET/data"
 }
 
 function _cfx() {
@@ -119,7 +122,6 @@ UPDATE_DEV_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-
 UPDATE_STABLE_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-stable.rdf"
 
 if [ -z "$FIREFOX_INSTANCE" ]; then
-	echo "#$FIREFOX_INSTANCE#"
     FIREFOX_INSTANCE=$DEFAULT_FIREFOX_INSTANCE
 fi
 
