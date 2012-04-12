@@ -74,12 +74,7 @@ function authenticate(credential) {
             } else {
                 // On a trouvé le bouton correspondant au chiffre, on peut cliquer dessus.
                 if(!haveError) {
-			var b = CHIFFRES_BOUTON[p];
-			if(!!b.click) {
-				b.click();
-			} else {
-				b.onclick();
-			}
+                	CHIFFRES_BOUTON[p].click();
 		}
             }
         }

@@ -15,7 +15,7 @@ function authenticate(credential) {
     if(!!_get(USERNAME_LINK_ID)) {
         _set(USERNAME_INPUT_ID, credential.username);
         _get(USERNAME_LINK_ID).click();
-    } else {
+    } else if(!!_get(PASSWORD_LINK_ID)) {
         _set(PASSWORD_INPUT_ID, credential.password);
         _get(PASSWORD_LINK_ID).click();
     }
