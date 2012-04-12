@@ -31,8 +31,10 @@ chrome.webNavigation.onCompleted.addListener(
 			// loop on each page that can match
 			for(var n in pages) {
 				var page = pages[n];
-				page = page.replace(/\?/, "\\?");
-				page = page.replace(/\*/, ".*");
+				if(typeof page == "string") {
+					page = page.replace(/\?/, "\\?");
+					page = page.replace(/\*/, ".*");
+				}
 				// Does the current URL match with this config ?
 				if(details.url.match(page)) {
 					injectScripts(details, script_config, config);
