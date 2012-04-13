@@ -70,7 +70,7 @@ function loadOption(option, id) {
 function updateOption(id) {
 	var value = getOptionsFromPage("_alo_", id);
 	fillObject(PREFS, id, getValue(value, id));
-	var id = id.split(".")[0];
+	id = id.split(".")[0];
 	storeOptions(id, PREFS[id]);
 }
 

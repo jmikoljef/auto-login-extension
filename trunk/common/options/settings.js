@@ -36,7 +36,7 @@ function getValue(object, name) {
 	var name_parts = name.split(".");
 	for(var i in name_parts) {
 		name = name_parts[i];
-		if(!object[name]) return;
+		if(!object[name]) return undefined;
 		object = object[name];
 	}
 	return object;
@@ -48,13 +48,13 @@ function getValue(object, name) {
  */
 function getElementValue(name) {
 	var elements = document.getElementsByName(name);
-	if(elements.length==0) return;
+	if(elements.length==0) return undefined;
 	if(elements[0].type=="radio") {
 		return _getRadioElementValue(elements);
 	} else if(elements[0].type=="checkbox") {
 		return _getCheckboxElementValue(elements);
 	} else {
-		_getDefaultElementValue(elements);
+		return _getDefaultElementValue(elements);
 	}
 }
 function _getRadioElementValue(elements) {
