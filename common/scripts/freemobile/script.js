@@ -5,7 +5,7 @@ const SUBMIT_BUTTON = document.getElementById("ident_btn_submit");
 var pos = new Array();
 
 /**
- * Detect which number correspond to  each image
+ * Detect which number correspond to each image
  */
 function ocr() {
     for(var i=0; i<CHIFFRES_BOUTON.length; i++) {
@@ -32,8 +32,8 @@ function check(canvas, points) {
         var i = point.x*4 + point.y*4 * canvas.width;
         var white = (data[i] == 255 && data[i+1] == 255 && data[i+2] == 255);
         if(!((point.c==0 && white) || (point.c==1 && !white))) {
-		return false;
-	}
+        	return false;
+        }
     }
     return true;
 }
@@ -42,16 +42,14 @@ function check(canvas, points) {
  * Return a canvas object correponding to an img HTML element
  */
 function getCanvas(img) {
-    // Create an empty canvas element
-    var canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-
-    // Copy the image contents to the canvas
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    
-    return canvas
+	// Create an empty canvas element
+	var canvas = document.createElement("canvas");
+	canvas.width = img.width;
+	canvas.height = img.height;
+	// Copy the image contents to the canvas
+	var ctx = canvas.getContext("2d");
+	ctx.drawImage(img, 0, 0);
+	return canvas;
 }
 
 /**
@@ -72,7 +70,8 @@ function authenticate(credential) {
                 console.error("L'image correspondant au chiffre " + n + " n'a pas été reconnu.");
                 haveError = true;
             } else {
-                // On a trouvé le bouton correspondant au chiffre, on peut cliquer dessus.
+                // On a trouvé le bouton correspondant au chiffre, on peut
+				// cliquer dessus.
                 if(!haveError) {
                 	CHIFFRES_BOUTON[p].click();
 				}
@@ -103,4 +102,3 @@ function execute(credential) {
         }
     }
 }
-
