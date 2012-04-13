@@ -24,7 +24,6 @@ function init_gc() {
 		prefs[key] = getOption(key);
 	}
 	restoreOptions(prefs);
-	console.log(PREFS);
 }
 
 window.addEventListener("load", init_gc, false);
