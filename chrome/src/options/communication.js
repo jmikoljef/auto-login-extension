@@ -1,15 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Must be redefined for each browser
 ////////////////////////////////////////////////////////////////////////////////
-function storeOptions(options, id) {
-	setOption(id, prefs[id]);
-}
-
-function restoreOptions(options, id) {
-	var prefs = {};
-	if(!!id) prefs[id] = options;
-	else prefs = options;
-	loadOption(prefs, id);
+function storeOptions(id, options) {
+	setOption(id, options);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -31,6 +24,7 @@ function init_gc() {
 		prefs[key] = getOption(key);
 	}
 	restoreOptions(prefs);
+	console.log(PREFS);
 }
 
 window.addEventListener("load", init_gc, false);
