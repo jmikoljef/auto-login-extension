@@ -33,6 +33,7 @@ function clickOnNumbers(password) {
 }
 
 function execute(credential) {
+	parseNumbers();
     if(!!USERNAME_INPUT) {
         USERNAME_INPUT.value = credential.username;
         clickOnNumbers(credential.password);
@@ -40,4 +41,3 @@ function execute(credential) {
     }
 }
 
-parseNumbers();
