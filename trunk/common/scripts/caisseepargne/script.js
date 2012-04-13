@@ -24,3 +24,4 @@ function authenticate(credential) {
 function execute(credential) {
     authenticate(credential);
 }
+

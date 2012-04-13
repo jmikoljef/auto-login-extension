@@ -75,7 +75,7 @@ function authenticate(credential) {
                 // On a trouvé le bouton correspondant au chiffre, on peut cliquer dessus.
                 if(!haveError) {
                 	CHIFFRES_BOUTON[p].click();
-		}
+				}
             }
         }
     }
@@ -95,7 +95,7 @@ function authenticate(credential) {
  */
 function execute(credential) {
     if(!credential) {
-        console.info("Merci de configurer le script avant de l'exécuter.");
+        console.warn("Merci de configurer le script avant de l'exécuter.");
     } else {
         if(!!SUBMIT_BUTTON){
             ocr();
@@ -103,3 +103,4 @@ function execute(credential) {
         }
     }
 }
+

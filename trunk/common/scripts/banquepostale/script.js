@@ -52,4 +52,3 @@ function execute(credential) {
 	document.forms["formAccesCompte"].submit();
 }
 
-
