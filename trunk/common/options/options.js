@@ -1,3 +1,9 @@
+// Hack for having usefull function on String object
+String.prototype.startsWith = function(str) {return (this.match("^"+str)==str)};
+String.prototype.endsWith = function(str) {return (this.match(str+"$")==str)};
+String.prototype.trim = function() {return (this.replace(/^[\s\xA0]+/, "").replace(/[\s\xA0]+$/, ""))};
+// End hack
+
 function init() {
 	switchPanel("main");
 }
@@ -32,28 +38,47 @@ function switchPanel(id) {
 	}
 }
 
+const PREFS = {};
+
 function saveOptions(id) {
 	var prefs = getOptionsFromPage("_alo_", id+".");
-	storeOptions(prefs[id], id);
+	storeOptions(id, prefs[id]);
+	fillObject(PREFS, id, prefs[id]);
 }
 
 function loadOption(option, id) {
-	if(options instanceof Object) {
-		for(var key in options) {
-			if(!id) {
-				id = key;
+	if(option instanceof Object) {
+		for(var key in option) {
+		        var tmp = id;
+			if(!tmp) {
+				tmp = key;
 			} else {
-				id += "." + key;
+				tmp += "." + key;
 			}
-			loadOption(option[key], id);
+			loadOption(option[key], tmp);
 		}
 	} else {
 		if(!id) {
 			console.error("Can't load option : id is not defined.");
 			return;
 		}
+		fillObject(PREFS, id, option);
 		setElementValue(id, option);
 	}
+}
+
+function updateOption(id) {
+	var value = getOptionsFromPage("_alo_", id);
+	fillObject(PREFS, id, getValue(value, id));
+	var id = id.split(".")[0];
+	storeOptions(id, PREFS[id]);
+}
+
+function restoreOptions(options, id) {
+	var prefs = {};
+	if(!!id) prefs[id] = options;
+	else prefs = options;
+	loadOption(prefs, id);
 }
 
 window.addEventListener("load", init, false);

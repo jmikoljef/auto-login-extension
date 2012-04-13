@@ -8,7 +8,7 @@ function getOptionsFromPage(classname, prefix) {
 		var element = elements[i];
 		var name = element.name;
 		// if there was a prefix, we check that the name starts with
-		if(!prefix || name.startWith(prefix)) {
+		if(!prefix || name.startsWith(prefix)) {
 			var value = getElementValue(name);
 			fillObject(prefs, name, value);
 		}
@@ -32,6 +32,16 @@ function fillObject(object, name, value) {
 	object[name] = value;
 }
 
+function getValue(object, name) {
+	var name_parts = name.split(".");
+	for(var i in name_parts) {
+		name = name_parts[i];
+		if(!object[name]) return;
+		object = object[name];
+	}
+	return object;
+}
+
 /**
  * Return the value of an input element (text, password, radio, checkbox)
  * If there was many element with this name, the result will be an array
@@ -42,7 +52,7 @@ function getElementValue(name) {
 	if(elements[0].type=="radio") {
 		return _getRadioElementValue(elements);
 	} else if(elements[0].type=="checkbox") {
-		return _getRadioElementValue(elements);
+		return _getCheckboxElementValue(elements);
 	} else {
 		_getDefaultElementValue(elements);
 	}
