@@ -16,7 +16,17 @@ function injectScripts(details, script_config, config) {
 	}
 	// Inject the main script and launch it
 	chrome.tabs.executeScript(details.tabId, {allFrames: true, file: "scripts/" + script_config.id + "/script.js"}, function() {
-		chrome.tabs.executeScript(details.tabId, {allFrames: true, code: "if(window.location.href==\""+details.url+"\") { execute("+JSON.stringify(credential)+"); }"});
+		chrome.tabs.executeScript(
+			details.tabId, 
+			{
+				allFrames: true,
+				code: 
+					"if(window.location.href==\""+details.url+"\") {"+
+						"var result = execute("+JSON.stringify(credential)+");"+
+						"callBackground('handleScriptResponse', [result, "+JSON.stringify(script_config)+"]);"+
+					"}"
+			}
+		);
 	});
 }
 
@@ -36,6 +46,7 @@ chrome.webNavigation.onCompleted.addListener(
 				if(typeof page == "string") {
 					page = page.replace(/\?/, "\\?");
 					page = page.replace(/\*/, ".*");
+					page = "^"+page+"$";
 				}
 				// Does the current URL match with this config ?
 				if(details.url.match(page)) {
@@ -53,3 +64,21 @@ chrome.webNavigation.onCompleted.addListener(
 	[]
 );
 
+chrome.extension.onRequest.addListener(
+	function(request, sender, sendResponse) {
+		var _function = eval("_"+request.functionName);
+		var response = _function.apply(this, request.params)
+		sendResponse(response);
+	}
+);
+
+function _handleScriptResponse(response, script_config) {
+	var msg;
+	if(!response) msg = "Authentification on "+script_config.label+" succeed.";
+	else msg = "Authentification on "+script_config.label+" fail.";
+	var tabId = undefined;
+	chrome.tabs.insertCSS(tabId, {file: "notifications/toaster-top-right-down.css"});
+	chrome.tabs.executeScript(tabId, {file: "notifications/toaster.js"}, function() {
+		chrome.tabs.executeScript(tabId, { code: "toastIt({content: '"+msg+"'});" });
+	});
+}
