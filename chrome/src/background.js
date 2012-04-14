@@ -53,18 +53,3 @@ chrome.webNavigation.onCompleted.addListener(
 	[]
 );
 
-function getOption(name) {
-	return eval("("+window.localStorage.getItem(name)+")");
-}
-function setOption(name, value) {
-	window.localStorage.setItem(name, JSON.stringify(value));
-}
-
-chrome.extension.onRequest.addListener(
-	function(request, sender, sendResponse) {
-		var _function = eval("_"+request.function);
-		var response = _function.apply(this, request.params)
-		sendResponse(response);
-	}
-);
-
