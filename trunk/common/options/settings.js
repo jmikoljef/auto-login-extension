@@ -36,7 +36,7 @@ function getValue(object, name) {
 	var name_parts = name.split(".");
 	for(var i in name_parts) {
 		name = name_parts[i];
-		if(!object[name]) return undefined;
+		if(object[name]==undefined) return undefined;
 		object = object[name];
 	}
 	return object;
@@ -115,9 +115,9 @@ function _setRadioElementValue(elements, value) {
 	}
 }
 function _setCheckboxElementValue(elements, values) {
-	if(elements.length==1) {
+	if(elements.length==1 && values.length==1) {
 		// if there's one element, it is treated as a boolean
-		elements[0].checked = !!elements[0].value;
+		elements[0].checked = values[0];
 	} else {
 		for(var i=0; i<elements.length; i++) {
 			// We have to check if the checkbox value is included in values
