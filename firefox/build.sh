@@ -16,8 +16,11 @@ function _copy() {
 	# Copy scripts
 	cp -Rf $SCRIPTS "$TARGET/data"
 
-	# Copy scripts
+	# Copy options UI
 	cp -Rf $OPTIONS/* "$TARGET/data/options"
+
+	# Copy notifications system
+	cp -Rf $NOTIFICATIONS "$TARGET/data"
 }
 
 function _cfx() {
@@ -119,6 +122,7 @@ TARGET="./target"
 COMMON="../common"
 SCRIPTS="$COMMON/scripts"
 OPTIONS="$COMMON/options"
+NOTIFICATIONS="$COMMON/notifications"
 UPDATE_DEV_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-dev.rdf"
 UPDATE_STABLE_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-stable.rdf"
 
