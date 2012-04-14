@@ -14,10 +14,10 @@ function _copy() {
 	cp "$COMMON/manifest.js" "$TARGET/lib"
 
 	# Copy scripts
-	#cp -Rf $SCRIPTS "$TARGET/data"
+	cp -Rf $SCRIPTS "$TARGET/data"
 
 	# Copy scripts
-	cp -Rf $COMMON/* "$TARGET/data"
+	cp -Rf $OPTIONS/* "$TARGET/data/options"
 }
 
 function _cfx() {
@@ -118,6 +118,7 @@ SRC="./src"
 TARGET="./target"
 COMMON="../common"
 SCRIPTS="$COMMON/scripts"
+OPTIONS="$COMMON/options"
 UPDATE_DEV_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-dev.rdf"
 UPDATE_STABLE_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-stable.rdf"
 
