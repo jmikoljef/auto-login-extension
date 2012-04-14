@@ -1,7 +1,10 @@
 // SDK libs
+const SIMPLE_STORAGE = require("simple-storage");
+const STORAGE = SIMPLE_STORAGE.storage;
 const PASSWORDS = require("passwords");
 const PAGE_MOD = require("page-mod");
 const WIDGET = require("widget");
+const TIMERS = require("timers");
 const SELF = require("self");
 const TABS = require("tabs");
 const DATA = SELF.data;
@@ -12,6 +15,18 @@ const MANIFEST = require("manifest");
 const SCRIPTS = MANIFEST.SCRIPTS;
 
 var settingsTabs = undefined;
+
+
+function loadOptions(worker) {
+	worker.port.emit('loadOptions', { id: 'main', options: STORAGE['main'] });
+	for(var s in SCRIPTS) {
+		var id = SCRIPTS[s].id;
+		var options = STORAGE[id];
+		if(!!options) {
+    		worker.port.emit('loadOptions', { id: id, options: options });
+		}
+	}
+}
 
 /*
  * Extract optionnal scripts path, and add mandatory scripts path
@@ -45,8 +60,8 @@ function _plugScript(script) {
     			},
     			function(credential) {
     				worker.port.emit('execute', credential);
-			}
-		);
+				}
+			);
 	    }
 	});
 }
@@ -64,16 +79,17 @@ exports.main = function(options, callbacks) {
     /*
      * Settings page
      */
-/*
     let settingsPage = PAGE_MOD.PageMod({
-        include: DATA.url('ui/settings.html'),
-        contentScriptFile: DATA.url("ui/settings.js"),
+        include: DATA.url('options/options.html'),
+        contentScriptFile: DATA.url("options/bootstrap.js"),
         onAttach: function(worker) {
-            worker.port.on('changeCredential', PASSWORD_MANAGER.set);
-            worker.port.emit('main', SCRIPTS);
+        	worker.port.on('saveOptions', function (datas) {
+        		// console.log('main.js', 'saveOptions', datas.id, datas.options);
+        		STORAGE[datas.id] = datas.options;
+        	});
+        	loadOptions(worker);
         }
     });
-*/
 
     /*
      * Widget
@@ -81,7 +97,7 @@ exports.main = function(options, callbacks) {
     let settingsWidget = WIDGET.Widget({
         label: "Auto-Login configuration",
         id: 'settings',
-        contentURL: DATA.url('ui/widget.html'),
+        contentURL: DATA.url('widget.html'),
         width: 100,
         onClick: function() {
             if(!!settingsTabs) {
@@ -99,18 +115,6 @@ exports.main = function(options, callbacks) {
             }
         }
     });
-    
-    var storage = require("simple-storage").storage;
-    try {
-	    console.log("storage.main.notification : " + storage["main.notification"]);
-    } catch(e) {
-    	console.exception(e);
-    }
-    try {
-	    console.log("window.localStorage.getItem(main.notification) : " + window.localStorage.getItem(main.notification));
-    } catch(e) {
-    	console.exception(e);
-    }
 }
 
 // Unload
