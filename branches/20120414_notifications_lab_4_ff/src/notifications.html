@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<title>Notifications</title>
+		<style type="text/css">
+#toaster {
+	position: absolute;
+	width: 260px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+
+.toast {
+	background-color: blue;
+	width: 250px;
+	height: 0px;
+	border-radius: 5px;
+	
+	position: relative;
+	
+	-moz-transition-property: all;
+	-moz-transition-duration: 0.5s;
+	-moz-transition-timing-function: ease-out;
+}
+
+.toast-hide {
+	margin-top: 0px;
+	height: 0px;
+}
+
+.toast-show {
+	margin-top: 5px;
+	height: 100px;
+}
+		</style>
+		<script language="javascript">
+			function _create() {
+				var toaster = document.getElementById('toaster');
+				toast = document.createElement('div');
+				toast.className = 'toast';
+				toast.addEventListener('click', function(event) {_destroy(event.target);}, false);
+				toaster.appendChild(toast);
+				return toast;
+			}
+
+			function _destroy(toast) {
+				var toaster = document.getElementById('toaster');
+				toast.className = 'toast toast-hide';
+				//toaster.removeChild(toast);
+			}
+			
+			function toastIt() {
+				var toast = _create();
+				window.setTimeout(function() {toast.className = 'toast toast-show';}, 100);
+				window.setTimeout(function() {_destroy(toast)}, 5000);
+			}
+		</script>
+	</head>
+	<body>
+		<div id="toaster"></div>
+		<h1>Laboratoire de dév d'un système de notifications</h1>
+		<ul>
+			<li><a href="#" onclick="javascript:toastIt();">Essai 1</a></li>
+		</ul>
+	</body>
+</html>
