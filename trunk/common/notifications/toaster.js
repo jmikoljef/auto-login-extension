@@ -17,12 +17,14 @@ function toastIt(options) {
 	if(!toaster) {
 		initToaster();
 	}
-	if(!options.displayTime) {
-		options.displayTime = DEFAULT_DISPLAY_TIME;
+	var displayTime = DEFAULT_DISPLAY_TIME;
+	if(!!options.displayTime) {
+		displayTime = options.displayTime;
 	}
 	var toast = _createToast(options);
 	_showToast(toast, options);
-	window.setTimeout(function () {_hideToast(toast, options);}, options.displayTime);
+	console.log('options.displayTime', displayTime);
+	window.setTimeout(function () {_hideToast(toast, options);}, displayTime);
 }
 
 /*
