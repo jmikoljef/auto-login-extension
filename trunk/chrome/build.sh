@@ -8,33 +8,55 @@ EXTENSION_DIR="${BUILD_DIR}/${EXTENSION_NAME}"
 COMMON_DIR="${ROOT_DIR}/../common"
 SCRIPTS_DIR="${COMMON_DIR}/scripts"
 
-# Oui je sais que c'est sale, mais là je ne vois pas comment faire
-CHROME="/opt/google/chrome/chrome"
-# CHROME="/usr/bin/chromium-browser"
-
-# Clean
-rm -Rf "${BUILD_DIR}"
-mkdir "${BUILD_DIR}"
-mkdir "${EXTENSION_DIR}"
-
-
-# Copy base files
-cp -Rf ${SRC_DIR}/* ${EXTENSION_DIR}
-
-# Copy config file
-cp -Rf ${COMMON_DIR}/* ${EXTENSION_DIR}
-
-echo "Extension created in ${EXTENSION_DIR}"
-
-# Create or update the extension
-if [ -a ${EXTENSION_NAME}.pem ]; then
-  # Update the extension, using existing key
-  "${CHROME}" --pack-extension="$EXTENSION_DIR" --pack-extension-key="${EXTENSION_NAME}.pem"
-else
-  # Create the extension
-  "${CHROME}" --pack-extension="$EXTENSION_DIR"
-  # Newly created key will be saved
-  mv ${BUILD_DIR}/${EXTENSION_NAME}.pem ${ROOT_DIR}
+if [ -z "$CHROME" ]; then
+	CHROME="/opt/google/chrome/chrome"
+#	CHROME="/usr/bin/chromium-browser"
 fi
 
+clean() {
+	# Clean
+	rm -Rf "${BUILD_DIR}"
+}
+
+init() {
+	clean
+
+	mkdir "${BUILD_DIR}"
+	mkdir "${EXTENSION_DIR}"
+}
+
+build() {
+	init
+
+	# Copy base files
+	cp -Rf ${SRC_DIR}/* ${EXTENSION_DIR}
+
+	# Copy config file
+	cp -Rf ${COMMON_DIR}/* ${EXTENSION_DIR}
+
+	echo "Extension created in ${EXTENSION_DIR}"
+}
+
+package() {
+	build
+
+	# Create or update the extension
+	if [ -e ${EXTENSION_NAME}.pem ]; then
+	  # Update the extension, using existing key
+	  "${CHROME}" --pack-extension="$EXTENSION_DIR" --pack-extension-key="${EXTENSION_NAME}.pem"
+	else
+	  # Create the extension
+	  "${CHROME}" --pack-extension="$EXTENSION_DIR"
+	  # Newly created key will be saved
+	  mv ${BUILD_DIR}/${EXTENSION_NAME}.pem ${ROOT_DIR}
+	fi
+}
+
+if [ -z "$1" ]; then
+	TARGET="build"
+else
+	TARGET=$1
+fi
+
+eval $TARGET
 
