@@ -1,0 +1,48 @@
+/*
+ * Toaster v0.1 stylesheet
+ * This is the default toast stylesheet.
+ * Notification will appear in top right and corner sliding to down.
+ */
+
+
+.toaster {
+	right: 5px; /* You can adjust right margin between toaster (toast too) and browser edge */
+	/*
+	 * Don't modify the next properties
+	 */
+	position: absolute;
+	width: 250px;
+	top: 0px;
+	bottom: 0px;
+}
+
+.toast {
+	background-color: blue;
+	border-radius: 5px;
+	-moz-transition-property: all;
+	-moz-transition-duration: 0.5s;
+	-moz-transition-timing-function: ease-out;
+	
+	/*
+	 * Don't modify the next properties
+	 */
+	position: relative;
+	width: 100%;
+	height: 0px;
+}
+
+.toast-hide {
+	/*
+	 * Don't modify the next properties
+	 */
+	height: 0px;
+	margin-top: 0px;
+}
+
+.toast-show {
+	/*
+	 * Don't modify the next properties
+	 */
+	height: 100px;
+	margin-top: 5px;
+}
