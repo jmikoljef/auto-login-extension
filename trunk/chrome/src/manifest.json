@@ -1,9 +1,10 @@
 {
-	"name": "Auto-Login",
+	"name": "Auto-Login Extension",
 	"version": "0.0.1",
-	"description": "Auto-Login",
+	"description": "Auto-Login Extension",
 	"permissions": [
 		"webNavigation",
+		"notifications",
 		"<all_urls>",
 		"tabs"
 	],
