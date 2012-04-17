@@ -25,7 +25,7 @@ function _set(id, value) {
 }
 
 function parseImgs() {
-var img_val = "";
+	var img_val = "";
 	for(var i = 0 ; i <= 9 ; i++) {
 		var img = _get('val_cel_' + i).firstChild.firstChild;
 		var b64 = img2base64(img);
@@ -45,10 +45,15 @@ function getPositionsFromValue(value) {
 	return positions;
 }
 
-function execute(credential) {
+function fillForm(credential) {
 	parseImgs();
 	_set(USERNAME_INPUT_ID, credential.username);
 	_set(PASSWORD_INPUT_ID, getPositionsFromValue(credential.password));
+	return true;
+}
+
+function validate() {
 	document.forms["formAccesCompte"].submit();
+	return true;
 }
 

@@ -8,6 +8,19 @@ function init() {
 	switchPanel("main");
 }
 
+function setStatus(msg) {
+	// Update status to let user know options were saved.
+	var status = document.getElementById("status");
+	if(!!status) {
+		status.innerHTML = msg;
+		status.className = 'status show';
+		setTimeout(
+			function() { status.className = 'status hide'; },
+			1500
+		);
+	}
+}
+
 function switchPanel(id) {
 	var tags = document.getElementsByClassName('menu-item-l1');
 	for(var i=0; i<tags.length; i++) {
@@ -32,7 +45,7 @@ function switchPanel(id) {
 		var pane = tags[i];
 		if(pane.id == 'panel-' + id) {
 			pane.style.display = 'block';
-		} else { 
+		} else {
 			pane.style.display = 'none';
 		}
 	}
@@ -44,6 +57,7 @@ function saveOptions(id) {
 	var prefs = getOptionsFromPage("_alo_", id+".");
 	storeOptions(id, prefs[id]);
 	fillObject(PREFS, id, prefs[id]);
+	setStatus("Preferences saved.");
 }
 
 function loadOption(option, id) {

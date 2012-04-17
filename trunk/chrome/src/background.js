@@ -10,6 +10,7 @@ function injectScripts(details, script_config, config) {
 
 	// chrome hack
 	chrome.tabs.executeScript(details.tabId, {allFrames: true, file: "hack_gc.js"});
+	chrome.tabs.executeScript(details.tabId, {allFrames: true, file: "commons.js"});
 	// Inject library scripts
 	for(var i in script_config.libs) {
 		chrome.tabs.executeScript(details.tabId, {allFrames: true, file: "scripts/" + script_config.libs[i]});
@@ -21,12 +22,14 @@ function injectScripts(details, script_config, config) {
 	// Inject the main script and launch it
 	var code = "";
 	code += "if(window.location.href==\""+details.url+"\") {";
-	code += 	"var result; ";
+	code += 	"var result;";
 	code += 	"try {";
-	code += 		"result = execute("+JSON.stringify(credential)+");";
-	code += 		"result = {exception: false, object: result};";
+	code += 		"if(fillForm("+JSON.stringify(credential)+")) result = 'form_filled';";
+	if(config.mode=="auto") {
+	code += 		"if(validate()) result = 'authentication_in_progress';";
+	}
 	code += 	"} catch(e) {";
-	code += 		"result = {exception: true, object: e};";
+	code += 		"result = e;";
 	code += 	"}";
 	code += 	"callBackground('handleScriptResponse', [result, "+details.tabId+", "+JSON.stringify(script_config)+"]);";
 	code += "}";
@@ -84,9 +87,17 @@ chrome.extension.onRequest.addListener(
 );
 
 function _handleScriptResponse(response, tabId, script_config) {
+	if(response==undefined) return;
 	var notification;
-	if(response.exception) notification = { type: "error", msg: "Authentification on "+script_config.label+" fails." };
-	else notification = { type: "filled", msg: "Authentification on "+script_config.label+" succeed." };
+	if(typeof response == "string") {
+		var msg = chrome.i18n.getMessage(response);
+		notification = { type: "filled", title:script_config.label, msg: msg };
+	} else {
+		var msg;
+		if(!!response.i18n_message) msg = chrome.i18n.getMessage(response.i18n_message);
+		else msg = chrome.i18n.getMessage(response.message);
+		notification = { type: "error", title:script_config.label, msg: msg };
+	}
 	var mode = getOption("main").notification;
 	sendNotification(notification, mode, tabId);
 }
@@ -98,7 +109,7 @@ function sendNotification(notification, mode, tabId) {
 			chrome.tabs.get(tabId, function(tab) {
 				var notif = webkitNotifications.createNotification(
 					tab.favIconUrl,
-					'Auto Login Extension', 
+					notification.title, 
 					notification.msg
 				);
 				notif.ondisplay = function() {
@@ -123,7 +134,8 @@ function sendNotification(notification, mode, tabId) {
 			insertNotificationToPage(tabId, notification.msg, timeout);
 			break;
 		default:
-			console.error("Unknown notification mode");
+			// none
+			break;
 	}
 }
 

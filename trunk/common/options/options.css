@@ -31,6 +31,48 @@ fieldset input[type="text"], fieldset input[type="password"] {
 	float:left;
 }
 
+.status {
+	text-align: center;
+	width: 150px;
+	margin-left: -75px;
+	left: 50%;
+	padding: 2px 5px;
+	border: solid 1px #4A4;
+  	background: #AFA;
+	border-radius: 3px;
+	font-size: 12px;
+	position: absolute;
+	z-index: 1;
+	overflow: hidden;
+}
+
+.hide {
+	bottom: 0px;
+	opacity:0;
+	transition-property: all;
+	transition-duration: 0.5s;
+	transition-timing-function: ease-in;
+	-moz-transition-property: all;
+	-moz-transition-duration: 0.5s;
+	-moz-transition-timing-function: ease-in;
+	-webkit-transition-property: all;
+	-webkit-transition-duration: 0.5s;
+	-webkit-transition-timing-function: ease-in;
+}
+
+.show {
+	bottom: 20px;
+	opacity:1;
+	transition-property: all;
+	transition-duration: 0.5s;
+	transition-timing-function: ease-out;
+	-moz-transition-property: all;
+	-moz-transition-duration: 0.5s;
+	-moz-transition-timing-function: ease-out;
+	-webkit-transition-property: all;
+	-webkit-transition-duration: 0.5s;
+	-webkit-transition-timing-function: ease-out;
+}
 /*
  * Title
  */
@@ -93,9 +135,14 @@ h1 {
 }
 .menu-disabled {
 	border: 1px solid rgb(242,241,240);
+	border-right: none;
 
 	/* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
 	z-index: 0;
+
+	transition-property: all;
+	transition-duration: 0.5s;
+	transition-timing-function: ease-out;
 }
 .menu-enabled {
 	background-color: white;
@@ -104,6 +151,10 @@ h1 {
 		
 	/* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
 	z-index: 1;
+
+	transition-property: all;
+	transition-duration: 0.5s;
+	transition-timing-function: ease-out;
 }
 
 /*
@@ -115,6 +166,8 @@ h1 {
 	border: 1px solid grey;
 	display: none;
 	position:absolute;
+	min-width: 350px;
+	min-height: 360px;
 	top: 41px;
 	left: 250px;
 	bottom: 0px;
