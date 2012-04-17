@@ -2,6 +2,7 @@
 	"name": "Auto-Login Extension",
 	"version": "0.0.1",
 	"description": "Auto-Login Extension",
+	"default_locale": "fr",
 	"permissions": [
 		"webNavigation",
 		"notifications",

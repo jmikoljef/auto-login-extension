@@ -8,6 +8,7 @@
 		<script type="text/javascript" src="communication.js"></script>
 	</head>
 	<body>
+		<div id="status" class="status hide">Preferences saved.</div>
 		<div id="body" class="body">
 			<h1>Autologin options</h1>
 			<div class="menu" id="menu">
@@ -57,7 +58,9 @@
 				<div class="element">
 					<fieldset>
 						<legend>Mode de notification</legend>
-						<input type="radio" name="main.notification" id="main.notification.desktop" value="desktop" checked="checked" class="_alo_ left"/>
+						<input type="radio" name="main.notification" id="main.notification.none" value="none" checked="checked" class="_alo_ left"/>
+						<label for="main.notification.none" class="right">D&eacute;sactiv&eacute;</label>
+						<input type="radio" name="main.notification" id="main.notification.desktop" value="desktop" class="_alo_ left"/>
 						<label for="main.notification.desktop" class="right">Sur le bureau</label>
 						<input type="radio" name="main.notification" id="main.notification.browser" value="browser" class="_alo_ left"/>
 						<label for="main.notification.browser" class="right">Dans le navigateur</label>
@@ -77,10 +80,10 @@
 				<div class="element">
 					<fieldset>
 						<legend>Mode</legend>
-						<input type="radio" name="freemobile.mode" id="freemobile.mode.1" value="1" checked="checked" class="_alo_ left":>
-						<label for="freemobile.mode.1" class="right">Automatique</label>
-						<input type="radio" name="freemobile.mode" id="freemobile.mode.2" value="2" class="_alo_ left"/>
-						<label for="freemobile.mode.2" class="right">Manuel</label>
+						<input type="radio" name="freemobile.mode" id="freemobile.mode.manual" value="manual" checked="checked" class="_alo_ left"/>
+						<label for="freemobile.mode.manual" class="right">Manuel</label>
+						<input type="radio" name="freemobile.mode" id="freemobile.mode.auto" value="auto" class="_alo_ left":>
+						<label for="freemobile.mode.auto" class="right">Automatique</label>
 					</fieldset>
 					<fieldset>
 						<legend>Identifiant / mot de passe</legend>
@@ -99,10 +102,10 @@
 				<div class="element">
 					<fieldset>
 						<legend>Mode</legend>
-						<input type="radio" name="caisseepargne.mode" id="caisseepargne.mode.1" value="1" checked="checked" class="_alo_ left">
-						<label for="caisseepargne.mode.1" class="right">Automatique</label>
-						<input type="radio" name="caisseepargne.mode" id="caisseepargne.mode.2" value="2" class="_alo_ left">
-						<label for="caisseepargne.mode.2" class="right">Manuel</label>
+						<input type="radio" name="caisseepargne.mode" id="caisseepargne.mode.manual" value="manual" checked="checked" class="_alo_ left">
+						<label for="caisseepargne.mode.manual" class="right">Manuel</label>
+						<input type="radio" name="caisseepargne.mode" id="caisseepargne.mode.auto" value="auto" class="_alo_ left">
+						<label for="caisseepargne.mode.auto" class="right">Automatique</label>
 					</fieldset>
 					<fieldset>
 						<legend>Identifiant / mot de passe</legend>
@@ -121,10 +124,10 @@
 				<div class="element">
 					<fieldset>
 						<legend>Mode</legend>
-						<input type="radio" name="banquepostale.mode" id="banquepostale.mode.1" value="1" checked="checked" class="_alo_ left">
-						<label for="banquepostale.mode.1" class="right">Automatique</label>
-						<input type="radio" name="banquepostale.mode" id="banquepostale.mode.2" value="2" class="_alo_ left">
-						<label for="banquepostale.mode.2" class="right">Manuel</label>
+						<input type="radio" name="banquepostale.mode" id="banquepostale.mode.manual" value="manual" checked="checked" class="_alo_ left">
+						<label for="banquepostale.mode.manual" class="right">Manuel</label>
+						<input type="radio" name="banquepostale.mode" id="banquepostale.mode.auto" value="auto" class="_alo_ left">
+						<label for="banquepostale.mode.auto" class="right">Automatique</label>
 					</fieldset>
 					<fieldset>
 						<legend>Identifiant / mot de passe</legend>
@@ -142,10 +145,10 @@
 			<div class="element">
 				<fieldset>
 				<legend>Mode</legend>
-					<input type="radio" name="creditagricole.mode" id="creditagricole.mode.1" value="1" checked="checked" class="_alo_ left">
-					<label for="creditagricole.mode.1" class="right">Automatique</label>
-					<input type="radio" name="creditagricole.mode" id="creditagricole.mode.2" value="2" class="_alo_ left">
-					<label for="creditagricole.mode.2" class="right">Manuel</label>
+					<input type="radio" name="creditagricole.mode" id="creditagricole.mode.manual" value="manual" checked="checked" class="_alo_ left">
+					<label for="creditagricole.mode.manual" class="right">Manuel</label>
+					<input type="radio" name="creditagricole.mode" id="creditagricole.mode.auto" value="auto" class="_alo_ left">
+					<label for="creditagricole.mode.auto" class="right">Automatique</label>
 				</fieldset>
 				<fieldset>
 				<legend>Identifiant / mot de passe</legend>

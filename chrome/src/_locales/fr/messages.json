@@ -1,0 +1,14 @@
+{
+	"form_filled": {
+		"message": "Formulaire remplie."
+	},
+	"authentication_in_progress": {
+		"message": "Authentification en cours..."
+	},
+	"incorrect_login": {
+		"message": "Le login est incorrect."
+	},
+	"image_recognition_error": {
+		"message": "Des images n'ont pas été reconnues."
+	}
+}

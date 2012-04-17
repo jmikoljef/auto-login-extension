@@ -8,34 +8,34 @@ var pos = new Array();
  * Detect which number correspond to each image
  */
 function ocr() {
-    for(var i=0; i<CHIFFRES_BOUTON.length; i++) {
-        var img = CHIFFRES_BOUTON[i];
-        var canvas = getCanvas(img);
-        for (var p in POINTS) {
-            var points = POINTS[p];
-            if(check(canvas, points)) {
-                pos[p] = i;
-                break;
-            }
-        }
-    }
+	for(var i=0; i<CHIFFRES_BOUTON.length; i++) {
+		var img = CHIFFRES_BOUTON[i];
+		var canvas = getCanvas(img);
+		for (var p in POINTS) {
+			var points = POINTS[p];
+			if(check(canvas, points)) {
+				pos[p] = i;
+				break;
+			}
+		}
+	}
 }
 
 /**
  * Vérifie si l'image valide une des séries de points fournies
  */
 function check(canvas, points) {
-    var image = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
-    var data = image.data;
-    for(var p in points) {
-        var point = points[p];
-        var i = point.x*4 + point.y*4 * canvas.width;
-        var white = (data[i] == 255 && data[i+1] == 255 && data[i+2] == 255);
-        if(!((point.c==0 && white) || (point.c==1 && !white))) {
-        	return false;
-        }
-    }
-    return true;
+	var image = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
+	var data = image.data;
+	for(var p in points) {
+		var point = points[p];
+		var i = point.x*4 + point.y*4 * canvas.width;
+		var white = (data[i] == 255 && data[i+1] == 255 && data[i+2] == 255);
+		if(!((point.c==0 && white) || (point.c==1 && !white))) {
+			return false;
+		}
+	}
+	return true;
 }
 
 /**
@@ -56,49 +56,51 @@ function getCanvas(img) {
  * Try to authenticate the user
  */
 function authenticate(credential) {
-    var haveError = false;
-    // Parcours du login pour cliquer sur les chiffres correspondants
-    for(var i in credential.username) {
-        var n = parseInt(credential.username[i]);
-        if(n == NaN) {
-            console.error("Le login doit contenir uniquement des chiffres");
-            haveError = true;
-        } else {
-            // Recherche de la position du bouton correspondant au chiffre 'n'
-            var p = pos[n];
-            if(p == undefined) {
-                console.error("L'image correspondant au chiffre " + n + " n'a pas été reconnu.");
-                haveError = true;
-            } else {
-                // On a trouvé le bouton correspondant au chiffre, on peut
-				// cliquer dessus.
-                if(!haveError) {
-                	CHIFFRES_BOUTON[p].click();
+	var error = undefined;
+	// Parcours du login pour cliquer sur les chiffres correspondants
+	for(var i in credential.username) {
+		var n = parseInt(credential.username[i]);
+		if(n == NaN) {
+			if(!error) error = new IncorrectLoginError();
+			console.error("Le login doit contenir uniquement des chiffres");
+		} else {
+			// Recherche de la position du bouton correspondant au chiffre 'n'
+			var p = pos[n];
+			if(p == undefined) {
+				if(!error) error = new ImageRecognitionError();
+				console.error("L'image correspondant au chiffre " + n + " n'a pas été reconnu.");
+			} else {
+				// On a trouvé le bouton correspondant au chiffre, on peut cliquer dessus.
+				if(!error) {
+					CHIFFRES_BOUTON[p].click();
 				}
-            }
-        }
-    }
-    if(haveError) {
-        var element = document.getElementsByClassName('ident_chiffre2')[0];
-        element.innerHTML = '<h1>' + credential.username + '</h1>' + element.innerHTML;
-    } else {
-        // On renseigne le mot de passe
-        PASSWORD_INPUT.value = credential.password;
-        // On soumet le formulaire
-        SUBMIT_BUTTON.click();
-    }
+			}
+		}
+	}
+	// On renseigne le mot de passe
+	PASSWORD_INPUT.value = credential.password;
+	if(!!error) {
+		var element = document.getElementsByClassName('ident_chiffre2')[0];
+		element.innerHTML = '<h1>' + credential.username + '</h1>' + element.innerHTML;
+		throw error;
+	}
 }
 
-/**
- * The main method of this script
- */
-function execute(credential) {
-    if(!credential) {
-        console.warn("Merci de configurer le script avant de l'exécuter.");
-    } else {
-        if(!!SUBMIT_BUTTON){
-            ocr();
-            authenticate(credential);
-        }
-    }
+function fillForm(credential) {
+	if(!credential) {
+		console.warn("Merci de configurer le script avant de l'exécuter.");
+	} else {
+		if(!!SUBMIT_BUTTON){
+			ocr();
+			authenticate(credential);
+		}
+	}
+	return true;
 }
+
+function validate() {
+	// On soumet le formulaire
+	SUBMIT_BUTTON.click();
+	return true;
+}
+
