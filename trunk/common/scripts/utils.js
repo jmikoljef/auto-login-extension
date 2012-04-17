@@ -6,7 +6,7 @@ function img2base64(img) {
 	var image = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
 	var data = image.data;
 	var dataStr = "";
-	for(var i=0; i<data.length; i++) {
+	for ( var i = 0; i < data.length; i++) {
 		dataStr += String.fromCharCode(data[i]);
 	}
 	var base64 = Base64.encode(dataStr);
@@ -30,3 +30,67 @@ function getCanvas(img) {
 	return canvas;
 }
 
+/*
+ * Classe de logging
+ */
+function Logger() {
+};
+
+// Change to false to turn off debugging
+Logger.debugEnabled = true;
+
+Logger.debug = function() {
+	if (Logger.debugEnabled) {
+		try {
+			console.debug.apply(console, arguments);
+		} catch (e) {
+			var message = '';
+			for ( var a in arguments) {
+				if (!!message)
+					message += ', ';
+				message += arguments[a];
+			}
+			console.debug(message);
+		}
+	}
+}
+
+Logger.log = function() {
+	try {
+		console.log.apply(console, arguments);
+	} catch (e) {
+		var message = '';
+		for ( var a in arguments) {
+			if (!!message)
+				message += ', ';
+			message += arguments[a];
+		}
+		console.log(message);
+	}
+}
+
+Logger.error = function() {
+	try {
+		console.error.apply(console, arguments);
+	} catch (e) {
+		var message = '';
+		for ( var a in arguments) {
+			if (!!message)
+				message += ', ';
+			message += arguments[a];
+		}
+		console.error(message);
+	}
+}
+
+Logger.dir = function() {
+	try {
+		console.dir.apply(console, arguments);
+	} catch (e) {
+		Logger.log.apply(LOGGER, arguments);
+	}
+}
+
+/*
+ * </logging>
+ */

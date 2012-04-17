@@ -5,6 +5,7 @@ const SELF = require("self");
 const DATA = SELF.data;
 const MANIFEST = require("manifest");
 const SCRIPTS = MANIFEST.SCRIPTS;
+Alex = require('alex.class').Alex;
 
 /*
  * Load module
@@ -27,44 +28,13 @@ exports.unload = function() {
  * Inject content-script in page
  */
 function _plugScript(script) {
-	/*
-	 * Script defined pages
-	 */
 	let pageMod = PAGE_MOD.PageMod({
 	    include: script.pages,
 	    contentScriptWhen : 'end',
 	    contentScriptFile: _contentScriptFiles(script),
 	    onAttach: function(worker) {
-	    	worker.port.on('error', function(message) {
-	    		MODULE_NOTIFICATIONS.notify({
-	    			pageWorker: worker,
-	        		state: 'error',
-	        		message: message,
-	        		site: script.site
-	        	});	    		
-	    	});
-	    	worker.port.on('filled', function() {
-	    		MODULE_NOTIFICATIONS.notify({
-	    			pageWorker: worker,
-	        		state: 'filled',
-	        		site: script.site
-	        	});	    		
-	    	});
-	    	worker.port.on('logged', function() {
-	    		MODULE_NOTIFICATIONS.notify({
-	    			pageWorker: worker,
-	        		state: 'loggued',
-	        		site: script.site
-	        	});	    		
-	    	});  	
-	    	PASSWORD_MANAGER.getFirst(
-	    		{
-	    			url:script.site
-    			},
-    			function(credential) {
-    				worker.port.emit('execute', credential);
-				}
-			);
+	    	var alex = Alex(script.site, worker);
+	    	alex.fillForm();
 	    }
 	});
 }
@@ -85,6 +55,7 @@ function _contentScriptFiles(script) {
 		}
 	}
 	urls.push(DATA.url('scripts/' + script.id + '/script.js'));
+	urls.push(DATA.url('scripts/utils.js'));
 	urls.push(DATA.url('scripts/bootstrap.js'));
 	return urls;
 }

@@ -34,9 +34,9 @@
 *
 * ***** END LICENSE BLOCK *****
 */
-
-
-var {Cc,Ci} = require("chrome");
+const CHROME = require("chrome");
+const Cc = CHROME.Cc;
+const Ci = CHROME.Ci;
 
 /**
 * Load various packaged styles for the add-on and undo on unload

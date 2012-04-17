@@ -25,7 +25,7 @@ function _copy() {
 
 function _cfx() {
     cd $TARGET
-    cfx $@
+    $CFX $@
     cd -
 }
 
@@ -114,8 +114,6 @@ function _goal() {
     esac
 }
 
-DEFAULT_FIREFOX_INSTANCE=`which firefox`
-DEFAULT_FIREFOX_PROFILE_DIR="/tmp/dev"
 RELEASES="../../releases"
 SRC="./src"
 TARGET="./target"
@@ -126,14 +124,25 @@ NOTIFICATIONS="$COMMON/notifications"
 UPDATE_DEV_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-dev.rdf"
 UPDATE_STABLE_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-stable.rdf"
 
-if [ -z "$FIREFOX_INSTANCE" ]; then
-    FIREFOX_INSTANCE=$DEFAULT_FIREFOX_INSTANCE
+if [ -z "$CFX" ]; then
+	CFX=cfx
+	if [ -e $CFX ]; then
+		echo "Please define CFX"
+		exit 1
+	fi
 fi
 
-if [ -z "$FIREFOX_PROFILE_DIR" ]; then
-    FIREFOX_PROFILE_DIR=$DEFAULT_FIREFOX_PROFILE_DIR
+if [ -z "$CFX_FIREFOX_INSTANCE" ]; then
+    echo "Please define CFX_FIREFOX_INSTANCE"
+    exit 1
 fi
-CFX_TEST_OPTIONS="-b $FIREFOX_INSTANCE -p $FIREFOX_PROFILE_DIR"
+
+if [ -z "$CFX_FIREFOX_PROFILE_DIR" ]; then
+    echo "Please define CFX_FIREFOX_PROFILE_DIR"
+    exit 1
+fi
+
+CFX_TEST_OPTIONS="-b $CFX_FIREFOX_INSTANCE -p $CFX_FIREFOX_PROFILE_DIR"
 CFX_INSTALL_OPTIONS="--update-url $UPDATE_DEV_RDF"
 CFX_RELEASE_OPTIONS="--update-url $UPDATE_STABLE_RDF"
 
