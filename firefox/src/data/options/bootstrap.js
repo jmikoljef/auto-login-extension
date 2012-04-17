@@ -20,9 +20,9 @@ function storeOptions(id, options) {
 /*
  * Page side
  */
-window.addEventListener('message', onMessage, false);
+window.addEventListener('message', onPageMessage, false);
 
-function onMessage(event) {
+function onPageMessage(event) {
 	var data = JSON.parse(event.data);
 	// console.log('bootstrap.js', 'onMessage', data.functionName, data.id, data.options);
 	if(data.functionName == 'storeOptions') {

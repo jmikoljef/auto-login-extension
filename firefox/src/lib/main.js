@@ -1,7 +1,7 @@
 //Modules
-const MODULE_NOTIFICATION = require("module-notifications");
-const MODULE_SETTINGS = require("module-settings");
-const MODULE_SCRIPTS = require("module-scripts");
+MODULE_NOTIFICATION = require("module-notifications");
+MODULE_SETTINGS = require("module-settings");
+MODULE_SCRIPTS = require("module-scripts");
 
 // Main
 exports.main = function(options, callbacks) {
