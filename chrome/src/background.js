@@ -10,7 +10,7 @@ function injectScripts(details, script_config, config) {
 
 	// chrome hack
 	chrome.tabs.executeScript(details.tabId, {allFrames: true, file: "hack_gc.js"});
-	chrome.tabs.executeScript(details.tabId, {allFrames: true, file: "commons.js"});
+	chrome.tabs.executeScript(details.tabId, {allFrames: true, file: "scripts/commons.js"});
 	// Inject library scripts
 	for(var i in script_config.libs) {
 		chrome.tabs.executeScript(details.tabId, {allFrames: true, file: "scripts/" + script_config.libs[i]});
@@ -86,15 +86,17 @@ chrome.extension.onRequest.addListener(
 	}
 );
 
+var locale_i18n = new i18n(getLocale(), chrome.extension.getURL);
+
 function _handleScriptResponse(response, tabId, script_config) {
 	if(response==undefined) return;
 	var notification;
 	if(typeof response == "string") {
-		var msg = chrome.i18n.getMessage(response);
+		var msg = locale_i18n.getMessage(response);
 		notification = { type: "filled", title:script_config.label, msg: msg };
 	} else {
 		var msg;
-		if(!!response.i18n_message) msg = chrome.i18n.getMessage(response.i18n_message);
+		if(!!response.i18n_message) msg = locale_i18n.getMessage(response.i18n_message);
 		else msg = chrome.i18n.getMessage(response.message);
 		notification = { type: "error", title:script_config.label, msg: msg };
 	}
@@ -149,4 +151,8 @@ function insertNotificationToPage(tabId, message, timeout) {
 			"});"
 		});
 	});
+}
+
+function getLocale() {
+	return window.navigator.language;
 }
