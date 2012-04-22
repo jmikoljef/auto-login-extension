@@ -2,7 +2,6 @@
 	"name": "Auto-Login Extension",
 	"version": "0.0.1",
 	"description": "Auto-Login Extension",
-	"default_locale": "fr",
 	"permissions": [
 		"webNavigation",
 		"notifications",
@@ -10,7 +9,7 @@
 		"tabs"
 	],
 	"background": {
-		"scripts": ["manifest.js", "background.js"]
+		"scripts": ["manifest.js", "file/file.js", "i18n/i18n.js", "background.js"]
 	},
 	"options_page": "options/options.html"
 }
