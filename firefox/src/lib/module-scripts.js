@@ -33,7 +33,7 @@ function _plugScript(script) {
 	    contentScriptWhen : 'end',
 	    contentScriptFile: _contentScriptFiles(script),
 	    onAttach: function(worker) {
-	    	var alex = Alex(script.site, worker);
+	    	var alex = Alex(script, worker);
 	    	alex.fillForm();
 	    }
 	});
