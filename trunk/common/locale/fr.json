@@ -1,6 +1,7 @@
 {
-	"form_filled": "Formulaire remplie.",
+	"form_filled": "Formulaire rempli.",
 	"authentication_in_progress": "Authentification en cours...",
 	"incorrect_login": "Le login est incorrect.",
-	"image_recognition_error": "Des images n'ont pas été reconnues."
+	"image_recognition_error": "Des images n'ont pas été reconnues.",
+	"authentication_error: "Une erreur est survenue durant le processus d'authentification."
 }
