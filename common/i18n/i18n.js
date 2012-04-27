@@ -1,12 +1,12 @@
 function i18n(locales, resolveUrl) {
-	this.locales = [];
+	this.locale = undefined;
 	if(!(locales instanceof Array)) {
 		locales = [ locales ];
 	}
 	for(var i = 0; i<locales.length; i++) {
 		var locale = this.getLocale(locales[i], resolveUrl);
 		if(locale != undefined) {
-			this.locales.push(locale);
+			this.locale = locale;
 		}
 	}
 }
@@ -14,27 +14,44 @@ function i18n(locales, resolveUrl) {
 i18n.prototype.getLocale = function(locale, resolveUrl) {
 	var result = undefined;
 	var url = "locale/"+locale+".json";
+	var language = undefined;
+	var country = undefined;
+	var regexp = /^(\w{2})([_-](\w{2}))?$/;
+	var match = regexp.exec(locale);
+	if(match != null) {
+		language = match[1];
+		country = match[3];
+		result = this.getLocaleFromFile("locale/"+language+".json", resolveUrl);
+		if(!!result) console.log("Using "+language+" locale.");
+		if(!!country) {
+			var tmp = this.getLocaleFromFile("locale/"+language+"-"+country+".json", resolveUrl);
+			if(!!tmp) console.log("Using "+language+"-"+country+" locale.");
+
+			if(!result) {
+				result = tmp;
+			} else if(!!tmp) {
+				for(i in tmp) {
+					result[i] = tmp[i];
+				}
+			}
+		}
+	}
+	console.log(result);
+	return result;
+}
+i18n.prototype.getLocaleFromFile = function(url, resolveUrl) {
+	var result = undefined;
 	var file = new File(url, resolveUrl);
 	var opened = file.open();
 	if(opened) {
-		console.info("Using locale "+locale);
 		result = file.getJsonContent();
 		file.close();
-	} else {
-		var i = locale.indexOf("_");
-		if(i != -1) {
-			var newLocale = locale.substring(0, i);
-			console.warn("File not found for " + locale + ", trying with " + newLocale + ".");
-			result = this.getLocale(newLocale, resolveUrl);
-		} else {
-			console.warn("Locale not found, default messages will be used");
-		}
 	}
 	return result;
 }
 
 i18n.prototype.getMessage = function(message) {
-	var locale = this.locales[0];
+	var locale = this.locale;
 	var msg = undefined;
 	if(locale != undefined) {
 		msg = locale[message];
