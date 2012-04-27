@@ -3,5 +3,5 @@
 	"authentication_in_progress": "Authentication in progress...",
 	"incorrect_login": "Login incorrect.",
 	"image_recognition_error": "Some images aren't recognized.",
-	"authentication_error: "An error has occurred during authentication process."
+	"authentication_error": "An error has occurred during authentication process."
 }
