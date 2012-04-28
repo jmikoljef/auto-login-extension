@@ -30,6 +30,7 @@ function lib(libName) {
 	
 	/*
 	 * Ici je voudrais retourner le pointeur de la lib (libName), comment est-ce que je peux faire ?
+	 * Ca marche ça : eval('return libName'); ?
 	 */
 }
 
