@@ -3,8 +3,9 @@ const PASSWORD_MANAGER = require("password-manager");
 const PAGE_MOD = require("page-mod");
 const SELF = require("self");
 const DATA = SELF.data;
-const MANIFEST = require("manifest");
-const SCRIPTS = MANIFEST.SCRIPTS;
+
+const THIRD = require('third-libs-loader');
+const SCRIPTS = THIRD.load('SCRIPTS_CONFIG', [{path:'manifest.js'}]);
 Alex = require('alex.class').Alex;
 
 /*

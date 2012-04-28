@@ -6,8 +6,9 @@ WIDGET = require("widget");
 TABS = require("tabs");
 SELF = require("self");
 DATA = SELF.data;
-MANIFEST = require("manifest");
-SCRIPTS = MANIFEST.SCRIPTS;
+
+const THIRD = require('third-libs-loader');
+const SCRIPTS = THIRD.load('SCRIPTS_CONFIG', [{path:'manifest.js'}]);
 
 var settingsTabs = undefined;
 
@@ -23,8 +24,7 @@ exports.load = function(scripts) {
 	    contentScriptFile : DATA.url("options/bootstrap.js"),
 	    onAttach : function(worker) {
 		    worker.port.on('saveOptions', function(datas) {
-			    // console.log('main.js', 'saveOptions', datas.id,
-				// datas.options);
+			    console.debug('module-settings.js', 'exports.load', ' worker.port.on(saveOptions)', datas);
 			    _saveOptions(datas.id, datas.options);
 		    });
 		    _loadOptions(worker);
@@ -61,6 +61,7 @@ exports.load = function(scripts) {
  * Unload module
  */
 exports.unload = function() {
+	console.debug('module-settings.js', 'exports.unload');
 	if (!!settingsTabs) {
 		settingsTabs.close();
 	}
@@ -70,6 +71,7 @@ exports.unload = function() {
  * Send options to settings page
  */
 function _loadOptions(worker) {
+	console.debug('module-settings.js', '_loadOptions', worker);
 	worker.port.emit('loadOptions', {
 	    id : 'main',
 	    options : STORAGE['main']
@@ -81,6 +83,7 @@ function _loadOptions(worker) {
 }
 
 function _loadOption(worker, script) {
+	console.debug('module-settings.js', '_loadOption', worker, script);
 	var id = script.id;
 	var options = STORAGE[id];
 	if (!!options) {
@@ -95,6 +98,7 @@ function _loadOption(worker, script) {
 }
 
 function _loadCredential(worker, script) {
+	console.debug('module-settings.js', '_loadCredential', worker, script);
 	PASSWORD_MANAGER.getFirst({
 		url : script.site
 	}, function(credential) {
@@ -108,6 +112,7 @@ function _loadCredential(worker, script) {
 }
 
 function _saveOptions(id, options) {
+	console.debug('module-settings.js', '_saveOptions', id, options);
 	if (!!options.credential) {
 		_saveCredential(id, options.credential);
 		delete options.credential;
@@ -116,12 +121,9 @@ function _saveOptions(id, options) {
 }
 
 function _saveCredential(id, credential) {
+	console.debug('module-settings.js', '_saveCredential', id, credential);
 	credential.url = _getUrl(id);
-	if (!!credential.username) {
-		// if(!credential.password) {
-		// credential.password = 'not defined';
-		// }
-		// FIXME si le password est vide le PASSWORD_MANAGER plante
+	if (!!credential.username && !!credential.password) {
 		PASSWORD_MANAGER.set(credential);
 	} else {
 		PASSWORD_MANAGER.remove(credential);
@@ -129,6 +131,7 @@ function _saveCredential(id, credential) {
 }
 
 function _getUrl(id) {
+	console.debug('module-settings.js', '_getUrl', id);
 	for ( var s in SCRIPTS) {
 		var script = SCRIPTS[s];
 		if (id == script.id) {

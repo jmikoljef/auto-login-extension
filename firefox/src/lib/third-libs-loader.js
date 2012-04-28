@@ -1,12 +1,27 @@
 SELF = require("self");
 DATA = SELF.data;
 XHR = require('xhr');
-PATH = '../data/';
 
-exports.load = function(libPath, libFunction) {
-	var url = DATA.url(PATH + libPath);
-	eval(_get(url) + ';');
-	eval('return ' + libFunction + ';');
+exports.load = function(refName, dependancies) {
+	for(var d in dependancies) {
+		var dep = dependancies[d];
+		try {
+			if (!!dep.lib) {
+				require(dep.lib);
+			}
+			if (!!dep.code) {
+				eval(dep.code);
+			}
+			if (!!dep.path) {
+				var url = DATA.url(dep.path);
+				eval(_get(url));
+			}
+		} catch (e) {
+			throw new Error('An error occur during the loading of [' + dep + ']');
+		}
+	}
+	eval('var ref = ' + refName + ';');
+	return ref;
 }
 
 function _get(url) {

@@ -10,17 +10,8 @@ function _copy() {
 	# Copy base files
 	cp -Rf "$SRC"/* $TARGET
 
-	# Conpy config file
-	cp "$COMMON/manifest.js" "$TARGET/lib"
-
-	# Copy scripts
-	cp -Rf $SCRIPTS "$TARGET/data"
-
-	# Copy options UI
-	cp -Rf $OPTIONS/* "$TARGET/data/options"
-
-	# Copy notifications system
-	cp -Rf $NOTIFICATIONS "$TARGET/data"
+	# Copy common files
+	cp -Rf $COMMON/* "$TARGET/data"
 }
 
 function _cfx() {
@@ -118,9 +109,6 @@ RELEASES="../../releases"
 SRC="./src"
 TARGET="./target"
 COMMON="../common"
-SCRIPTS="$COMMON/scripts"
-OPTIONS="$COMMON/options"
-NOTIFICATIONS="$COMMON/notifications"
 UPDATE_DEV_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-dev.rdf"
 UPDATE_STABLE_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-stable.rdf"
 

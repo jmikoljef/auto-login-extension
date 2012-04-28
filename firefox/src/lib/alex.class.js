@@ -2,16 +2,18 @@ MODULE_NOTIFICATIONS = require('module-notifications');
 PASSWORD_MANAGER = require("password-manager");
 SIMPLE_STORAGE = require("simple-storage");
 STORAGE = SIMPLE_STORAGE.storage;
+
+// TODO export it
 Logger = require('logger');
 
 //Alex constructor
 exports.Alex = function (script, worker) {
-	Logger.debug('alex.class.js', 'exports.Alex');
+	Logger.debug('alex.class.js', 'exports.Alex', script, worker);
 	return new Alex(script, worker);
 }
 
 function Alex(script, scriptWorker) {
-	Logger.debug('alex.class.js', 'Alex()');
+	Logger.debug('alex.class.js', 'Alex', script, scriptWorker);
 	this.script = script;
 	this.worker = scriptWorker;
     this.filled = false;
@@ -46,10 +48,11 @@ Alex.prototype.validate = function() {
 Alex.prototype.onFilled = function() {
 	Logger.debug('alex.class.js', 'onFilled');
     this.filled = true;
+    var instance = this;
     MODULE_NOTIFICATIONS.notify({
-        pageWorker : this.worker,
+        pageWorker : instance.worker,
         state : 'filled',
-        site : this.site
+        site : instance.script.site
     });
 
     var modeAuto = true;
@@ -65,19 +68,21 @@ Alex.prototype.onFilled = function() {
 Alex.prototype.onValidated = function() {
 	Logger.debug('alex.class.js', 'onValidated');
     this.validated = true;
+    var instance = this;
     MODULE_NOTIFICATIONS.notify({
-        pageWorker : this.worker,
+        pageWorker : instance.worker,
         state : 'validated',
-        site : this.site
+        site : instance.script.site
     });
 }
 
 Alex.prototype.onProblem = function(message) {
-	Logger.debug('alex.class.js', 'onProblem');
+	Logger.debug('alex.class.js', 'onProblem', message);
+    var instance = this;
     MODULE_NOTIFICATIONS.notify({
-        pageWorker : this.worker,
+        pageWorker : instance.worker,
         state : 'error',
         message : message,
-        site : this.site
+        site : instance.script.site
     });
 }

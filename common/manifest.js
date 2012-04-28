@@ -41,10 +41,3 @@ const SCRIPTS_CONFIG = [
         pages: ['https://www.tourainepoitou-s2-g2-enligne.credit-agricole.fr/stb/entreeBam']
     }
 ];
-
-try {
-	// Firefox
-	exports.SCRIPTS = SCRIPTS_CONFIG;
-} catch(err) {
-	// Une erreur ? C'est que ça doit-être Chrome !
-}
