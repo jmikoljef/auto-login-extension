@@ -6,10 +6,15 @@ SELF = require("self");
 DATA = SELF.data;
 WORKERS = new Array();
 
+var _ = require("module-localization").get; 
+
+var template  = '${title} - ${image} - ${content}';
+
 /*
  * Load module
  */
 exports.load = function() {
+	console.debug('module-notifications.js', 'exports.load');
 	var userstyles = require("userstyles");
 	var url = DATA.url('notifications/toaster-top-right-down.css');
 	userstyles.load(url);
@@ -19,6 +24,7 @@ exports.load = function() {
 	 * mode, in case of user change of minds
 	 */
 	TABS.on('ready', function(tab) {
+		console.debug('module-notifications.js', 'exports.load', 'TABS.on(ready)');
 		var worker = tab.attach({
 		    contentScriptFile : DATA.url('notifications/toaster.js'),
 		    contentScript : 'self.port.on("notify", toastIt);'
@@ -26,11 +32,13 @@ exports.load = function() {
 		WORKERS[tab.index] = worker;
 	});
 	TABS.on('close', function(tab) {
+		console.debug('module-notifications.js', 'exports.load', 'TABS.on(close)');
 		delete WORKERS[tab.index];
 	});
 }
 
 exports.notify = function(options) {
+	console.debug('module-notifications.js', 'exports.notify', options);
 	var mode = 'browser';
 	if (!!STORAGE.main) {
 		mode = STORAGE.main.notification;
@@ -48,18 +56,22 @@ exports.notify = function(options) {
 		break;
 
 		case 'system':
-		default:
 			_notifySystem(settings);
+		break;
+		
+		case 'none':
+		default:
+			// No notification
 	}
 }
 
 function _notifyPage(settings) {
-	console.log('module-notifications', '_notifyPage', settings);
+	console.debug('module-notifications.js', '_notifyPage', settings);
 	options.pageWorker.port.emit('notify', settings);
 }
 
 function _notifyBrowser(settings) {
-	console.log('module-notifications', '_notifyBrowser', settings);
+	console.debug('module-notifications.js', '_notifyBrowser', settings);
 	for ( var w in WORKERS) {
 		var worker = WORKERS[w];
 		worker.port.emit('notify', settings);
@@ -67,7 +79,7 @@ function _notifyBrowser(settings) {
 }
 
 function _notifySystem(settings) {
-	console.log('module-notifications', '_notifySystem', settings);
+	console.debug('module-notifications.js', '_notifySystem', settings);
 	NOTIFICATIONS.notify({
 	    title : 'Auto Login Extension',
 	    data : settings.content,
@@ -80,21 +92,22 @@ function _notifySystem(settings) {
 }
 
 function _settings(options) {
+	console.debug('module-notifications.js', '_settings', options);
 	var settings = {};
 	settings.displayTime = options.displayTime;
+	settings.content = template.replace(/\$\{title\}/g, options.site);
 	switch (options.state) {
 		case 'filled':
-			settings.content = '<span>Field are completed for ' + options.site + '.</span>';
+			settings.content = settings.content.replace(/\$\{content\}/g, _('form_filled'));
 		break;
 
-		case 'logged':
-			settings.content = '<span>Notification !</span>';
+		case 'validated':
+			settings.content = settings.content.replace(/\$\{content\}/g, _('authentication_in_progress'));
 		break;
 
 		case 'error':
 		default:
-//			settings.content = '<span>An error occured during auto-login process. ' + !!options.message ? options.message : '' + '</span>';
-			settings.content = '<span>An error occured during auto-login process.</span>';
+			settings.content = settings.content.replace(/\$\{content\}/g, _('authentication_error'));
 	}
 	return settings;
 }
@@ -103,5 +116,5 @@ function _settings(options) {
  * Unload module
  */
 exports.unload = function() {
-	//
+	console.debug('module-notifications.js', 'unload');
 }
