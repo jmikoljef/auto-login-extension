@@ -1,9 +1,9 @@
 function i18n(locales, resolveUrl) {
 	console.debug('i18n.js', 'i18n', locales, resolveUrl);
 	this.locale = undefined;
-	if(!(locales instanceof Array)) {
-		locales = [ locales ];
-	}
+//	if(!(locales instanceof Array)) {
+//		locales = [ locales ];
+//	}
 	for(var i = 0; i<locales.length && !this.locale; i++) {
 		var locale = this.getLocale(locales[i], resolveUrl);
 		if(locale != undefined) {
@@ -15,12 +15,11 @@ function i18n(locales, resolveUrl) {
 i18n.prototype.getLocale = function(locale, resolveUrl) {
 	console.debug('i18n.js', 'i18n.prototype.getLocale', locale, resolveUrl);
 	var result = undefined;
-	var url = "locale/"+locale+".json";
 	var language = undefined;
 	var country = undefined;
 	var regexp = /^(\w{2})([_-](\w{2}))?$/;
 	var match = regexp.exec(locale);
-	if(match != null) {
+	if(!!match) {
 		language = match[1];
 		country = match[3];
 		result = this.getLocaleFromFile("locale/"+language+".json", resolveUrl);
@@ -37,8 +36,10 @@ i18n.prototype.getLocale = function(locale, resolveUrl) {
 				}
 			}
 		}
+	} else {
+		console.debug('i18n.js', 'i18n.prototype.getLocale', 'the locale [' + locale + '] don\'t match format.');
 	}
-	console.log(result);
+	console.debug('i18n.js', 'i18n.prototype.getLocale', 'result: ' + result);
 	return result;
 }
 i18n.prototype.getLocaleFromFile = function(url, resolveUrl) {
