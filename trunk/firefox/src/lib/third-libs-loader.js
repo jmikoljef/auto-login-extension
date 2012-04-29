@@ -1,6 +1,5 @@
-SELF = require("self");
-DATA = SELF.data;
-XHR = require('xhr');
+Data = require("self").data;
+Xhr = require('xhr');
 
 exports.load = function (refName, dependencies) {
 	for(var d in dependencies) {
@@ -13,8 +12,7 @@ exports.load = function (refName, dependencies) {
 				eval(dep.code);
 			}
 			if (!!dep.path) {
-				var url = DATA.url(dep.path);
-				eval(_get(url));
+				eval(exports.get(dep.path));
 			}
 		} catch (e) {
 			throw new Error('An error occur during the loading of [' + dep + ']');
@@ -24,9 +22,9 @@ exports.load = function (refName, dependencies) {
 	return ref;
 }
 
-function _get(url) {
-	var xhr = new XHR.XMLHttpRequest();
-	xhr.open("GET", url, false);
+exports.get = function(path) {
+	var xhr = new Xhr.XMLHttpRequest();
+	xhr.open("GET", Data.url(path), false);
 	xhr.send();
 	if (xhr.readyState != 4) {
 		throw new Error('Error occur during the loading of the lib');

@@ -1,19 +1,14 @@
-const MODULE_NOTIFICATIONS = require('module-notifications');
-const PASSWORD_MANAGER = require("password-manager");
-const PAGE_MOD = require("page-mod");
-const SELF = require("self");
-const DATA = SELF.data;
-
-const THIRD = require('third-libs-loader');
-const SCRIPTS = THIRD.load('SCRIPTS_CONFIG', [{path:'manifest.js'}]);
+PageMod = require("page-mod");
+Data = require("self").data;
 Alex = require('alex.class').Alex;
+Scripts = require('third-libs-loader').load('SCRIPTS_CONFIG', [{path:'manifest.js'}]);
 
 /*
  * Load module
  */
 exports.load = function() {
-	for(var s in SCRIPTS) {
-		var script = SCRIPTS[s];
+	for(var s in Scripts) {
+		var script = Scripts[s];
         _plugScript(script);
 	}
 }
@@ -29,7 +24,7 @@ exports.unload = function() {
  * Inject content-script in page
  */
 function _plugScript(script) {
-	let pageMod = PAGE_MOD.PageMod({
+	PageMod.PageMod({
 	    include: script.pages,
 	    contentScriptWhen : 'end',
 	    contentScriptFile: _contentScriptFiles(script),
@@ -47,16 +42,16 @@ function _contentScriptFiles(script) {
 	var urls = new Array();
 	if(!!script.libs) {
 		for(var i in script.files) {
-			urls.push(DATA.url('scripts/' + script.libs[i]));
+			urls.push(Data.url('scripts/' + script.libs[i]));
 		}
 	}
 	if(!!script.files) {
 		for(var i in script.files) {
-			urls.push(DATA.url('scripts/' + script.id + '/' + script.files[i]));
+			urls.push(Data.url('scripts/' + script.id + '/' + script.files[i]));
 		}
 	}
-	urls.push(DATA.url('scripts/' + script.id + '/script.js'));
-	urls.push(DATA.url('scripts/utils.js'));
-	urls.push(DATA.url('scripts/bootstrap.js'));
+	urls.push(Data.url('scripts/' + script.id + '/script.js'));
+	urls.push(Data.url('scripts/utils.js'));
+	urls.push(Data.url('scripts/bootstrap.js'));
 	return urls;
 }

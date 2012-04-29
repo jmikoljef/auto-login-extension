@@ -1,21 +1,21 @@
 //Modules
-MODULE_LOCALIZATION = require("module-localization");
-MODULE_NOTIFICATION = require("module-notifications");
-MODULE_SETTINGS = require("module-settings");
-MODULE_SCRIPTS = require("module-scripts");
+LocalizationModule = require("module-localization");
+NotificationModule = require("module-notifications");
+SettingsModule = require("module-settings");
+ScriptsModule = require("module-scripts");
 
 // Main
 exports.main = function(options, callbacks) {
-	MODULE_LOCALIZATION.load();
-	MODULE_NOTIFICATION.load();
-	MODULE_SETTINGS.load();
-	MODULE_SCRIPTS.load();
+	LocalizationModule.load();
+	NotificationModule.load();
+	SettingsModule.load();
+	ScriptsModule.load();
 }
 
 // Unload
 exports.onUnload = function(reason) {
-	MODULE_LOCALIZATION.unload();
-	MODULE_SCRIPTS.unload();
-	MODULE_SETTINGS.unload();
-	MODULE_NOTIFICATION.unload();
+	LocalizationModule.unload();
+	ScriptsModule.unload();
+	SettingsModule.unload();
+	NotificationModule.unload();
 }

@@ -1,7 +1,7 @@
-const PASSWORDS = require("passwords");
+Passwords = require("passwords");
 
 function _getAll(credential, callback) {
-	PASSWORDS.search({
+	Passwords.search({
 		url : credential.url,
 		onComplete : function onComplete(credentials) {
 			credentials.forEach(callback);
@@ -12,7 +12,7 @@ function _getAll(credential, callback) {
 function _getFirst(credential, callback) {
 	console.log('url:' + credential.url);
 	var found = false;
-	PASSWORDS.search({
+	Passwords.search({
 		url : credential.url,
 		onComplete : function onComplete(credentials) {
 			console.log('credentials:' + credentials);
@@ -27,11 +27,11 @@ function _getFirst(credential, callback) {
 }
 
 function _set(credential) {
-	PASSWORDS.search({
+	Passwords.search({
 		url : credential.url,
 		onComplete : function onComplete(credentials) {
-			credentials.forEach(PASSWORDS.remove);
-			PASSWORDS.store({
+			credentials.forEach(Passwords.remove);
+			Passwords.store({
 				url : credential.url,
 				formSubmitURL : credential.url,
 				username : credential.username,
@@ -42,10 +42,10 @@ function _set(credential) {
 };
 
 function _remove(credential) {
-	PASSWORDS.search({
+	Passwords.search({
 		url : credential.url,
 		onComplete : function onComplete(credentials) {
-			credentials.forEach(PASSWORDS.remove);
+			credentials.forEach(Passwords.remove);
 		}
 	});
 };

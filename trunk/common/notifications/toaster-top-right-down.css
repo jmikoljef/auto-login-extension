@@ -16,7 +16,6 @@
 }
 
 .toast {
-	background-color: blue;
 	border-radius: 5px;
 	transition-property: all;
 	transition-duration: 0.5s;
