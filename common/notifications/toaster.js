@@ -22,7 +22,7 @@ function toastIt(options) {
 	}
 	var toast = _createToast(options);
 	_showToast(toast, options);
-	window.setTimeout(function () {_hideToast(toast, options);}, options.displayTime);
+	//window.setTimeout(function () {_hideToast(toast, options);}, options.displayTime);
 }
 
 /*

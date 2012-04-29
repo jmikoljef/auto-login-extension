@@ -1,14 +1,12 @@
-SIMPLE_STORAGE = require("simple-storage");
-NOTIFICATIONS = require("notifications");
-STORAGE = SIMPLE_STORAGE.storage;
-TABS = require("tabs");
-SELF = require("self");
-DATA = SELF.data;
-WORKERS = new Array();
+Data = require("self").data;
+Notifications = require("notifications");
+Storage = require("simple-storage").storage;
+Tabs = require("tabs");
+
+const WORKERS = new Array();
 
 var _ = require("module-localization").get; 
-
-var template  = '${title} - ${image} - ${content}';
+var template  = require("third-libs-loader").get('notifications/alex.html');
 
 /*
  * Load module
@@ -16,23 +14,23 @@ var template  = '${title} - ${image} - ${content}';
 exports.load = function() {
 	console.debug('module-notifications.js', 'exports.load');
 	var userstyles = require("userstyles");
-	var url = DATA.url('notifications/toaster-top-right-down.css');
-	userstyles.load(url);
+	userstyles.load(Data.url('notifications/toaster-top-right-down.css'));
+	userstyles.load(Data.url('notifications/alex.css'));
 
 	/*
 	 * We attach notification script, even notification.mode is not in browser
 	 * mode, in case of user change of minds
 	 */
-	TABS.on('ready', function(tab) {
-		console.debug('module-notifications.js', 'exports.load', 'TABS.on(ready)');
+	Tabs.on('ready', function(tab) {
+		console.debug('module-notifications.js', 'exports.load', 'Tabs.on(ready)');
 		var worker = tab.attach({
-		    contentScriptFile : DATA.url('notifications/toaster.js'),
+		    contentScriptFile : Data.url('notifications/toaster.js'),
 		    contentScript : 'self.port.on("notify", toastIt);'
 		});
 		WORKERS[tab.index] = worker;
 	});
-	TABS.on('close', function(tab) {
-		console.debug('module-notifications.js', 'exports.load', 'TABS.on(close)');
+	Tabs.on('close', function(tab) {
+		console.debug('module-notifications.js', 'exports.load', 'Tabs.on(close)');
 		delete WORKERS[tab.index];
 	});
 }
@@ -40,8 +38,8 @@ exports.load = function() {
 exports.notify = function(options) {
 	console.debug('module-notifications.js', 'exports.notify', options);
 	var mode = 'browser';
-	if (!!STORAGE.main) {
-		mode = STORAGE.main.notification;
+	if (!!Storage.main) {
+		mode = Storage.main.notification;
 	}
 
 	var settings = _settings(options);
@@ -80,7 +78,7 @@ function _notifyBrowser(settings) {
 
 function _notifySystem(settings) {
 	console.debug('module-notifications.js', '_notifySystem', settings);
-	NOTIFICATIONS.notify({
+	Notifications.notify({
 	    title : 'Auto Login Extension',
 	    data : settings.content,
 	    onClick : function(data) {

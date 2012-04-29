@@ -1,11 +1,9 @@
-PASSWORD_MANAGER = require("password-manager");
-SIMPLE_STORAGE = require("simple-storage");
+PasswordManager = require("password-manager");
 PAGE_MOD = require("page-mod");
-STORAGE = SIMPLE_STORAGE.storage;
-WIDGET = require("widget");
-TABS = require("tabs");
-SELF = require("self");
-DATA = SELF.data;
+Storage = require("simple-storage").storage;
+Widget = require("widget");
+Tabs = require("tabs");
+Data = require("self").data;
 
 const THIRD = require('third-libs-loader');
 const SCRIPTS = THIRD.load('SCRIPTS_CONFIG', [{path:'manifest.js'}]);
@@ -20,8 +18,8 @@ exports.load = function(scripts) {
 	 * Settings page
 	 */
 	settingsPage = PAGE_MOD.PageMod({
-	    include : DATA.url('options/options.html'),
-	    contentScriptFile : DATA.url("options/bootstrap.js"),
+	    include : Data.url('options/options.html'),
+	    contentScriptFile : Data.url("options/bootstrap.js"),
 	    onAttach : function(worker) {
 		    worker.port.on('saveOptions', function(datas) {
 			    console.debug('module-settings.js', 'exports.load', ' worker.port.on(saveOptions)', datas);
@@ -34,17 +32,17 @@ exports.load = function(scripts) {
 	/*
 	 * Widget
 	 */
-	settingsWidget = WIDGET.Widget({
+	settingsWidget = Widget.Widget({
 	    label : "Auto-Login configuration",
 	    id : 'settings',
-	    contentURL : DATA.url('widget.html'),
+	    contentURL : Data.url('widget.html'),
 	    width : 100,
 	    onClick : function() {
 		    if (!!settingsTabs) {
 			    settingsTabs.activate();
 		    } else {
-			    TABS.open({
-			        url : DATA.url('options/options.html'),
+			    Tabs.open({
+			        url : Data.url('options/options.html'),
 			        onOpen : function(tab) {
 				        settingsTabs = tab;
 			        },
@@ -74,7 +72,7 @@ function _loadOptions(worker) {
 	console.debug('module-settings.js', '_loadOptions', worker);
 	worker.port.emit('loadOptions', {
 	    id : 'main',
-	    options : STORAGE['main']
+	    options : Storage['main']
 	});
 	for ( var s in SCRIPTS) {
 		var script = SCRIPTS[s];
@@ -85,7 +83,7 @@ function _loadOptions(worker) {
 function _loadOption(worker, script) {
 	console.debug('module-settings.js', '_loadOption', worker, script);
 	var id = script.id;
-	var options = STORAGE[id];
+	var options = Storage[id];
 	if (!!options) {
 		worker.port.emit('loadOptions', {
 		    id : id,
@@ -99,7 +97,7 @@ function _loadOption(worker, script) {
 
 function _loadCredential(worker, script) {
 	console.debug('module-settings.js', '_loadCredential', worker, script);
-	PASSWORD_MANAGER.getFirst({
+	PasswordManager.getFirst({
 		url : script.site
 	}, function(credential) {
 		var options = {};
@@ -117,16 +115,16 @@ function _saveOptions(id, options) {
 		_saveCredential(id, options.credential);
 		delete options.credential;
 	}
-	STORAGE[id] = options;
+	Storage[id] = options;
 }
 
 function _saveCredential(id, credential) {
 	console.debug('module-settings.js', '_saveCredential', id, credential);
 	credential.url = _getUrl(id);
 	if (!!credential.username && !!credential.password) {
-		PASSWORD_MANAGER.set(credential);
+		PasswordManager.set(credential);
 	} else {
-		PASSWORD_MANAGER.remove(credential);
+		PasswordManager.remove(credential);
 	}
 }
 
