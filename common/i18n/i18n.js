@@ -4,7 +4,7 @@ function i18n(locales, resolveUrl) {
 	if(!(locales instanceof Array)) {
 		locales = [ locales ];
 	}
-	for(var i = 0; i<locales.length; i++) {
+	for(var i = 0; i<locales.length && !this.locale; i++) {
 		var locale = this.getLocale(locales[i], resolveUrl);
 		if(locale != undefined) {
 			this.locale = locale;
