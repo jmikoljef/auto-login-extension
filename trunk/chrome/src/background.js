@@ -86,7 +86,7 @@ chrome.extension.onRequest.addListener(
 	}
 );
 
-var locale_i18n = new i18n(getLocale(), chrome.extension.getURL);
+var locale_i18n = new I18n(getLocales(), chrome.extension.getURL);
 
 function _handleScriptResponse(response, tabId, script_config) {
 	if(response==undefined) return;
@@ -153,6 +153,9 @@ function insertNotificationToPage(tabId, message, timeout) {
 	});
 }
 
-function getLocale() {
-	return window.navigator.language;
+function getLocales() {
+	var locales = [];
+	locales.push(window.navigator.language);
+	locales.push("en"); // Add default locale
+	return locales;
 }
