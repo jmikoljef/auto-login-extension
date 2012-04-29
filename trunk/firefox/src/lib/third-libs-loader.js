@@ -2,9 +2,9 @@ SELF = require("self");
 DATA = SELF.data;
 XHR = require('xhr');
 
-exports.load = function(refName, dependancies) {
-	for(var d in dependancies) {
-		var dep = dependancies[d];
+exports.load = function (refName, dependencies) {
+	for(var d in dependencies) {
+		var dep = dependencies[d];
 		try {
 			if (!!dep.lib) {
 				require(dep.lib);
