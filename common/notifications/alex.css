@@ -18,7 +18,14 @@
 	width: 300px;
     background: rgba(0, 0, 0, 0.6);
 	color: white;
-	/*padding: 5px 5px 5px 5px;*/
+	/* Scratching all font page properties  */
+	font-family: Ubuntu, Arial, Sans;
+	font-size: 10pt;
+	font-size-adjust: none;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
 
 	/*
 	 * Lib properties
