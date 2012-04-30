@@ -1,18 +1,12 @@
-function i18n(locales, resolveUrl) {
+function I18n(locales, resolveUrl) {
 	console.debug('i18n.js', 'i18n', locales, resolveUrl);
 	this.locale = undefined;
-//	if(!(locales instanceof Array)) {
-//		locales = [ locales ];
-//	}
 	for(var i = 0; i<locales.length && !this.locale; i++) {
-		var locale = this.getLocale(locales[i], resolveUrl);
-		if(locale != undefined) {
-			this.locale = locale;
-		}
+		this.locale = this.getLocale(locales[i], resolveUrl);
 	}
 }
 
-i18n.prototype.getLocale = function(locale, resolveUrl) {
+I18n.prototype.getLocale = function(locale, resolveUrl) {
 	console.debug('i18n.js', 'i18n.prototype.getLocale', locale, resolveUrl);
 	var result = undefined;
 	var language = undefined;
@@ -42,7 +36,7 @@ i18n.prototype.getLocale = function(locale, resolveUrl) {
 	console.debug('i18n.js', 'i18n.prototype.getLocale', 'result: ' + result);
 	return result;
 }
-i18n.prototype.getLocaleFromFile = function(url, resolveUrl) {
+I18n.prototype.getLocaleFromFile = function(url, resolveUrl) {
 	console.debug('i18n.js', 'i18n.prototype.getLocaleFromFile', url, resolveUrl);
 	var result = undefined;
 	var file = new File(url, resolveUrl);
@@ -54,7 +48,7 @@ i18n.prototype.getLocaleFromFile = function(url, resolveUrl) {
 	return result;
 }
 
-i18n.prototype.getMessage = function(message) {
+I18n.prototype.getMessage = function(message) {
 	console.debug('i18n.js', 'i18n.prototype.getMessage', message);
 	var locale = this.locale;
 	var msg = undefined;
