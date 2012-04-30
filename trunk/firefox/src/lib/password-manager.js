@@ -10,12 +10,10 @@ function _getAll(credential, callback) {
 };
 
 function _getFirst(credential, callback) {
-	console.log('url:' + credential.url);
 	var found = false;
 	Passwords.search({
 		url : credential.url,
 		onComplete : function onComplete(credentials) {
-			console.log('credentials:' + credentials);
 			credentials.forEach(function(foundCredential) {
 				if (!found) {
 					found = true;

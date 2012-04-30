@@ -36,24 +36,37 @@ exports.load = function() {
 
 exports.notify = function(options) {
 	console.debug('module-notifications.js', 'exports.notify', options);
+
+	switch (options.state) {
+		case 'filled':
+			options.message = _('form_filled');
+		break;
+
+		case 'validated':
+			options.message = _('authentication_in_progress');
+		break;
+
+		case 'error':
+		default:
+			options.message = _('authentication_error');
+	}
+
 	var mode = 'browser';
 	if (!!Storage.main) {
 		mode = Storage.main.notification;
 	}
 
-	var settings = _settings(options);
-
 	switch (mode) {
 		case 'page':
-			_notifyPage(settings);
+			_notifyPage(options);
 		break;
 
 		case 'browser':
-			_notifyBrowser(settings);
+			_notifyBrowser(options);
 		break;
 
-		case 'system':
-			_notifySystem(settings);
+		case 'desktop':
+			_notifyDesktop(options);
 		break;
 		
 		case 'none':
@@ -62,24 +75,30 @@ exports.notify = function(options) {
 	}
 }
 
-function _notifyPage(settings) {
-	console.debug('module-notifications.js', '_notifyPage', settings);
-	options.pageWorker.port.emit('notify', settings);
+function _notifyPage(options) {
+	console.debug('module-notifications.js', '_notifyPage', options);
+	var settings = _settings(options);
+	var index = options.pageWorker.tab.index;
+	var worker = WORKERS[index];
+	worker.port.emit('notify', settings);
+	console.debug('module-notifications.js', '_notifyPage', 'fin');
 }
 
-function _notifyBrowser(settings) {
-	console.debug('module-notifications.js', '_notifyBrowser', settings);
+function _notifyBrowser(options) {
+	console.debug('module-notifications.js', '_notifyBrowser', options);
+	var settings = _settings(options);
 	for ( var w in WORKERS) {
 		var worker = WORKERS[w];
 		worker.port.emit('notify', settings);
 	}
 }
 
-function _notifySystem(settings) {
-	console.debug('module-notifications.js', '_notifySystem', settings);
+function _notifyDesktop(options) {
+	console.debug('module-notifications.js', '_notifyDesktop', options);
 	Notifications.notify({
-	    title : 'Auto Login Extension',
-	    data : settings.content,
+	    title : 'ALEx - ' + options.script.site,
+	    text: options.message,
+	    iconURL: options.script.icon,
 	    onClick : function(data) {
 		    if (!!options.pageWorker.tab) {
 			    options.pageWorker.tab.activate();
@@ -94,21 +113,9 @@ function _settings(options) {
 	var content = template;
 	content = content.replace(/\$\{title\}/g, options.script.site);
 	content = content.replace(/\$\{image\}/g, options.script.icon);
-	switch (options.state) {
-		case 'filled':
-			content = content.replace(/\$\{content\}/g, _('form_filled'));
-		break;
-
-		case 'validated':
-			content = content.replace(/\$\{content\}/g, _('authentication_in_progress'));
-		break;
-
-		case 'error':
-		default:
-			content = content.replace(/\$\{content\}/g, _('authentication_error'));
-	}
-	settings.displayTime = options.displayTime;
+	content = content.replace(/\$\{content\}/g, options.message);
 	settings.content = content;
+	settings.displayTime = options.displayTime;
 	return settings;
 }
 
