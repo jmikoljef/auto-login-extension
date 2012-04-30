@@ -14,7 +14,6 @@ var template  = require("third-libs-loader").get('notifications/alex.html');
 exports.load = function() {
 	console.debug('module-notifications.js', 'exports.load');
 	var userstyles = require("userstyles");
-	userstyles.load(Data.url('notifications/toaster-top-right-down.css'));
 	userstyles.load(Data.url('notifications/alex.css'));
 
 	/*
@@ -92,21 +91,24 @@ function _notifySystem(settings) {
 function _settings(options) {
 	console.debug('module-notifications.js', '_settings', options);
 	var settings = {};
-	settings.displayTime = options.displayTime;
-	settings.content = template.replace(/\$\{title\}/g, options.site);
+	var content = template;
+	content = content.replace(/\$\{title\}/g, options.script.site);
+	content = content.replace(/\$\{image\}/g, options.script.icon);
 	switch (options.state) {
 		case 'filled':
-			settings.content = settings.content.replace(/\$\{content\}/g, _('form_filled'));
+			content = content.replace(/\$\{content\}/g, _('form_filled'));
 		break;
 
 		case 'validated':
-			settings.content = settings.content.replace(/\$\{content\}/g, _('authentication_in_progress'));
+			content = content.replace(/\$\{content\}/g, _('authentication_in_progress'));
 		break;
 
 		case 'error':
 		default:
-			settings.content = settings.content.replace(/\$\{content\}/g, _('authentication_error'));
+			content = content.replace(/\$\{content\}/g, _('authentication_error'));
 	}
+	settings.displayTime = options.displayTime;
+	settings.content = content;
 	return settings;
 }
 

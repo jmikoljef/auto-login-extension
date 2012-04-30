@@ -1,4 +1,5 @@
 PageMod = require("page-mod");
+require("tabs");
 Data = require("self").data;
 Alex = require('alex.class').Alex;
 Scripts = require('third-libs-loader').load('SCRIPTS_CONFIG', [{path:'manifest.js'}]);
@@ -29,6 +30,7 @@ function _plugScript(script) {
 	    contentScriptWhen : 'end',
 	    contentScriptFile: _contentScriptFiles(script),
 	    onAttach: function(worker) {
+	    	script.icon = worker.tab.favicon;
 	    	var alex = Alex(script, worker);
 	    	alex.fillForm();
 	    }
