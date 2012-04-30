@@ -9,7 +9,7 @@
 		"tabs"
 	],
 	"background": {
-		"scripts": ["manifest.js", "file/file.class.js", "i18n/i18n.class.js", "background.js"]
+		"scripts": ["manifest.js", "file/file.class.js", "i18n/i18n.class.js", "template/template.class.js", "background.js"]
 	},
 	"options_page": "options/options.html"
 }

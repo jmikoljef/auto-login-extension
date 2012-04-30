@@ -133,7 +133,17 @@ function sendNotification(notification, mode, tabId) {
 			});
 			break;
 		case "page":
-			insertNotificationToPage(tabId, notification.msg, timeout);
+			chrome.tabs.get(tabId, function(tab) {
+				insertNotificationToPage(
+					tabId, 
+					{
+						image: tab.favIconUrl,
+						title: notification.title,
+						content: notification.msg,
+						timeout: timeout
+					}
+				);
+			});
 			break;
 		default:
 			// none
@@ -141,13 +151,16 @@ function sendNotification(notification, mode, tabId) {
 	}
 }
 
-function insertNotificationToPage(tabId, message, timeout) {
-	chrome.tabs.insertCSS(tabId, {file: "notifications/toaster-top-right-down.css"});
+function insertNotificationToPage(tabId, options) {
+	var template = new Template(new File("notifications/alex.html", chrome.extension.getURL));
+	var content = template.apply(options).replace(/\n/g, "");
+	console.log(content);
+	chrome.tabs.insertCSS(tabId, {file: "notifications/alex.css"});
 	chrome.tabs.executeScript(tabId, {file: "notifications/toaster.js"}, function() {
 		chrome.tabs.executeScript(tabId, { code: 
 			"toastIt({"+
-				"content: '"+message+"', "+
-				"displayTime: "+timeout+
+				"content: '"+content+"', "+
+				"displayTime: "+options.timeout+
 			"});"
 		});
 	});
