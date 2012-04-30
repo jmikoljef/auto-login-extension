@@ -57,7 +57,7 @@ function saveOptions(id) {
 	var prefs = getOptionsFromPage("_alo_", id+".");
 	storeOptions(id, prefs[id]);
 	fillObject(PREFS, id, prefs[id]);
-	setStatus("Preferences saved.");
+	setStatus("Pr&eacute;ferences sauvegard&eacute;es.");
 }
 
 function loadOption(option, id) {
