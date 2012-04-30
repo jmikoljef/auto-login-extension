@@ -153,7 +153,7 @@ function sendNotification(notification, mode, tabId) {
 
 function insertNotificationToPage(tabId, options) {
 	var template = new Template(new File("notifications/alex.html", chrome.extension.getURL));
-	var content = template.apply(options).replace(/\n/g, "");
+	var content = template.apply(options).replace(/\n/g, "").replace(/\'/g, "\\'");
 	console.log(content);
 	chrome.tabs.insertCSS(tabId, {file: "notifications/alex.css"});
 	chrome.tabs.executeScript(tabId, {file: "notifications/toaster.js"}, function() {
@@ -170,5 +170,5 @@ function getLocales() {
 	var locales = [];
 	locales.push(window.navigator.language);
 	locales.push("en"); // Add default locale
-	return locales;
+	return ["fr"]; // TODO: return the correct value for futur release
 }
