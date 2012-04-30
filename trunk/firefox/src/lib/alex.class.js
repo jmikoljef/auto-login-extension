@@ -51,7 +51,7 @@ Alex.prototype.onFilled = function() {
 	NotificationModule.notify({
 	    pageWorker : instance.worker,
 	    state : 'filled',
-	    site : instance.script.site
+	    script : instance.script
 	});
 
 	var modeAuto = true;
@@ -71,7 +71,7 @@ Alex.prototype.onValidated = function() {
 	NotificationModule.notify({
 	    pageWorker : instance.worker,
 	    state : 'validated',
-	    site : instance.script.site
+	    script : instance.script
 	});
 }
 
@@ -82,6 +82,6 @@ Alex.prototype.onProblem = function(message) {
 	    pageWorker : instance.worker,
 	    state : 'error',
 	    message : message,
-	    site : instance.script.site
+	    script : instance.script
 	});
 }
