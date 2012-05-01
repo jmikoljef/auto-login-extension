@@ -38,6 +38,10 @@ const SCRIPTS_CONFIG = [
     	id: 'creditagricole',
     	label: 'Cr\u00E9dit Agricole',
         site: 'http://www.credit-agricole.fr/',
-        pages: ['https://www.tourainepoitou-s2-g2-enligne.credit-agricole.fr/stb/entreeBam']
+        pages: [/https:\/\/.*\.credit-agricole\.fr\/stb\/entreeBam/]
+    	/*
+    	 * Il existe 2 variantes des sites du CA, seule la plus courante est gérée.
+    	 * Voici la regex qui nous permettra de gérer prochainement la 2ème : /https:\/\/.*\.credit-agricole\.fr\/g1\/ssl\/identification\/nav1\/acc_ide1_1\.htm/
+    	 */
     }
 ];
