@@ -1,7 +1,8 @@
 {
 	"name": "Auto-Login Extension",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "Auto-Login Extension",
+	"update_url": "http://auto-login-extension.googlecode.com/svn/releases/updates.xml",
 	"permissions": [
 		"webNavigation",
 		"notifications",
