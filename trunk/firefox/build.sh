@@ -109,7 +109,7 @@ RELEASES="../../releases"
 SRC="./src"
 TARGET="./target"
 COMMON="../common"
-UPDATE_DEV_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-dev.rdf"
+UPDATE_TESTING_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-testing.rdf"
 UPDATE_STABLE_RDF="https://auto-login-extension.googlecode.com/svn/releases/update-stable.rdf"
 
 if [ -z "$CFX" ]; then
@@ -131,7 +131,7 @@ if [ -z "$CFX_FIREFOX_PROFILE_DIR" ]; then
 fi
 
 CFX_TEST_OPTIONS="-b $CFX_FIREFOX_INSTANCE -p $CFX_FIREFOX_PROFILE_DIR"
-CFX_INSTALL_OPTIONS="--update-url $UPDATE_DEV_RDF"
+CFX_INSTALL_OPTIONS="--update-url $UPDATE_TESTING_RDF"
 CFX_RELEASE_OPTIONS="--update-url $UPDATE_STABLE_RDF"
 
 if [ $# -eq 0 ]; then
