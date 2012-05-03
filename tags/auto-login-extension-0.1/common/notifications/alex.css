@@ -1,0 +1,114 @@
+/*
+ * Toaster v0.1 stylesheet
+ * This is the default toast stylesheet.
+ * Notification will appear in top right and corner sliding to down.
+ */
+
+/*
+ * IMPORTANT !
+ * All properties are mark with !important flag to be sure not be deleted by page stylesheet
+ */
+
+.toaster {
+	right: 5px !important; /* You can adjust right margin between toaster (toast too) and browser edge */
+	/*
+	 * Don't modify the next properties
+	 */
+	position: absolute !important;
+	top: 0px !important;
+}
+
+.toast {
+	width: 300px !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+	color: white !important;
+	/* Scratching all font page properties  */
+	font-family: Ubuntu, Arial, Sans !important;
+	font-size: 10pt !important;
+	font-size-adjust: none !important;
+	font-stretch: normal !important;
+	font-style: normal !important;
+	font-variant: normal !important;
+	font-weight: normal !important;
+
+	/*
+	 * Lib properties
+	 */
+
+	border-radius: 5px !important;
+	transition-property: all !important;
+	transition-duration: 0.5s !important;
+	transition-timing-function: ease-out !important;
+	-moz-transition-property: all !important;
+	-moz-transition-duration: 0.5s !important;
+	-moz-transition-timing-function: ease-out !important;
+	-webkit-transition-property: all !important;
+	-webkit-transition-duration: 0.5s !important;
+	-webkit-transition-timing-function: ease-out !important;
+ 	
+	/*
+	 * Don't modify the next properties
+	 */
+	position: relative !important;
+	height: 0px !important;
+	overflow: hidden !important;
+}
+
+.toast-hide {
+	/*
+	 * Don't modify the next properties
+	 */
+	height: 0px !important;
+	margin-top: 0px !important;
+}
+
+.toast-show {
+	/*
+	 * Don't modify the next properties
+	 */
+	height: 60px !important;
+	margin-top: 5px !important;
+}
+
+/*
+ * ALEx properties
+ */
+
+.alex-notification-titlebox {
+	width: 100% !important;
+	height: 20px !important;
+	text-align: center !important;
+	font-weight: bold !important;
+	vertical-align: middle !important;
+}
+
+.alex-notification-imagebox {
+	float: left !important;
+	width: 40px !important;
+	height: 40px !important;
+	text-align: center !important;
+	vertical-align: middle !important;
+}
+
+.alex-notification-imagebox img {
+	width: 20px !important;
+	height: 20px !important;
+	vertical-align: middle !important;
+}
+
+.alex-notification-messagebox {
+	float: left !important;
+	width: 260px !important;
+	height: 40px !important;
+	text-align: center !important;
+	vertical-align: middle !important;
+}
+
+.alex-notification-title {
+	width: 100% !important;
+}
+
+.alex-notification-content {
+	width: 100% !important;
+	vertical-align: middle !important;
+}
