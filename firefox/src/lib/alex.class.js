@@ -67,20 +67,16 @@ Alex.prototype.validate = function() {
 Alex.prototype.onFilled = function() {
 	Logger.debug('alex.class.js', 'onFilled');
 	this.filled = true;
-	var instance = this;
-	NotificationModule.notify({
-	    pageWorker : instance.worker,
-	    state : 'filled',
-	    script : instance.script
-	});
 
-	var modeAuto = true;
-	if (!!Storage[this.script.id]) {
-		modeAuto = (Storage[this.script.id].mode == 'auto');
-	}
-
-	if (modeAuto) {
+	if (!!Storage[this.script.id] && Storage[this.script.id].mode == 'auto') {
 		this.validate();
+	} else {
+		var instance = this;
+		NotificationModule.notify({
+		    pageWorker : instance.worker,
+		    state : 'filled',
+		    script : instance.script
+		});
 	}
 }
 
