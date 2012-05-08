@@ -1,7 +1,7 @@
 {
     "name": "auto-login-extension", 
     "license": "MPL 1.1/GPL 2.0/LGPL 2.1", 
-    "author": "Pierre-Marie Dhaussy <pierremarie.dhaussy@gmail.com>", 
+    "author": "Pierre-Marie Dhaussy, Bruno Macherel, Aurélie Gandour <auto-login-extension@googlegroups.com>", 
     "version": "0.1.1", 
     "fullName": "Auto-Login Extension", 
     "id": "jid1-O9kpfSiYNsuwcw", 
