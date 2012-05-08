@@ -5,13 +5,13 @@
             <Seq>
                 <li>
                     <Description>
-                        <em:version>0.1</em:version>
+                        <em:version>0.1.1</em:version>
                         <em:targetApplication>
                             <Description>
                                 <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
                                 <em:minVersion>10.0</em:minVersion>
                                 <em:maxVersion>*</em:maxVersion>
-                                <em:updateLink>http://auto-login-extension.googlecode.com/svn/releases/auto-login-extension-0.1.xpi</em:updateLink>
+                                <em:updateLink>http://auto-login-extension.googlecode.com/svn/releases/auto-login-extension-0.1.1.xpi</em:updateLink>
                             </Description>
                         </em:targetApplication>
                     </Description>
