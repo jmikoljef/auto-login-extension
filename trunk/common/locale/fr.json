@@ -4,7 +4,7 @@
 	"incorrect_login": "Le login est incorrect.",
 	"image_recognition_error": "Des images n'ont pas été reconnues.",
 	"authentication_error": "Une erreur est survenue durant le processus d'authentification.",
-	"settings.title": "Auto Login Extension - Options", // head.title & body.div.h1
+	"settings.title": "Auto Login Extension - Options",
 	"settings.save.message": "Pr&eacute;ferences sauvegard&eacute;es.",
 	"settings.save.button": "Enregistrer",
 	"settings.menu.item.main.title": "G&eacute;n&eacute;ral",

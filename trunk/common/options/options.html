@@ -12,46 +12,6 @@
 		<div id="body" class="body">
 			<h1>Autologin options</h1>
 			<div class="menu" id="menu">
-				<div id="menu-main" class="menu-item-l1 menu-enabled">
-					<a href="javascript:switchPanel('main')">
-						<img src="main.png"/>
-						<span>G&eacute;n&eacute;rales</span>
-					</a>
-				</div>
-				<div id="menu-scripts" class="menu-item-l1 menu-disabled">
-					<a href="javascript:switchPanel('scripts')">
-						<img src="extension.png"/>
-						<span>Scripts</span>
-					</a>
-				</div>
-				<div id="menu-freemobile" class="menu-item-l2 menu-disabled">
-					<a href="javascript:switchPanel('freemobile')">
-						<img src="advanced.png"/>
-						<span>Free mobile</span>
-					</a>
-					<input type="checkbox" name="freemobile.enabled" id="freemobile.enabled" class="_alo_" onchange="updateOption('freemobile.enabled')">
-				</div>
-				<div id="menu-caisseepargne" class="menu-item-l2 menu-disabled">
-					<a href="javascript:switchPanel('caisseepargne')">
-						<img src="advanced.png"/>
-						<span>La Caisse d'Epargne</span>
-					</a>
-					<input type="checkbox" name="caisseepargne.enabled" id="caisseepargne.enabled" class="_alo_" onchange="updateOption('caisseepargne.enabled')">
-				</div>
-				<div id="menu-banquepostale" class="menu-item-l2 menu-disabled">
-					<a href="javascript:switchPanel('banquepostale')">
-						<img src="advanced.png"/>
-						<span>La Banque Postale</span>
-					</a>
-					<input type="checkbox" name="banquepostale.enabled" id="banquepostale.enabled" class="_alo_" onchange="updateOption('banquepostale.enabled')">
-				</div>
-				<div id="menu-creditagricole" class="menu-item-l2 menu-disabled">
-					<a href="javascript:switchPanel('creditagricole')">
-						<img src="advanced.png"/>
-						<span>Cr&eacute;dit Agricole</span>
-					</a>
-					<input type="checkbox" name="creditagricole.enabled" id="creditagricole.enabled" class="_alo_" onchange="updateOption('creditagricole.enabled')">
-				</div>
 			</div>
 			<div id="panel-main" class="panel">
 				<h2>G&eacute;n&eacute;rales</h2>
@@ -69,98 +29,11 @@
 					</fieldset>
 				</div>
 				<div class="button">
-					<input name="button" type="button" value="Enregistrer" onclick="saveOptions('main');"/>
+					<input id="main.save" name="button" type="button" value="Enregistrer" />
 				</div>
 			</div>
 			<div id="panel-scripts" class="panel">
 				<h2>Gestion des scripts</h2>
-			</div>
-			<div id="panel-freemobile" class="panel">
-				<h2>Free mobile</h2>
-				<div class="element">
-					<fieldset>
-						<legend>Mode</legend>
-						<input type="radio" name="freemobile.mode" id="freemobile.mode.manual" value="manual" checked="checked" class="_alo_ left"/>
-						<label for="freemobile.mode.manual" class="right">Manuel</label>
-						<input type="radio" name="freemobile.mode" id="freemobile.mode.auto" value="auto" class="_alo_ left":>
-						<label for="freemobile.mode.auto" class="right">Automatique</label>
-					</fieldset>
-					<fieldset>
-						<legend>Identifiant / mot de passe</legend>
-						<label for="freemobile.credential.username" class="left">Identifiant : </label>
-						<input type="text" name="freemobile.credential.username" id="freemobile.credential.username" required="required" class="_alo_ right"/>
-						<label for="freemobile.credential.password" class="left">Mot de passe : </label>
-						<input type="password" name="freemobile.credential.password" id="freemobile.credential.password" required="required" class="_alo_ right"/>
-					</fieldset>
-				</div>
-				<div class="button">
-					<input name="button" type="button" value="Enregistrer" onclick="saveOptions('freemobile');"/>
-				</div>
-			</div>
-			<div id="panel-caisseepargne" class="panel">
-				<h2>La Caisse d'Epargne</h2>
-				<div class="element">
-					<fieldset>
-						<legend>Mode</legend>
-						<input type="radio" name="caisseepargne.mode" id="caisseepargne.mode.manual" value="manual" checked="checked" class="_alo_ left">
-						<label for="caisseepargne.mode.manual" class="right">Manuel</label>
-						<input type="radio" name="caisseepargne.mode" id="caisseepargne.mode.auto" value="auto" class="_alo_ left">
-						<label for="caisseepargne.mode.auto" class="right">Automatique</label>
-					</fieldset>
-					<fieldset>
-						<legend>Identifiant / mot de passe</legend>
-						<label for="caisseepargne.credential.username" class="left">Identifiant : </label>
-						<input type="text" name="caisseepargne.credential.username" id="caisseepargne.credential.username" required="required" class="_alo_ right">
-						<label for="caisseepargne.credential.password" class="left">Mot de passe : </label>
-						<input type="password" name="caisseepargne.credential.password" id="caisseepargne.credential.password" required="required" class="_alo_ right">
-					</fieldset>
-				</div>
-				<div class="button">
-					<input name="button" type="button" value="Enregistrer" onclick="saveOptions('caisseepargne');">
-				</div>
-			</div>
-			<div id="panel-banquepostale" class="panel">
-			<h2>La Banque Postale</h2>
-				<div class="element">
-					<fieldset>
-						<legend>Mode</legend>
-						<input type="radio" name="banquepostale.mode" id="banquepostale.mode.manual" value="manual" checked="checked" class="_alo_ left">
-						<label for="banquepostale.mode.manual" class="right">Manuel</label>
-						<input type="radio" name="banquepostale.mode" id="banquepostale.mode.auto" value="auto" class="_alo_ left">
-						<label for="banquepostale.mode.auto" class="right">Automatique</label>
-					</fieldset>
-					<fieldset>
-						<legend>Identifiant / mot de passe</legend>
-						<label for="banquepostale.credential.username" class="left">Identifiant : </label>
-						<input type="text" name="banquepostale.credential.username" id="banquepostale.credential.username" required="required" class="_alo_ right">
-						<label for="banquepostale.credential.password" class="left">Mot de passe : </label>
-						<input type="password" name="banquepostale.credential.password" id="banquepostale.credential.password" required="required" class="_alo_ right">
-					</fieldset>
-				</div>
-				<div class="button">
-					<input name="button" type="button" value="Enregistrer" onclick="saveOptions('banquepostale');">
-				</div>
-			</div>
-			<div id="panel-creditagricole" class="panel"><h2>Cr&eacute;dit Agricole</h2>
-			<div class="element">
-				<fieldset>
-				<legend>Mode</legend>
-					<input type="radio" name="creditagricole.mode" id="creditagricole.mode.manual" value="manual" checked="checked" class="_alo_ left">
-					<label for="creditagricole.mode.manual" class="right">Manuel</label>
-					<input type="radio" name="creditagricole.mode" id="creditagricole.mode.auto" value="auto" class="_alo_ left">
-					<label for="creditagricole.mode.auto" class="right">Automatique</label>
-				</fieldset>
-				<fieldset>
-				<legend>Identifiant / mot de passe</legend>
-					<label for="creditagricole.credential.username" class="left">Identifiant : </label>
-					<input type="text" name="creditagricole.credential.username" id="creditagricole.credential.username" required="required" class="_alo_ right">
-					<label for="creditagricole.credential.password" class="left">Mot de passe : </label>
-					<input type="password" name="creditagricole.credential.password" id="creditagricole.credential.password" required="required" class="_alo_ right">
-				</fieldset>
-				</div>
-				<div class="button">
-					<input name="button" type="button" value="Enregistrer" onclick="saveOptions('creditagricole');">
-				</div>
 			</div>
 		</div>
 	</body>

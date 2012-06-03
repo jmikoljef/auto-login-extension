@@ -18,58 +18,83 @@
  * along with this program.  See LICENSE.txt or <http://www.gnu.org/licenses/  >.
  */
 
-function Logger(level) {
-	this.checkLevel = function(level) {
-		return !!(this.level & level);
+var Logger = (function() {
+	/**
+	 * Constructor
+	 * All method are static, so it's usefull only for class declaration
+	 */
+	function Class() {
 	}
-	this.level = level;
-}
 
-Logger.prototype.LOG = 1;
-Logger.prototype.DEBUG = 2;
-Logger.prototype.INFO  = 4;
-Logger.prototype.WARN  = 8;
-Logger.prototype.ERROR = 16;
+	Class.ALL   = 0;
+	Class.LOG   = 1<<0;//1
+	Class.DEBUG = 1<<1;//2
+	Class.INFO  = 1<<2;//4
+	Class.WARN  = 1<<3;//8
+	Class.ERROR = 1<<4;//16
+	Class.NONE  = (1<<8)-1;//255
 
-Logger.prototype.isLogEnabled = function() {
-	return this.checkLevel(this.LOG);
-};
-Logger.prototype.isDebugEnabled = function() {
-	return this.checkLevel(this.DEBUG);
-};
-Logger.prototype.isInfoEnabled = function() {
-	return this.checkLevel(this.INFO);
-};
-Logger.prototype.isWarnEnabled = function() {
-	return this.checkLevel(this.WARN);
-};
-Logger.prototype.isErrorEnabled = function() {
-	return this.checkLevel(this.ERROR);
-};
+	Class.level = Class.INFO;
 
-Logger.prototype.log = function() {
-	if(this.isLogEnabled()) {
-		console.log.apply(console, arguments);
+	Class.checkLevel = function(level) {
+		return level>=Class.level; // or !!(Class.level & level);
 	}
-};
-Logger.prototype.debug() {
-	if(this.isDebugEnabled()) {
-		console.debug.apply(console, arguments);
+
+	Class.formatLogMessage = function(args) {
+		var result = [Class.formatLogMessage.caller.name];
+		for(var i in args) {
+			result.push(args[i]);
+		}
+		return result;
 	}
-};
-Logger.prototype.info(msg) {
-	if(this.isInfoEnabled()) {
-		console.info.apply(console, arguments);
+
+	Class.writeLog = function(logFunction, args) {
+		var params = Logger.formatLogMessage(args);
+		logFunction.apply(console, params);
 	}
-};
-Logger.prototype.warn(msg) {
-	if(this.isWarnEnabled()) {
-		console.warn.apply(console, arguments);
-	}
-};
-Logger.prototype.error(msg) {
-	if(this.isWarnEnabled()) {
-		console.warn.apply(console, arguments);
-	}
-};
+
+	Class.isLogEnabled = function() {
+		return Class.checkLevel(Class.LOG);
+	};
+	Class.isDebugEnabled = function() {
+		return Class.checkLevel(Class.DEBUG);
+	};
+	Class.isInfoEnabled = function() {
+		return Class.checkLevel(Class.INFO);
+	};
+	Class.isWarnEnabled = function() {
+		return Class.checkLevel(Class.WARN);
+	};
+	Class.isErrorEnabled = function() {
+		return Class.checkLevel(Class.ERROR);
+	};
+
+	Class.log = function() {
+		if(Class.isLogEnabled()) {
+			Class.writeLog(console.log, arguments);
+		}
+	};
+	Class.debug = function() {
+		if(Class.isDebugEnabled()) {
+			Class.writeLog(console.debug, arguments);
+		}
+	};
+	Class.info = function(msg) {
+		if(Class.isInfoEnabled()) {
+			Class.writeLog(console.info, arguments);
+		}
+	};
+	Class.warn = function(msg) {
+		if(Class.isWarnEnabled()) {
+			Class.writeLog(console.warn, arguments);
+		}
+	};
+	Class.error = function(msg) {
+		if(Class.isWarnEnabled()) {
+			Class.writeLog(console.warn, arguments);
+		}
+	};
+
+	return Class;
+})();
 
