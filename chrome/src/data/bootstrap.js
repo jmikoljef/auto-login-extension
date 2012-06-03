@@ -18,33 +18,35 @@
  * along with this program.  See LICENSE.txt or <http://www.gnu.org/licenses/  >.
  */
 
-////////////////////////////////////////////////////////////////////////////////
-// Must be redefined for each browser
-////////////////////////////////////////////////////////////////////////////////
-function storeOptions(id, options) {
-	setOption(id, options);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// browser specific
-////////////////////////////////////////////////////////////////////////////////
-function getOption(name) {
-	return JSON.parse(window.localStorage.getItem(name));
-}
-
-function setOption(name, value) {
-	window.localStorage.setItem(name, JSON.stringify(value));
-}
-
-function init_gc() {
-	var prefs = {};
-	// Build preferences from localStorage
-	for(var i=0; i<localStorage.length; i++) {
-		var key = localStorage.key(i);
-		prefs[key] = getOption(key);
+// Only a singleton instance is created, so the class is not returned
+(function() {
+	function Class() {
+		var instance = this;
+		chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+			if(request.url == window.location.href) {
+				var _instance = instance;
+				var _function = eval("_instance."+request.functionName);
+				try {
+					var response = _function.apply(_instance, request.args)
+					sendResponse({response: response});
+				} catch (e) {
+					sendResponse({error: e});
+				}
+			}
+		});
 	}
-	restoreOptions(prefs);
-}
 
-window.addEventListener("load", init_gc, false);
+	Class.prototype.getCurrentLocationUrl = function() {
+		return window.location.href;
+	}
+
+	Class.prototype.fillForm = function(credential) {
+		fillForm(credential);
+	}
+	Class.prototype.validate = function() {
+		validate();
+	}
+	
+	new Class();
+})();
 

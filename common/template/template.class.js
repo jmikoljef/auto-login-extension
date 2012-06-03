@@ -18,18 +18,23 @@
  * along with this program.  See LICENSE.txt or <http://www.gnu.org/licenses/  >.
  */
 
-function Template(file) {
-	var opened = file.open();
-	if(opened) {
-		this.template = file.getContent();
-		file.close();
+var Template = (function() {
+	function Class(file) {
+		var opened = file.open();
+		if(opened) {
+			this.template = file.getContent();
+			file.close();
+		}
 	}
-}
-Template.prototype.apply = function(variables) {
-	var content = this.template;
-	for(var key in variables) {
-		var regexp = new RegExp("\\$\\{"+key+"\\}", "g");
-		content = content.replace(regexp, variables[key]);
+	Class.prototype.apply = function(variables) {
+		var content = this.template;
+		for(var key in variables) {
+			var regexp = new RegExp("\\$\\{"+key+"\\}", "g");
+			content = content.replace(regexp, variables[key]);
+		}
+		return content;
 	}
-	return content;
-}
+
+	return Class;
+})();
+

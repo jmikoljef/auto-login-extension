@@ -154,3 +154,205 @@ function _setDefaultElementValue(elements, values) {
 	}
 }
 
+function _init() {
+	var parent = document.getElementById("menu");
+	var level = 1;
+	createMenu(parent, level, menus);
+	createPanels();
+	var button = document.getElementById("main.save");
+	button.addEventListener("click", function() { saveOptions("main"); }, false);
+}
+
+window.addEventListener("load", _init, false);
+
+var menus = [
+	{
+		id: "main",
+		label: "G\u00E9n\u00E9rales",
+		image: "main.png",
+		checkbox: false
+	},
+	{
+		id: "scripts",
+		label: "Scripts",
+		image: "extension.png",
+		checkbox: false,
+		submenu: [
+			{
+				id: "freemobile",
+				label: "Free Mobile",
+				image: "advanced.png",
+				checkbox: true
+			},
+			{
+				id: "caisseepargne",
+				label: "La Caisse d'Epargne",
+				image: "advanced.png",
+				checkbox: true
+			},
+			{
+				id: "banquepoostale",
+				label: "La Banque Postale",
+				image: "advanced.png",
+				checkbox: true
+			},
+			{
+				id: "creditagricole",
+				label: "Cr\u00E9dit Agricole",
+				image: "advanced.png",
+				checkbox: true
+			}
+		]
+	},
+];
+
+function createMenu(parent, level, menuItems) {
+	if(!menuItems) return;
+	for(var i=0; i<menuItems.length; i++) {
+		var menuItem = menuItems[i];
+		createMenuItem(parent, level, menuItem);
+		createMenu(parent, level+1, menuItem.submenu);
+	}
+}
+
+function createMenuItem(parent, level, menuItem) {
+	var div = document.createElement("div");
+	div.setAttribute("id", "menu-"+menuItem.id);
+	div.setAttribute("name", "menu");
+	div.setAttribute("class", "menu-item-l"+level);
+	var a = document.createElement("a");
+	a.setAttribute("href", "#"+menuItem.id);
+	var img = document.createElement("img");
+	img.setAttribute("src", menuItem.image);
+	a.appendChild(img);
+	var span = document.createElement("span");
+	var text = document.createTextNode(menuItem.label);
+	span.appendChild(text);
+	a.appendChild(span);
+	div.appendChild(a);
+	if(menuItem.checkbox) {
+		var checkbox = document.createElement("input");
+		checkbox.setAttribute("type", "checkbox");
+		checkbox.setAttribute("name", menuItem.id+".enabled");
+		checkbox.setAttribute("id", menuItem.id+".enabled");
+		checkbox.setAttribute("class", "_alo_");
+		checkbox.addEventListener(
+			"click",
+			function() {
+				updateOption(menuItem.id+".enabled");
+			},
+			false
+		);
+		div.appendChild(checkbox);
+	}
+	parent.appendChild(div);	
+}
+
+var panels = [
+	{
+		id: "freemobile",
+		label: "Free Mobile",
+	},
+	{
+		id: "caisseepargne",
+		label: "La Caisse d'Epargne",
+	},
+	{
+		id: "banquepoostale",
+		label: "La Banque Postale",
+	},
+	{
+		id: "creditagricole",
+		label: "Cr\u00E9dit Agricole",
+	}
+];
+
+var i = 0;
+function createPanels() {
+	var parent = document.getElementById("body");
+	for(var i=0; i<panels.length; i++) {
+		var panel = panels[i];
+		var div = document.createElement("div");
+		div.setAttribute("id", "panel-"+panel.id);
+		div.setAttribute("class", "panel");
+		var h2 = document.createElement("h2");
+		var title = document.createTextNode(panel.label);
+		h2.appendChild(title);
+		div.appendChild(h2);
+		var divElement = document.createElement("div");
+		var fieldsetMode = document.createElement("fieldSet");
+		var legendMode = document.createElement("legend");
+		legendMode.appendChild(document.createTextNode("Mode"));
+		fieldsetMode.appendChild(legendMode);
+		var radioManual = document.createElement("input");
+		radioManual.setAttribute("type", "radio");
+		radioManual.setAttribute("name", panel.id+".mode");
+		radioManual.setAttribute("id", panel.id+".mode.manual");
+		radioManual.setAttribute("value", "manual");
+		radioManual.setAttribute("class", "_alo_ left");
+		fieldsetMode.appendChild(radioManual);
+		var labelManual = document.createElement("label");
+		labelManual.setAttribute("for", panel.id+".mode.manual");
+		labelManual.setAttribute("class", "right");
+		labelManual.appendChild(document.createTextNode("Manuel"));
+		fieldsetMode.appendChild(labelManual);
+		var radioAuto = document.createElement("input");
+		radioAuto.setAttribute("type", "radio");
+		radioAuto.setAttribute("name", panel.id+".mode");
+		radioAuto.setAttribute("id", panel.id+".mode.auto");
+		radioAuto.setAttribute("value", "auto");
+		radioAuto.setAttribute("class", "_alo_ left");
+		fieldsetMode.appendChild(radioAuto);
+		var labelAuto = document.createElement("label");
+		labelAuto.setAttribute("for", panel.id+".mode.auto");
+		labelAuto.setAttribute("class", "right");
+		labelAuto.appendChild(document.createTextNode("Automatique"));
+		fieldsetMode.appendChild(labelAuto);
+		divElement.appendChild(fieldsetMode);
+		var fieldsetCredential = document.createElement("fieldSet");
+		var legendCredential = document.createElement("legend");
+		legendCredential.appendChild(document.createTextNode("Identifiant / Mot de passe"));
+		fieldsetCredential.appendChild(legendCredential);
+		var labelUser = document.createElement("label");
+		labelUser.setAttribute("for", panel.id+".credential.username");
+		labelUser.setAttribute("class", "left");
+		labelUser.appendChild(document.createTextNode("Identifiant : "));
+		fieldsetCredential.appendChild(labelUser);
+		var username = document.createElement("input");
+		username.setAttribute("type", "text");
+		username.setAttribute("name", panel.id+".credential.username");
+		username.setAttribute("id", panel.id+".credential.username");
+		username.setAttribute("required", "required");
+		username.setAttribute("class", "_alo_ right");
+		fieldsetCredential.appendChild(username);
+		var labelPassword = document.createElement("label");
+		labelPassword.setAttribute("for", panel.id+".credential.password");
+		labelPassword.setAttribute("class", "left");
+		labelPassword.appendChild(document.createTextNode("Mot de passe : "));
+		fieldsetCredential.appendChild(labelPassword);
+		var password = document.createElement("input");
+		password.setAttribute("type", "password");
+		password.setAttribute("name", panel.id+".credential.password");
+		password.setAttribute("id", panel.id+".credential.password");
+		password.setAttribute("required", "required");
+		password.setAttribute("class", "_alo_ right");
+		fieldsetCredential.appendChild(password);
+		divElement.appendChild(fieldsetCredential);
+		div.appendChild(divElement);
+		var divButton = document.createElement("div");
+		divButton.setAttribute("class", "button");
+		var button = document.createElement("input");
+		button.setAttribute("name", "button");
+		button.setAttribute("type", "button");
+		button.setAttribute("value", "Enregistrer");
+		var f = function(e) {
+				var id = e.target.parentElement.parentElement.id.substring(6);
+				saveOptions(id);
+		}
+		button.addEventListener("click", f, false);
+		divButton.appendChild(button);
+		div.appendChild(divButton);
+		parent.appendChild(div);
+	}
+}
+

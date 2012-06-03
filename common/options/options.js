@@ -24,7 +24,26 @@ String.prototype.endsWith = function(str) {return (this.match(str+"$")==str)};
 String.prototype.trim = function() {return (this.replace(/^[\s\xA0]+/, "").replace(/[\s\xA0]+$/, ""))};
 // End hack
 
+var Menu = (function() {
+	function Class(id, label, image, checkbox) {
+		this.id = id;
+		this.label = label;
+		this.image = image;
+		this.checkbox = checkbox;
+		this.children = [];
+	}
+
+	Class.prototype.addSubMenu = function(submenu) {
+		this.children.push(submenu);
+	}
+	return Class;
+})();
+
 function init() {
+	var menus = document.getElementsByName("menu");
+	for(var i=0; i<menus.length; i++) {
+		menus[i].addEventListener("click", clickMenuItem, false);
+	}
 	switchPanel("main");
 }
 
@@ -39,6 +58,18 @@ function setStatus(msg) {
 			1500
 		);
 	}
+}
+
+function clickMenuItem(event) {
+	var menu = undefined;
+	var tmp = event.target;
+	while(!!tmp && !menu) {
+		if(tmp.getAttribute("name")=="menu") menu = tmp;
+		tmp = tmp.parentElement;
+	}
+	if(!menu) return;
+	var id = menu.id.substring(5);
+	switchPanel(id);
 }
 
 function switchPanel(id) {

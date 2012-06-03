@@ -18,33 +18,20 @@
  * along with this program.  See LICENSE.txt or <http://www.gnu.org/licenses/  >.
  */
 
-////////////////////////////////////////////////////////////////////////////////
-// Must be redefined for each browser
-////////////////////////////////////////////////////////////////////////////////
-function storeOptions(id, options) {
-	setOption(id, options);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// browser specific
-////////////////////////////////////////////////////////////////////////////////
-function getOption(name) {
-	return JSON.parse(window.localStorage.getItem(name));
-}
-
-function setOption(name, value) {
-	window.localStorage.setItem(name, JSON.stringify(value));
-}
-
-function init_gc() {
-	var prefs = {};
-	// Build preferences from localStorage
-	for(var i=0; i<localStorage.length; i++) {
-		var key = localStorage.key(i);
-		prefs[key] = getOption(key);
+var OptionManager = (function() {
+	function Class() {
 	}
-	restoreOptions(prefs);
-}
 
-window.addEventListener("load", init_gc, false);
+	Class.getOption = function(name) {
+		var tmp = window.localStorage.getItem(name);
+		var option = JSON.parse(tmp);
+		return option;
+	}
+	Class.setOption = function(name, value) {
+		var option = JSON.stringify(value);
+		window.localStorage.setItem(name, option);
+	}
+
+	return Class;
+})();
 

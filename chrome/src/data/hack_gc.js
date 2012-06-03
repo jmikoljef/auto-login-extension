@@ -19,32 +19,15 @@
  */
 
 ////////////////////////////////////////////////////////////////////////////////
-// Must be redefined for each browser
+// Hack for using click function on anchor and image
 ////////////////////////////////////////////////////////////////////////////////
-function storeOptions(id, options) {
-	setOption(id, options);
+HTMLAnchorElement.prototype.click = function() {
+	document.location = this.href;
 }
-
+HTMLImageElement.prototype.click = function() {
+	this.onclick();
+}
 ////////////////////////////////////////////////////////////////////////////////
-// browser specific
+// End hack
 ////////////////////////////////////////////////////////////////////////////////
-function getOption(name) {
-	return JSON.parse(window.localStorage.getItem(name));
-}
-
-function setOption(name, value) {
-	window.localStorage.setItem(name, JSON.stringify(value));
-}
-
-function init_gc() {
-	var prefs = {};
-	// Build preferences from localStorage
-	for(var i=0; i<localStorage.length; i++) {
-		var key = localStorage.key(i);
-		prefs[key] = getOption(key);
-	}
-	restoreOptions(prefs);
-}
-
-window.addEventListener("load", init_gc, false);
 

@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Auto-Login Extension",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Auto-Login Extension",
 	"homepage_url": "http://code.google.com/p/auto-login-extension/",
 	"update_url": "http://auto-login-extension.googlecode.com/svn/releases/updates.xml",
@@ -12,7 +12,18 @@
 		"tabs"
 	],
 	"background": {
-		"scripts": ["manifest.js", "file/file.class.js", "i18n/i18n.class.js", "template/template.class.js", "background.js"]
+		"scripts": [
+			"manifest.js",
+			"alex/alex.class.js",
+			"file/file.class.js",
+			"i18n/i18n.class.js",
+			"logger/logger.class.js",
+			"template/template.class.js",
+			"lib/ales.class.js",
+			"lib/notification.class.js",
+			"lib/optionManager.class.js",
+			"lib/background.js"
+		]
 	},
 	"options_page": "options/options.html"
 }
