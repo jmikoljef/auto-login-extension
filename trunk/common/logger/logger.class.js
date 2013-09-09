@@ -26,18 +26,19 @@ var Logger = (function() {
 	function Class() {
 	}
 
-	Class.ALL   = 0;
-	Class.LOG   = 1<<0;//1
-	Class.DEBUG = 1<<1;//2
-	Class.INFO  = 1<<2;//4
-	Class.WARN  = 1<<3;//8
-	Class.ERROR = 1<<4;//16
-	Class.NONE  = (1<<8)-1;//255
+	Class.NONE   = 0;
+	Class.FATAL = 1<<0;//1
+	Class.ERROR = 1<<1;//2
+	Class.WARN  = 1<<2;//4
+	Class.INFO  = 1<<3;//8
+	Class.DEBUG = 1<<4;//16
+	Class.LOG   = 1<<5;//32
+	Class.ALL  = (1<<8)-1;//255
 
 	Class.level = Class.INFO;
 
 	Class.checkLevel = function(level) {
-		return level>=Class.level; // or !!(Class.level & level);
+		return level<=Class.level; // or !!(Class.level & level);
 	}
 
 	Class.formatLogMessage = function(args) {

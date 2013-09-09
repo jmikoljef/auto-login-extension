@@ -25,8 +25,9 @@ Widget = require("widget");
 Tabs = require("tabs");
 Data = require("self").data;
 
+JSON.minify = require('third-libs-loader').load('JSON.minify', 'minify.json.js');
 const THIRD = require('third-libs-loader');
-const SCRIPTS = THIRD.load('SCRIPTS_CONFIG', [{path:'manifest.js'}]);
+const SCRIPTS = JSON.minify(THIRD.get('repository/manifest.json')).scripts_config;
 
 var settingsTabs = undefined;
 

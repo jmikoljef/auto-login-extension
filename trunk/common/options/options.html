@@ -3,9 +3,14 @@
 	<head>
 		<title>AutoLogin Extension - Options</title>
 		<link rel=StyleSheet href="options.css" TYPE="text/css"></link>
-		<script type="text/javascript" src="settings.js"></script>
-		<script type="text/javascript" src="options.js"></script>
-		<script type="text/javascript" src="communication.js"></script>
+		<script type="text/javascript" src="../minify.json.js"></script>
+		<script type="text/javascript" src="../file/file.class.js"></script>
+		<script type="text/javascript" src="../i18n/i18n.class.js"></script>
+		<script type="text/javascript" src="js/sha1.js"></script>
+		<script type="text/javascript" src="js/ui.js"></script>
+		<script type="text/javascript" src="js/settings.js"></script>
+		<script type="text/javascript" src="js/options.js"></script>
+		<script type="text/javascript" src="js/communication.js"></script>
 	</head>
 	<body>
 		<div id="status" class="status hide">Pr&eacute;ferences sauvegard&eacute;es.</div>
@@ -33,7 +38,15 @@
 				</div>
 			</div>
 			<div id="panel-scripts" class="panel">
-				<h2>Gestion des scripts</h2>
+				<h2 id="panel-script.title">Gestion des scripts</h2>
+				<div class="element">
+					<fieldset id="scipts.repositories">
+						<legend id="scipts.repositories.legend">Liste des d&eacute;p&ocirc;ts</legend>
+					</fieldset>
+				</div>
+				<div class="button">
+					<input id="scripts.save" name="button" type="button" value="Enregistrer" />
+				</div>
 			</div>
 		</div>
 	</body>

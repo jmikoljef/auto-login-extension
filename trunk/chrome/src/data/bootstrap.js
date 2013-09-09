@@ -20,14 +20,14 @@
 
 // Only a singleton instance is created, so the class is not returned
 (function() {
-	function Class() {
+	function Bootstrap() {
 		var instance = this;
 		chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 			if(request.url == window.location.href) {
 				var _instance = instance;
 				var _function = eval("_instance."+request.functionName);
 				try {
-					var response = _function.apply(_instance, request.args)
+					var response = _function.apply(_instance, request.args);
 					sendResponse({response: response});
 				} catch (e) {
 					sendResponse({error: e});
@@ -36,17 +36,17 @@
 		});
 	}
 
-	Class.prototype.getCurrentLocationUrl = function() {
+	Bootstrap.prototype.getCurrentLocationUrl = function() {
 		return window.location.href;
 	}
 
-	Class.prototype.fillForm = function(credential) {
-		fillForm(credential);
+	Bootstrap.prototype.fillForm = function(credential) {
+		return fillForm(credential);
 	}
-	Class.prototype.validate = function() {
-		validate();
+	Bootstrap.prototype.validate = function() {
+		return validate();
 	}
 	
-	new Class();
+	new Bootstrap();
 })();
 

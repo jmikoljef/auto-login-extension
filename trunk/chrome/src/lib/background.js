@@ -20,41 +20,55 @@
 
 Logger.level = Logger.ALL;
 
-// Add a listener on tabs for injecting scripts if needed
-chrome.webNavigation.onCompleted.addListener(
-	// Callback
-	function(details) {
-		for(var i in SCRIPTS_CONFIG) {
-			var script_config = SCRIPTS_CONFIG[i];
-			var config = OptionManager.getOption(script_config.id);
+(function Background() {
+	
+	function handleRepository(repository, details) {
+		var url = repository.url;
+		var resolveUrl = undefined;
+		if(repository.id=="local") {
+			url = "repository";
+			resolveUrl = chrome.extension.getURL;
+		}
+		var file = new File(url + "/manifest.json", resolveUrl);
+		file.open();
+		var manifest = file.getJsonContent();
+		for(var i in manifest.scripts_config) {
+			var script_config = manifest.scripts_config[i];
+			var config = OptionManager.getOption(repository.id + "#" + script_config.id);
 			if(!config) continue;
 			if(!config.enabled) continue;
 			var pages = script_config.pages;
 			// loop on each page that can match
 			for(var n in pages) {
-				var page = pages[n];
-				if(typeof page == "string") {
-					page = page.replace(/\?/, "\\?");
-					page = page.replace(/\*/, ".*");
-					page = "^"+page+"$";
-				}
+				var page = new RegExp(pages[n]);
 				// Does the current URL match with this config ?
 				if(details.url.match(page)) {
-					//injectScripts(details, script_config, config);
 					script_config.tabId = details.tabId;
 					script_config.prefs = config;
 					script_config.url = details.url;
+					script_config.repository = repository;
 					var alex = new Alex(ChromeAles, script_config);
 				}
 			}
 		}
-	},
-	// Filter
-	{
-		urls: ["<all_urls>"],
-		types: ["main_frame", "sub_frame"]
-	},
-	// opt_extraInfoSpec
-	[]
-);
-
+	}
+	
+	// Add a listener on tabs for injecting scripts if needed
+	chrome.webRequest.onCompleted.addListener(
+		// Callback
+		function(details) {
+			var repositories = OptionManager.getOption("scripts").repositories;
+			for(var key in repositories) {
+				handleRepository(repositories[key], details)
+			}
+		},
+		// Filter
+		{
+			urls: ["<all_urls>"],
+			types: ["main_frame", "sub_frame"]
+		},
+		// opt_extraInfoSpec
+		[]
+	);
+	Logger.debug("test");
+})();

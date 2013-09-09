@@ -19,26 +19,37 @@
  */
 
 ////////////////////////////////////////////////////////////////////////////////
-// Hack for using click function on anchor and image
+// Must be redefined for each browser
 ////////////////////////////////////////////////////////////////////////////////
-HTMLAnchorElement.prototype.click = function() {
-	document.location = this.href;
+Settings.prototype._load = function(name, callback) {
+	// console.log('communication.js', '_load', name);
+	var data = {
+		functionName: 'loadSettings',
+		name:name
+	};
+	//FIXME call the callback
+	error to fix...
+	window.postMessage(JSON.stringify(data), '*');
+};
+Settings.prototype._store = function store(value, name) {
+	// console.log('communication.js', 'storeOptions', value, name);
+	var data = {
+		functionName: 'storeSettings',
+		name:name,
+		value:value
+	};
+	window.postMessage(JSON.stringify(data), '*');
 }
-HTMLImageElement.prototype.click = function() {
-	this.onclick();
-}
+
 ////////////////////////////////////////////////////////////////////////////////
-// End hack
+// browser specifics
 ////////////////////////////////////////////////////////////////////////////////
+window.addEventListener('message', onMessage, false);
 
-function handleNotification(result) {
-	if(!result) return;
-	toastIt({content: "Test Notification"});
+function onMessage(event) {
+	var data = JSON.parse(event.data);
+	// console.log('communication.js', 'onMessage', data.functionName, data.id, data.options);
+	if(data.functionName == 'loadSettings') {
+		settings.loadSettings(data.options, data.id);
+	}
 }
-
-function callBackground(functionName, args, callback, needSender) {
-	if(needSender!=true) needSender = false;
-	if(!callback) callback = function() {};
-	chrome.extension.sendRequest({functionName: functionName, params: args, needSender: needSender}, callback);
-}
-

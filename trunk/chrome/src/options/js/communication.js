@@ -21,30 +21,45 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Must be redefined for each browser
 ////////////////////////////////////////////////////////////////////////////////
-function storeOptions(id, options) {
-	setOption(id, options);
+Settings.prototype._load = function(name, callback) {
+/*
+	if(!name) {
+		// Build preferences from localStorage
+		for(var i=0; i<localStorage.length; i++) {
+			var key = localStorage.key(i);
+			this._load(key, callback);
+		}
+	} else {
+		callback(name, this.__load(name));
+	}
+*/
+	callback(name, this.__load(name));
+}
+Settings.prototype.__load = function(name) {
+	if(!name) {
+		var settings = {};
+		// Build preferences from localStorage
+		for(var i=0; i<localStorage.length; i++) {
+			var key = localStorage.key(i);
+			settings[key] = this.__load(key);
+		}
+		return settings;
+	} else {
+		return JSON.parse(window.localStorage.getItem(name));
+	}
+}
+Settings.prototype._store = function(value, name) {
+	if(!name) {
+		if(value instanceof Object) {
+			for(var key in value) {
+				this._store(value[key], key);
+			}
+		}
+	} else {
+		window.localStorage.setItem(name, JSON.stringify(value));
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // browser specific
 ////////////////////////////////////////////////////////////////////////////////
-function getOption(name) {
-	return JSON.parse(window.localStorage.getItem(name));
-}
-
-function setOption(name, value) {
-	window.localStorage.setItem(name, JSON.stringify(value));
-}
-
-function init_gc() {
-	var prefs = {};
-	// Build preferences from localStorage
-	for(var i=0; i<localStorage.length; i++) {
-		var key = localStorage.key(i);
-		prefs[key] = getOption(key);
-	}
-	restoreOptions(prefs);
-}
-
-window.addEventListener("load", init_gc, false);
-
