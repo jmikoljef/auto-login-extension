@@ -52,7 +52,7 @@ var File = (function() {
 	};
 	Class.prototype.getJsonContent = function() {
 		if(this.json==undefined) {
-			this.json = JSON.parse(this.content);
+			this.json = JSON.parse(JSON.minify(this.content));
 		}
 		return this.json;
 	};

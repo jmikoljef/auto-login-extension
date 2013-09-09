@@ -89,6 +89,7 @@ h1 {
  * Menu
  */
 .menu {
+	width: 251px;
 	float: left;
 	padding-top: 40px;
 }
@@ -103,31 +104,33 @@ h1 {
 	vertical-align : middle;
 	float: right;
 }
-.menu-item-l1,.menu-item-l2 {
-	padding: 5px;
+.menu .menu-item div[name="menu"] {
+	padding: 3px 5px;
 	margin-bottom: 5px;
-
-	/* CSS3 */
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;
 
 	/* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
 	position:relative;
 }
 
-.menu .menu-item-l1 {
+/* Menu de 1° niveau et supérieur */
+.menu .menu-item {
 	color: rgb(72,72,72);
 	font-size: 16pt;
-	width: 240px;
 }
-.menu .menu-item-l2 {
+/* Menu de 2° niveau et supérieur */
+.menu .menu-item .menu-item {
 	font-size: 12pt;
-	margin-left: 18px;
-	width: 222px;
+	padding-left: 12px;
+	font-weight: bold;
 }
-.menu .menu-item-l2 img {
+/* Menu de 3° niveau et supérieur */
+.menu .menu-item .menu-item .menu-item {
+	font-weight: normal;
+}
+.menu-item .menu-item img {
 	width: 16px;
 }
+
 .menu a:link,a:visited,a:focus,a:active,a:hover {
 	color: rgb(72,72,72);
 	text-decoration: none;
@@ -152,9 +155,17 @@ h1 {
 	/* Evite que la bordure droite du menu ne crée des traces sur la bordure du panel */
 	z-index: 1;
 
+	/* CSS3 */
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+
 	transition-property: all;
 	transition-duration: 0.5s;
 	transition-timing-function: ease-out;
+}
+
+.menu-hidden {
+	opacity:0;
 }
 
 /*

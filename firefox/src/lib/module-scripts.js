@@ -22,15 +22,16 @@ PageMod = require("page-mod");
 require("tabs");
 Data = require("self").data;
 Alex = require('alex.class').Alex;
-Scripts = require('third-libs-loader').load('SCRIPTS_CONFIG', [{path:'manifest.js'}]);
-
+JSON.minify = require('third-libs-loader').load('JSON.minify', 'minify.json.js');
+Scripts = JSON.minify(require('third-libs-loader').get('repository/manifest.json')).scripts_config;
+console.log(Scripts);
 /*
  * Load module
  */
 exports.load = function() {
 	for(var s in Scripts) {
 		var script = Scripts[s];
-        _plugScript(script);
+		_plugScript(script);
 	}
 }
 
@@ -45,15 +46,21 @@ exports.unload = function() {
  * Inject content-script in page
  */
 function _plugScript(script) {
+console.log("####");
+console.log(script);
+console.exception({});
+console.log("####");
 	PageMod.PageMod({
 	    include: script.pages,
 	    contentScriptWhen : 'end',
 	    contentScriptFile: _contentScriptFiles(script),
+//*
 	    onAttach: function(worker) {
 	    	script.icon = worker.tab.favicon;
 	    	var alex = Alex(script, worker);
 	    	alex.fillForm();
 	    }
+//*/
 	});
 }
 
@@ -61,18 +68,22 @@ function _plugScript(script) {
  * Extract optionnal scripts path, and add mandatory scripts path
  */
 function _contentScriptFiles(script) {
+	var repoUrl = 'repository';
+	var libUrl = repoUrl + '/lib';
+	var scriptsUrl = repoUrl + '/scripts';
+
 	var urls = new Array();
 	if(!!script.libs) {
 		for(var i in script.files) {
-			urls.push(Data.url('scripts/' + script.libs[i]));
+			urls.push(Data.url(libUrl + '/' + script.libs[i]));
 		}
 	}
 	if(!!script.files) {
 		for(var i in script.files) {
-			urls.push(Data.url('scripts/' + script.id + '/' + script.files[i]));
+			urls.push(Data.url(scriptsUrl + '/' + script.id + '/' + script.files[i]));
 		}
 	}
-	urls.push(Data.url('scripts/' + script.id + '/script.js'));
+	urls.push(Data.url(scriptsUrl + '/' + script.id + '/script.js'));
 	urls.push(Data.url('scripts/utils.js'));
 	urls.push(Data.url('scripts/bootstrap.js'));
 	return urls;

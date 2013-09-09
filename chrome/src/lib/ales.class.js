@@ -108,19 +108,33 @@ var ChromeAles = (function() {
 	function injectScripts(instance) {
 		var config = instance.config;
 		var tabId = config.tabId;
+
+		var repository = config.repository;
+		var repoUrl = repository.url;
+		var libUrl = repoUrl + "/" + (repository.lib?repository.lib:"lib");
+		var scriptsUrl = repoUrl + "/" + (repository.lib?repository.lib:"scripts");
+		var file = undefined;
+
 		// chrome hack
 		chrome.tabs.executeScript(tabId, {allFrames: true, file: "data/hack_gc.js"});
-		chrome.tabs.executeScript(tabId, {allFrames: true, file: "scripts/commons.js"});
+		chrome.tabs.executeScript(tabId, {allFrames: true, file: "repository/lib/commons.js"});
 		// Inject library scripts
 		for(var i in config.libs) {
-			chrome.tabs.executeScript(tabId, {allFrames: true, file: "scripts/" + config.libs[i]});
+			file = new File(libUrl + "/" + config.libs[i]);
+			file.open();
+			chrome.tabs.executeScript(tabId, {allFrames: true, code: file.getContent()});
 		}
 		// Inject others specifics scripts
 		for(var i in config.files) {
-			chrome.tabs.executeScript(tabId, {allFrames: true, file: "scripts/" + config.id + "/" + config.files[i]});
+			file = new File(scriptsUrl + "/" + config.id + "/" + config.files[i]);
+			file.open();
+			chrome.tabs.executeScript(tabId, {allFrames: true, code: file.getContent()});
 		}
 		// Inject the main script and launch it
-		chrome.tabs.executeScript(tabId, {allFrames: true, file: "scripts/" + config.id + "/script.js"});
+		
+		file = new File(scriptsUrl + "/" + config.id + "/script.js");
+		file.open();
+		chrome.tabs.executeScript(tabId, {allFrames: true, code: file.getContent()});
 		chrome.tabs.executeScript(tabId, {allFrames: true, file: "data/bootstrap.js"}, function() {
 			fireEvent("init", instance);
 		});

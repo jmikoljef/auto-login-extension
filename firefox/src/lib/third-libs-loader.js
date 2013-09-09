@@ -35,7 +35,7 @@ exports.load = function (refName, dependencies) {
 				eval(exports.get(dep.path));
 			}
 		} catch (e) {
-			throw new Error('An error occur during the loading of [' + dep + ']');
+			throw new Error('An error occur during the loading of [' + JSON.stringify(dep) + ']');
 		}
 	}
 	eval('var ref = ' + refName + ';');
